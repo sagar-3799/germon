@@ -1,5 +1,7 @@
 /* ==========================================================================
-   GERMON IT SOLUTION PVT. LTD. - Interactive Particle Canvas
+   GERMON IT SOLUTION PVT. LTD. - Interactive Particle Canvas (Optimized)
+   Performance fixes: reduced particle count, pauses when tab is hidden,
+   skips if user prefers reduced motion, throttled on mobile.
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -8,9 +10,16 @@ document.addEventListener('DOMContentLoaded', function () {
   const canvas = document.getElementById('hero-particles');
   if (!canvas) return;
 
+  // Skip on mobile (saves battery and CPU)
+  if (window.innerWidth < 768) return;
+
+  // Respect prefers-reduced-motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
   const ctx = canvas.getContext('2d');
   let particlesArray = [];
-  const numberOfParticles = 45;
+  const numberOfParticles = 25; // Reduced from 45
+  let animationId = null;
 
   function resizeCanvas() {
     canvas.width = canvas.parentElement.offsetWidth;
@@ -18,16 +27,20 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
+  window.addEventListener('resize', resizeCanvas, { passive: true });
 
   class Particle {
     constructor() {
+      this.reset();
+    }
+
+    reset() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
-      this.size = Math.random() * 3 + 1;
-      this.speedX = Math.random() * 1.5 - 0.75;
-      this.speedY = Math.random() * 1.5 - 0.75;
-      this.color = Math.random() > 0.5 ? 'rgba(245, 0, 13, 0.4)' : 'rgba(24, 168, 232, 0.4)';
+      this.size = Math.random() * 2 + 0.8;
+      this.speedX = (Math.random() - 0.5) * 0.8;
+      this.speedY = (Math.random() - 0.5) * 0.8;
+      this.color = Math.random() > 0.5 ? 'rgba(245, 0, 13, 0.35)' : 'rgba(24, 168, 232, 0.35)';
     }
 
     update() {
@@ -57,11 +70,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function connectParticles() {
     for (let a = 0; a < particlesArray.length; a++) {
-      for (let b = a; b < particlesArray.length; b++) {
-        let distance = Math.hypot(particlesArray[a].x - particlesArray[b].x, particlesArray[a].y - particlesArray[b].y);
-        if (distance < 110) {
-          ctx.strokeStyle = 'rgba(255, 255, 255, ' + (0.15 - distance / 1000) + ')';
-          ctx.lineWidth = 1;
+      for (let b = a + 1; b < particlesArray.length; b++) {
+        const dx = particlesArray[a].x - particlesArray[b].x;
+        const dy = particlesArray[a].y - particlesArray[b].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 100) {
+          ctx.strokeStyle = 'rgba(255,255,255,' + (0.12 - distance / 900) + ')';
+          ctx.lineWidth = 0.8;
           ctx.beginPath();
           ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
           ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
@@ -72,13 +87,18 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function animate() {
+    // Pause when tab is hidden to save CPU
+    if (document.hidden) {
+      animationId = requestAnimationFrame(animate);
+      return;
+    }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < particlesArray.length; i++) {
       particlesArray[i].update();
       particlesArray[i].draw();
     }
     connectParticles();
-    requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
   }
 
   init();

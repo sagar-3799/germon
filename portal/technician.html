@@ -254,15 +254,12 @@
       const currentUser = GermonStore.getCurrentUser();
       const statusFilter = document.getElementById('techStatusFilter').value;
 
-      // Technicians see assigned jobs, Admin/Staff can see all or preview
       let filterObj = {};
-      if (currentUser.role === 'technician') {
-        filterObj.techId = currentUser.id;
-      }
       if (statusFilter !== 'all') {
         filterObj.status = statusFilter;
       }
 
+      // GermonStore.getJobs automatically enforces: Unassigned jobs (visible to all) + Assigned jobs (visible to assigned user/admin)
       const jobs = GermonStore.getJobs(filterObj);
       document.getElementById('assignedCount').textContent = jobs.length;
       const container = document.getElementById('techJobsContainer');

@@ -167,10 +167,11 @@
     });
 
     function populateTechFilter() {
-      const users = GermonStore.getUsers().filter(u => u.role === 'technician');
+      const users = GermonStore.getUsers().filter(u => u.role !== 'admin' && u.status === 'active');
       const sel = document.getElementById('filterTech');
+      sel.innerHTML = '<option value="all">All Visible Jobs</option><option value="unassigned">⚠️ Unassigned Jobs Only</option>';
       users.forEach(u => {
-        sel.innerHTML += `<option value="${u.id}">${u.name}</option>`;
+        sel.innerHTML += `<option value="${u.id}">${u.name} (${u.role})</option>`;
       });
     }
 

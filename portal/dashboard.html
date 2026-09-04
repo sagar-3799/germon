@@ -352,21 +352,24 @@
       initDashboard();
     }
 
-    // Populate Technicians in Select Dropdowns
+    // Populate all assignable users in dropdowns (staff + technicians)
     function populateTechDropdowns() {
       const users = GermonStore.getUsers();
-      const techs = users.filter(u => u.role === 'technician' && u.status === 'active');
+      const currentUser = GermonStore.getCurrentUser();
+      const assignable = users.filter(u => u.role !== 'admin' && u.status === 'active');
 
       const filterSelect = document.getElementById('techFilter');
-      filterSelect.innerHTML = '<option value="all">All Technicians</option>';
+      filterSelect.innerHTML = '<option value="all">All Visible Jobs</option><option value="unassigned">⚠️ Unassigned Jobs Only</option>';
 
       const jobSelect = document.getElementById('jobAssignedTech');
       jobSelect.innerHTML = '<option value="">-- Unassigned --</option>';
 
-      techs.forEach(t => {
-        filterSelect.innerHTML += `<option value="${t.id}">${t.name} (${t.phone})</option>`;
-        jobSelect.innerHTML += `<option value="${t.id}" data-name="${t.name}">${t.name} - ${t.specialities ? t.specialities.join(', ') : ''}</option>`;
+      assignable.forEach(t => {
+        filterSelect.innerHTML += `<option value="${t.id}">${t.name} (${t.role})</option>`;
+        jobSelect.innerHTML += `<option value="${t.id}" data-name="${t.name}">${t.name} — ${t.role}${t.specialities && t.specialities.length ? ' (' + t.specialities.join(', ') + ')' : ''}</option>`;
       });
+
+      filterSelect.value = 'all';
     }
 
     // Render Metric Cards

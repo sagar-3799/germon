@@ -2,6 +2,8 @@
    GERMON IT SOLUTION PVT. LTD. - Office Work & Technician Portal Styles
    ========================================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 :root {
   --germon-blue: #2B2E83;
   --germon-blue-dark: #1E215C;
@@ -11,9 +13,11 @@
   --germon-dark: #0F172A;
   --germon-slate: #1E293B;
   --germon-gray: #64748B;
-  --germon-light: #F8FAFC;
+  --germon-light: #F1F5F9;
   --germon-card-bg: #FFFFFF;
   --germon-border: #E2E8F0;
+  --portal-radius: 14px;
+  --portal-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   
   --status-pending: #F59E0B;
   --status-assigned: #3B82F6;
@@ -24,10 +28,11 @@
 }
 
 body {
-  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, Roboto, sans-serif;
   background-color: var(--germon-light);
   color: #1E293B;
   min-height: 100vh;
+  font-size: 0.94rem;
 }
 
 /* Navbar */
@@ -122,18 +127,18 @@ body {
 /* Metric Cards */
 .stat-card {
   background: #FFFFFF;
-  border-radius: 14px;
-  padding: 1.25rem;
-  border: 1px solid var(--germon-border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 16px;
+  padding: 1.35rem 1.5rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0,0,0,0.03);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   position: relative;
   overflow: hidden;
 }
 
 .stat-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(43, 46, 131, 0.08);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(43, 46, 131, 0.12);
 }
 
 .stat-card-accent {

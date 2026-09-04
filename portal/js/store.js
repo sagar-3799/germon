@@ -59,19 +59,15 @@ const GermonStore = (function () {
       if (!stored) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultDatabase));
       } else {
-        // Ensure Admin (usr-01) credentials in storage match the defined default admin
+        // Ensure at least one admin exists in DB. Do NOT overwrite password if admin has changed it.
         const db = JSON.parse(stored);
         const adminIndex = db.users ? db.users.findIndex(u => u.id === 'usr-01' || u.role === 'admin') : -1;
-        if (adminIndex >= 0) {
-          db.users[adminIndex].email = defaultDatabase.users[0].email;
-          db.users[adminIndex].phone = defaultDatabase.users[0].phone;
-          db.users[adminIndex].pass = defaultDatabase.users[0].pass;
-          db.users[adminIndex].name = defaultDatabase.users[0].name;
-          saveDB(db);
-        } else {
+        if (adminIndex < 0) {
+          // No admin found — seed the default admin
           db.users = [defaultDatabase.users[0], ...(db.users || [])];
           saveDB(db);
         }
+        // If admin exists, keep their current password intact (do not overwrite from defaultDatabase)
       }
     } catch (e) {
       console.error('LocalStorage error:', e);
@@ -132,8 +128,8 @@ const GermonStore = (function () {
         (cleanEmail === 'admin' && u.role === 'admin') ||
         (cleanEmail === 'sagar' && u.role === 'admin');
 
-      // Check password (matches stored pass, or allow default admin pass fallback)
-      const matchesPass = (u.pass === cleanPass) || (u.role === 'admin' && (cleanPass === 'Cctv@3799' || cleanPass === 'admin123'));
+      // Check password
+      const matchesPass = u.pass === cleanPass;
 
       return matchesIdentifier && matchesPass && u.status === 'active';
     }) : null;
@@ -144,7 +140,7 @@ const GermonStore = (function () {
       const defEmail = defAdmin.email.toLowerCase();
       const defPhone = defAdmin.phone;
       const isDefAdminIdentifier = cleanEmail === defEmail || cleanEmail === defPhone || cleanEmail === 'admin' || cleanEmail === 'sagar';
-      const isDefAdminPass = cleanPass === defAdmin.pass || cleanPass === 'admin123' || cleanPass === 'Cctv@3799';
+      const isDefAdminPass = cleanPass === defAdmin.pass;
 
       if (isDefAdminIdentifier && isDefAdminPass) {
         found = defAdmin;
@@ -184,7 +180,8 @@ const GermonStore = (function () {
       throw new Error('Maximum 10 active users allowed in the system! Please deactivate an unused staff/technician account first.');
     }
 
-    const newId = 'usr-' + String(db.users.length + 1).padStart(2, '0');
+    // Use timestamp-based ID to avoid duplicates when users are deleted and re-added
+    const newId = 'usr-' + Date.now().toString(36).slice(-6);
     const newUser = {
       id: newId,
       name: userData.name,
@@ -248,12 +245,36 @@ const GermonStore = (function () {
     const db = getDB();
     let jobs = db.jobs || [];
 
+    const currentUser = getCurrentUser();
+
+    // Enforce visibility rule for non-admin users:
+    // - Unassigned jobs: Visible to all users
+    // - Assigned jobs: Visible ONLY to the assigned user (or Admin)
+    if (currentUser && currentUser.role !== 'admin') {
+      const cId = currentUser.id;
+      const cName = (currentUser.name || '').toLowerCase();
+
+      jobs = jobs.filter(j => {
+        const isUnassigned = !j.assignedTechId || j.assignedTechId === '' || j.assignedTechName === 'Unassigned';
+        const isAssignedToMe = j.assignedTechId === cId || (j.assignedTechName && j.assignedTechName.toLowerCase() === cName);
+        return isUnassigned || isAssignedToMe;
+      });
+    }
+
     if (filter) {
       if (filter.status && filter.status !== 'all') {
         jobs = jobs.filter(j => j.status === filter.status);
       }
       if (filter.techId && filter.techId !== 'all') {
-        jobs = jobs.filter(j => j.assignedTechId === filter.techId);
+        if (filter.techId === 'unassigned') {
+          jobs = jobs.filter(j => !j.assignedTechId || j.assignedTechId === '' || j.assignedTechName === 'Unassigned');
+        } else {
+          const matchName = currentUser && currentUser.id === filter.techId ? currentUser.name.toLowerCase() : null;
+          jobs = jobs.filter(j => 
+            j.assignedTechId === filter.techId ||
+            (matchName && j.assignedTechName && j.assignedTechName.toLowerCase() === matchName)
+          );
+        }
       }
       if (filter.search) {
         const q = filter.search.toLowerCase();
@@ -325,6 +346,13 @@ const GermonStore = (function () {
     const db = getDB();
     const job = db.jobs.find(j => j.id === jobId);
     if (!job) return false;
+
+    const currentUser = getCurrentUser();
+    // Auto-assign to current user if job was unassigned
+    if (currentUser && (!job.assignedTechId || job.assignedTechId === '' || job.assignedTechName === 'Unassigned')) {
+      job.assignedTechId = currentUser.id;
+      job.assignedTechName = currentUser.name;
+    }
 
     const prevStatus = job.status;
     job.status = newStatus;
