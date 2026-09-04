@@ -25,42 +25,56 @@
     <!-- 1-Click Backup Options Row -->
     <div class="row g-4 mb-4">
       
-      <!-- JSON Backup Card -->
-      <div class="col-md-6 col-lg-4">
+      <!-- Firebase Cloud Sync Card -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-4 h-100 p-4 bg-white">
+          <div class="stat-icon bg-danger bg-opacity-10 text-danger mb-3 fs-3">
+            <i class="bi bi-fire"></i>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">Firebase Cloud Sync</h5>
+          <p class="small text-muted mb-3" id="firebaseStatusText">Upload local offline data to Cloud Firestore DB for live multi-user sync.</p>
+          <button class="btn btn-danger fw-bold mt-auto" onclick="handleFirebaseSync()" id="btnFirebaseSync">
+            <i class="bi bi-cloud-upload me-1"></i> Sync to Firebase
+          </button>
+        </div>
+      </div>
+
+      <!-- JSON Full Backup -->
+      <div class="col-md-6 col-lg-3">
         <div class="card border-0 shadow-sm rounded-4 h-100 p-4 bg-white">
           <div class="stat-icon bg-primary bg-opacity-10 text-primary mb-3 fs-3">
             <i class="bi bi-filetype-json"></i>
           </div>
-          <h5 class="fw-bold text-dark mb-1">JSON Full Backup</h5>
-          <p class="small text-muted mb-4">Export the entire portal database (clients, jobs, equipment, passwords, users) into a single offline JSON file.</p>
+          <h5 class="fw-bold text-dark mb-1">JSON Backup</h5>
+          <p class="small text-muted mb-4">Export entire portal database into a single JSON file.</p>
           <button class="btn btn-primary fw-bold mt-auto" onclick="GermonStore.exportJSON()">
-            <i class="bi bi-download me-2"></i> Download JSON (.json)
+            <i class="bi bi-download me-2"></i> Download JSON
           </button>
         </div>
       </div>
 
       <!-- MySQL SQL Dump Card -->
-      <div class="col-md-6 col-lg-4">
+      <div class="col-md-6 col-lg-3">
         <div class="card border-0 shadow-sm rounded-4 h-100 p-4 bg-white">
           <div class="stat-icon bg-success bg-opacity-10 text-success mb-3 fs-3">
             <i class="bi bi-filetype-sql"></i>
           </div>
-          <h5 class="fw-bold text-dark mb-1">MySQL SQL Dump</h5>
-          <p class="small text-muted mb-4">Generates standard MySQL/MariaDB compatible SQL with table schemas and insert queries for cPanel phpMyAdmin.</p>
+          <h5 class="fw-bold text-dark mb-1">MySQL Dump</h5>
+          <p class="small text-muted mb-4">Generates standard MySQL compatible SQL dump file.</p>
           <button class="btn btn-success fw-bold mt-auto" onclick="GermonStore.exportSQL()">
-            <i class="bi bi-file-earmark-code me-2"></i> Download SQL (.sql)
+            <i class="bi bi-file-earmark-code me-2"></i> Download SQL
           </button>
         </div>
       </div>
 
       <!-- Restore Card -->
-      <div class="col-md-6 col-lg-4">
+      <div class="col-md-6 col-lg-3">
         <div class="card border-0 shadow-sm rounded-4 h-100 p-4 bg-white">
           <div class="stat-icon bg-warning bg-opacity-10 text-warning mb-3 fs-3">
             <i class="bi bi-arrow-counterclockwise"></i>
           </div>
-          <h5 class="fw-bold text-dark mb-1">Restore from Backup</h5>
-          <p class="small text-muted mb-3">Restore your records from a previously downloaded JSON backup file.</p>
+          <h5 class="fw-bold text-dark mb-1">Restore Backup</h5>
+          <p class="small text-muted mb-3">Restore your records from a JSON file.</p>
           <input type="file" id="restoreFileInput" class="form-control form-control-sm mb-3" accept=".json">
           <button class="btn btn-outline-warning text-dark fw-bold mt-auto" onclick="handleRestore()">
             <i class="bi bi-upload me-1"></i> Upload &amp; Restore
@@ -131,12 +145,48 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
   <script src="js/store.js"></script>
   <script src="js/nav.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       renderLogs();
+      checkFirebaseStatus();
     });
+
+    function checkFirebaseStatus() {
+      const statusText = document.getElementById('firebaseStatusText');
+      const btn = document.getElementById('btnFirebaseSync');
+      if (GermonStore.isFirebaseActive()) {
+        statusText.innerHTML = '<span class="text-success fw-bold"><i class="bi bi-check-circle-fill me-1"></i> Connected to Firebase Cloud!</span> Realtime sync is active across all devices.';
+        btn.innerHTML = '<i class="bi bi-cloud-check-fill me-1"></i> Push Local Data to Firebase';
+      } else {
+        statusText.innerHTML = '<span class="text-warning fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i> Not Configured</span> Add your API key in <code>js/firebase-config.js</code> to enable Cloud Sync.';
+      }
+    }
+
+    async function handleFirebaseSync() {
+      if (!GermonStore.isFirebaseActive()) {
+        alert('Firebase credentials are not configured yet! Please open portal/js/firebase-config.js and add your project keys.');
+        return;
+      }
+      try {
+        const btn = document.getElementById('btnFirebaseSync');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Syncing...';
+        await GermonStore.pushLocalToFirebase();
+        alert('Local database successfully migrated to Firebase Cloud Firestore!');
+        btn.disabled = false;
+        checkFirebaseStatus();
+      } catch (err) {
+        alert('Firebase Sync failed: ' + err.message);
+        document.getElementById('btnFirebaseSync').disabled = false;
+      }
+    }
 
     function renderLogs() {
       const logs = GermonStore.getAuditLogs();

@@ -2,12 +2,14 @@
  * GERMON IT SOLUTION PVT. LTD. - Core Store & Database Engine
  * Zero-server Reactive Engine built for Cloudflare Pages & GitHub Pages
  * Features:
+ *  - Firebase Cloud Firestore & Auth Integration (Realtime Multi-User Sync)
+ *  - Automatic LocalStorage Fallback (Offline support)
  *  - 10 Active Users limit enforcement
  *  - Two-Way AES-compatible Password Vault Encryption
  *  - Client-Side Mobile Photo Compressor (5-10MB down to ~200KB)
  *  - Digital Touch Signature Capture
  *  - Equipment Serial & Warranty Tracker
- *  - 1-Click JSON & MySQL (.sql) Exporters
+ *  - 1-Click JSON, MySQL (.sql) & Firebase Cloud Migration Tools
  */
 
 const GermonStore = (function () {
@@ -17,7 +19,7 @@ const GermonStore = (function () {
   const AUTH_KEY = 'germon_current_user_v3';
   const MASTER_PIN = '1234'; // Default Master PIN to view client credentials
 
-  // Clean Production Seed Data (Demo data removed)
+  // Clean Production Seed Data
   const defaultDatabase = {
     users: [
       {
@@ -41,15 +43,17 @@ const GermonStore = (function () {
         timestamp: '2026-09-04 09:00',
         user: 'System',
         action: 'INIT',
-        detail: 'Germon IT System Initialized - Clean Production Database v3 Ready.'
+        detail: 'Germon IT System Initialized - Clean Production Database Ready.'
       }
     ]
   };
 
-  // Initialize DB in localStorage if not present
+  let cachedDB = null;
+  let firestoreUnsubscribers = [];
+
+  // Initialize DB in localStorage and Firebase if configured
   function initDB() {
     try {
-      // Clear legacy storage versions if present
       localStorage.removeItem('germon_portal_db_v1');
       localStorage.removeItem('germon_current_user_v1');
       localStorage.removeItem('germon_portal_db_v2');
@@ -57,40 +61,113 @@ const GermonStore = (function () {
 
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultDatabase));
+        cachedDB = JSON.parse(JSON.stringify(defaultDatabase));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cachedDB));
       } else {
-        // Ensure at least one admin exists in DB. Do NOT overwrite password if admin has changed it.
-        const db = JSON.parse(stored);
-        const adminIndex = db.users ? db.users.findIndex(u => u.id === 'usr-01' || u.role === 'admin') : -1;
-        if (adminIndex < 0) {
-          // No admin found — seed the default admin
-          db.users = [defaultDatabase.users[0], ...(db.users || [])];
-          saveDB(db);
+        cachedDB = JSON.parse(stored);
+        if (!cachedDB.users || !cachedDB.users.length) {
+          cachedDB.users = [defaultDatabase.users[0]];
+          saveDB(cachedDB);
         }
-        // If admin exists, keep their current password intact (do not overwrite from defaultDatabase)
       }
+
+      // Initialize Firebase Listeners if configured
+      initFirebaseListeners();
     } catch (e) {
       console.error('LocalStorage error:', e);
+      cachedDB = JSON.parse(JSON.stringify(defaultDatabase));
     }
   }
 
   function getDB() {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : defaultDatabase;
-    } catch (e) {
-      return defaultDatabase;
+    if (!cachedDB) {
+      initDB();
     }
+    return cachedDB;
   }
 
   function saveDB(db) {
     try {
+      cachedDB = db;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+      // Dispatch custom event for UI reactivity
+      window.dispatchEvent(new CustomEvent('germon-db-updated', { detail: db }));
       return true;
     } catch (e) {
       console.error('Failed to save to localStorage:', e);
       return false;
     }
+  }
+
+  // --- FIREBASE SYNC ENGINE ---
+  function isFirebaseActive() {
+    return (
+      window.GermonFirebase &&
+      window.GermonFirebase.isConfigured() &&
+      window.GermonFirebase.db
+    );
+  }
+
+  function initFirebaseListeners() {
+    if (!isFirebaseActive()) return;
+
+    const db = window.GermonFirebase.db;
+    const collections = ['users', 'clients', 'equipment', 'credentials', 'jobs', 'auditLogs'];
+
+    // Unsubscribe existing if re-init
+    firestoreUnsubscribers.forEach(unsub => unsub());
+    firestoreUnsubscribers = [];
+
+    collections.forEach(colName => {
+      try {
+        const unsub = db.collection(colName).onSnapshot(snapshot => {
+          if (!snapshot.empty) {
+            const items = [];
+            snapshot.forEach(doc => {
+              items.push({ ...doc.data(), id: doc.id });
+            });
+            if (!cachedDB) cachedDB = getDB();
+            cachedDB[colName] = items;
+            saveDB(cachedDB);
+          }
+        }, err => {
+          console.warn(`Firestore listener warning for ${colName}:`, err);
+        });
+        firestoreUnsubscribers.push(unsub);
+      } catch (e) {
+        console.error(`Error attaching listener for ${colName}:`, e);
+      }
+    });
+  }
+
+  function syncToFirestore(collection, id, data) {
+    if (!isFirebaseActive()) return;
+    try {
+      window.GermonFirebase.db.collection(collection).doc(id).set(data, { merge: true })
+        .catch(err => console.error(`Firestore write error [${collection}/${id}]:`, err));
+    } catch (e) {
+      console.error('Firestore sync error:', e);
+    }
+  }
+
+  // 1-Click Upload LocalStorage Data to Firebase Cloud
+  async function pushLocalToFirebase() {
+    if (!isFirebaseActive()) {
+      throw new Error('Firebase is not configured! Please add your Firebase credentials in firebase-config.js first.');
+    }
+    const currentDB = getDB();
+    const db = window.GermonFirebase.db;
+    const collections = ['users', 'clients', 'equipment', 'credentials', 'jobs', 'auditLogs'];
+
+    for (const col of collections) {
+      const list = currentDB[col] || [];
+      for (const item of list) {
+        const docId = item.id || db.collection(col).doc().id;
+        await db.collection(col).doc(docId).set(item, { merge: true });
+      }
+    }
+    logAudit('FIREBASE_SYNC', 'Local database migrated to Firebase Cloud Firestore successfully.');
+    return true;
   }
 
   // Auth & Session
@@ -128,13 +205,11 @@ const GermonStore = (function () {
         (cleanEmail === 'admin' && u.role === 'admin') ||
         (cleanEmail === 'sagar' && u.role === 'admin');
 
-      // Check password
       const matchesPass = u.pass === cleanPass;
-
       return matchesIdentifier && matchesPass && u.status === 'active';
     }) : null;
 
-    // 2. Fallback check against defaultDatabase in case localStorage was desynchronized
+    // 2. Fallback check against defaultDatabase
     if (!found) {
       const defAdmin = defaultDatabase.users[0];
       const defEmail = defAdmin.email.toLowerCase();
@@ -144,7 +219,6 @@ const GermonStore = (function () {
 
       if (isDefAdminIdentifier && isDefAdminPass) {
         found = defAdmin;
-        // Resync into DB
         initDB();
       }
     }
@@ -164,23 +238,22 @@ const GermonStore = (function () {
   // 10 Users Rule Enforcement
   function getUsers() {
     const db = getDB();
-    return db.users;
+    return db.users || [];
   }
 
   function getActiveUserCount() {
     const db = getDB();
-    return db.users.filter(u => u.status === 'active').length;
+    return (db.users || []).filter(u => u.status === 'active').length;
   }
 
   function addUser(userData) {
     const db = getDB();
-    const activeCount = db.users.filter(u => u.status === 'active').length;
+    const activeCount = (db.users || []).filter(u => u.status === 'active').length;
 
     if (activeCount >= 10 && userData.status === 'active') {
       throw new Error('Maximum 10 active users allowed in the system! Please deactivate an unused staff/technician account first.');
     }
 
-    // Use timestamp-based ID to avoid duplicates when users are deleted and re-added
     const newId = 'usr-' + Date.now().toString(36).slice(-6);
     const newUser = {
       id: newId,
@@ -193,15 +266,17 @@ const GermonStore = (function () {
       specialities: userData.specialities || []
     };
 
+    if (!db.users) db.users = [];
     db.users.push(newUser);
     saveDB(db);
+    syncToFirestore('users', newUser.id, newUser);
     logAudit('USER_ADD', `Added user ${newUser.name} (${newUser.role})`);
     return newUser;
   }
 
   function toggleUserStatus(userId) {
     const db = getDB();
-    const u = db.users.find(user => user.id === userId);
+    const u = (db.users || []).find(user => user.id === userId);
     if (!u) return false;
 
     if (u.status === 'active') {
@@ -214,13 +289,14 @@ const GermonStore = (function () {
       u.status = 'active';
     }
     saveDB(db);
+    syncToFirestore('users', u.id, u);
     logAudit('USER_STATUS', `User ${u.name} set to ${u.status}`);
     return u.status;
   }
 
   function updateUser(userId, updatedData) {
     const db = getDB();
-    const u = db.users.find(user => user.id === userId);
+    const u = (db.users || []).find(user => user.id === userId);
     if (!u) throw new Error('User not found');
 
     if (updatedData.name) u.name = updatedData.name.trim();
@@ -230,6 +306,7 @@ const GermonStore = (function () {
     if (updatedData.specialities) u.specialities = updatedData.specialities;
 
     saveDB(db);
+    syncToFirestore('users', u.id, u);
 
     const current = getCurrentUser();
     if (current && current.id === userId) {
@@ -247,9 +324,6 @@ const GermonStore = (function () {
 
     const currentUser = getCurrentUser();
 
-    // Enforce visibility rule for non-admin users:
-    // - Unassigned jobs: Visible to all users
-    // - Assigned jobs: Visible ONLY to the assigned user (or Admin)
     if (currentUser && currentUser.role !== 'admin') {
       const cId = currentUser.id;
       const cName = (currentUser.name || '').toLowerCase();
@@ -292,11 +366,13 @@ const GermonStore = (function () {
 
   function getJobById(jobId) {
     const db = getDB();
-    return db.jobs.find(j => j.id === jobId) || null;
+    return (db.jobs || []).find(j => j.id === jobId) || null;
   }
 
   function createJob(jobData) {
     const db = getDB();
+    if (!db.jobs) db.jobs = [];
+
     const currentYear = new Date().getFullYear();
     const jobNum = String(db.jobs.length + 1).padStart(4, '0');
     const newJobId = `JOB-${currentYear}-${jobNum}`;
@@ -338,17 +414,17 @@ const GermonStore = (function () {
 
     db.jobs.unshift(newJob);
     saveDB(db);
+    syncToFirestore('jobs', newJob.id, newJob);
     logAudit('JOB_CREATE', `Created ${newJobId} for ${newJob.clientName}`);
     return newJob;
   }
 
   function updateJobStatus(jobId, newStatus, extraData = {}) {
     const db = getDB();
-    const job = db.jobs.find(j => j.id === jobId);
+    const job = (db.jobs || []).find(j => j.id === jobId);
     if (!job) return false;
 
     const currentUser = getCurrentUser();
-    // Auto-assign to current user if job was unassigned
     if (currentUser && (!job.assignedTechId || job.assignedTechId === '' || job.assignedTechName === 'Unassigned')) {
       job.assignedTechId = currentUser.id;
       job.assignedTechName = currentUser.name;
@@ -386,6 +462,7 @@ const GermonStore = (function () {
     });
 
     saveDB(db);
+    syncToFirestore('jobs', job.id, job);
     logAudit('JOB_UPDATE', `${jobId} marked as ${newStatus}`);
     return job;
   }
@@ -393,11 +470,12 @@ const GermonStore = (function () {
   // Clients
   function getClients() {
     const db = getDB();
-    return db.clients;
+    return db.clients || [];
   }
 
   function addClient(clientData) {
     const db = getDB();
+    if (!db.clients) db.clients = [];
     const newId = 'cl-' + String(db.clients.length + 1).padStart(2, '0');
     const newClient = {
       id: newId,
@@ -413,6 +491,7 @@ const GermonStore = (function () {
     };
     db.clients.push(newClient);
     saveDB(db);
+    syncToFirestore('clients', newClient.id, newClient);
     logAudit('CLIENT_ADD', `Added client ${newClient.name}`);
     return newClient;
   }
@@ -420,14 +499,16 @@ const GermonStore = (function () {
   // Equipment & Warranty
   function getEquipment(clientId) {
     const db = getDB();
+    const list = db.equipment || [];
     if (clientId) {
-      return db.equipment.filter(e => e.clientId === clientId);
+      return list.filter(e => e.clientId === clientId);
     }
-    return db.equipment;
+    return list;
   }
 
   function addEquipment(eqData) {
     const db = getDB();
+    if (!db.equipment) db.equipment = [];
     const newId = 'eq-' + String(db.equipment.length + 1).padStart(2, '0');
     const newEq = {
       id: newId,
@@ -442,11 +523,12 @@ const GermonStore = (function () {
     };
     db.equipment.push(newEq);
     saveDB(db);
+    syncToFirestore('equipment', newEq.id, newEq);
     logAudit('EQUIPMENT_ADD', `Added equipment S/N: ${newEq.serialNumber}`);
     return newEq;
   }
 
-  // Two-Way AES-Compatible Encryption for Password Vault
+  // Password Encryption
   function encryptPassword(plainText) {
     if (!plainText) return '';
     try {
@@ -467,14 +549,16 @@ const GermonStore = (function () {
 
   function getCredentials(clientId) {
     const db = getDB();
+    const list = db.credentials || [];
     if (clientId) {
-      return db.credentials.filter(c => c.clientId === clientId);
+      return list.filter(c => c.clientId === clientId);
     }
-    return db.credentials;
+    return list;
   }
 
   function addCredential(credData) {
     const db = getDB();
+    if (!db.credentials) db.credentials = [];
     const newId = 'crd-' + String(db.credentials.length + 1).padStart(2, '0');
     const newCred = {
       id: newId,
@@ -489,6 +573,7 @@ const GermonStore = (function () {
     };
     db.credentials.push(newCred);
     saveDB(db);
+    syncToFirestore('credentials', newCred.id, newCred);
     logAudit('CREDENTIAL_ADD', `Added credentials for ${newCred.systemType}`);
     return newCred;
   }
@@ -497,7 +582,7 @@ const GermonStore = (function () {
     return pin === MASTER_PIN;
   }
 
-  // Client-Side Image Compressor (Transforms 5-10MB mobile photos to ~150-250KB)
+  // Client-Side Image Compressor
   function compressImage(file, maxWidth = 1280, quality = 0.72) {
     return new Promise((resolve, reject) => {
       if (!file || !file.type.startsWith('image/')) {
@@ -524,7 +609,6 @@ const GermonStore = (function () {
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          // Return compressed Base64 JPEG
           const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
           resolve(compressedDataUrl);
         };
@@ -548,15 +632,16 @@ const GermonStore = (function () {
       detail: detail
     };
     db.auditLogs.unshift(newLog);
-    if (db.auditLogs.length > 200) db.auditLogs.pop(); // Keep last 200 logs
+    if (db.auditLogs.length > 200) db.auditLogs.pop();
     saveDB(db);
+    syncToFirestore('auditLogs', newLog.id, newLog);
   }
 
   function getAuditLogs() {
     return getDB().auditLogs || [];
   }
 
-  // Online Web Inquiries (From single contact form)
+  // Online Web Inquiries
   function getWebInquiries() {
     try {
       const stored = localStorage.getItem('germon_inquiries');
@@ -577,7 +662,7 @@ const GermonStore = (function () {
     } catch (e) {}
   }
 
-  // 1-Click Database Exporter (JSON & MySQL SQL Dump)
+  // 1-Click Database Exporters
   function exportJSON() {
     const db = getDB();
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(db, null, 2));
@@ -597,7 +682,6 @@ const GermonStore = (function () {
     sql += `-- Compatible with MySQL 5.7+ / MariaDB / cPanel phpMyAdmin\n`;
     sql += `-- ========================================================\n\n`;
 
-    // Users Table
     sql += `CREATE TABLE IF NOT EXISTS users (\n`;
     sql += `  id VARCHAR(20) PRIMARY KEY,\n`;
     sql += `  name VARCHAR(100) NOT NULL,\n`;
@@ -608,12 +692,11 @@ const GermonStore = (function () {
     sql += `  password_hash VARCHAR(255) NOT NULL\n`;
     sql += `);\n\n`;
 
-    db.users.forEach(u => {
+    (db.users || []).forEach(u => {
       sql += `INSERT INTO users (id, name, role, email, phone, status, password_hash) VALUES ('${u.id}', '${escapeSQL(u.name)}', '${u.role}', '${u.email}', '${u.phone}', '${u.status}', '${escapeSQL(u.pass)}');\n`;
     });
     sql += `\n`;
 
-    // Clients Table
     sql += `CREATE TABLE IF NOT EXISTS clients (\n`;
     sql += `  id VARCHAR(20) PRIMARY KEY,\n`;
     sql += `  name VARCHAR(150) NOT NULL,\n`;
@@ -626,12 +709,11 @@ const GermonStore = (function () {
     sql += `  client_type VARCHAR(50)\n`;
     sql += `);\n\n`;
 
-    db.clients.forEach(c => {
+    (db.clients || []).forEach(c => {
       sql += `INSERT INTO clients (id, name, contact_person, phone, email, address, landmark, pan_vat, client_type) VALUES ('${c.id}', '${escapeSQL(c.name)}', '${escapeSQL(c.contactPerson)}', '${c.phone}', '${c.email}', '${escapeSQL(c.address)}', '${escapeSQL(c.landmark)}', '${c.panVat}', '${c.type}');\n`;
     });
     sql += `\n`;
 
-    // Work Orders Table
     sql += `CREATE TABLE IF NOT EXISTS work_orders (\n`;
     sql += `  id VARCHAR(30) PRIMARY KEY,\n`;
     sql += `  client_id VARCHAR(20),\n`;
@@ -648,7 +730,7 @@ const GermonStore = (function () {
     sql += `  created_at DATETIME\n`;
     sql += `);\n\n`;
 
-    db.jobs.forEach(j => {
+    (db.jobs || []).forEach(j => {
       sql += `INSERT INTO work_orders (id, client_id, client_name, work_type, priority, location, assigned_tech_id, scheduled_date, status, estimated_amount, paid_amount, hold_reason, created_at) VALUES ('${j.id}', '${j.clientId}', '${escapeSQL(j.clientName)}', '${escapeSQL(j.workType)}', '${j.priority}', '${escapeSQL(j.location)}', '${j.assignedTechId}', '${j.scheduledDate}', '${j.status}', ${j.estimatedAmount}, ${j.paidAmount}, '${escapeSQL(j.holdReason)}', '${j.createdAt}');\n`;
     });
 
@@ -666,6 +748,9 @@ const GermonStore = (function () {
       const parsed = JSON.parse(jsonString);
       if (parsed.users && parsed.jobs) {
         saveDB(parsed);
+        if (isFirebaseActive()) {
+          pushLocalToFirebase();
+        }
         return true;
       }
       return false;
@@ -676,6 +761,9 @@ const GermonStore = (function () {
 
   function resetToDefault() {
     saveDB(defaultDatabase);
+    if (isFirebaseActive()) {
+      pushLocalToFirebase();
+    }
   }
 
   // Helpers
@@ -727,6 +815,8 @@ const GermonStore = (function () {
     exportJSON,
     exportSQL,
     restoreDatabase,
-    resetToDefault
+    resetToDefault,
+    pushLocalToFirebase,
+    isFirebaseActive
   };
 })();
