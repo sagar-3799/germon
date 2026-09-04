@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio & Project Showcase | Germon IT Solution Pvt. Ltd.</title>
+  <meta name="description" content="Explore completed projects by Germon IT Solution Pvt. Ltd. across Chitwan, Nepal: CCTV & Wi-Fi Camera, Fire Safety, Biometric Attendance, Access Control Gates, Money Counting Machines, Laptop/Computer Repairs, Routers & PoE Switches.">
+
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animation.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar d-none d-md-block">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="top-info">
+        <span class="me-3"><i class="bi bi-geo-alt-fill text-danger me-1"></i> Ganesh Market, Narayangarh, Chitwan, Nepal</span>
+        <span class="me-3"><i class="bi bi-envelope-fill text-info me-1"></i> <a href="mailto:germonitchitwan@gmail.com">germonitchitwan@gmail.com</a></span>
+        <span><i class="bi bi-telephone-fill text-success me-1"></i> +977-9855084949 / 9866284949</span>
+      </div>
+      <div class="social-icons">
+        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+      <div class="container">
+        <a class="navbar-brand navbar-brand-wrapper" href="index.html">
+          <img src="Logo.jpeg" alt="Germon IT Solution Logo" class="navbar-brand-logo">
+          <div class="brand-text">
+            <span class="brand-name">GERMON IT</span>
+            <span class="brand-subname">SOLUTION PVT. LTD.</span>
+          </div>
+        </a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="bi bi-list fs-1 text-primary"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMain">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="services.html">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="portfolio.html">Portfolio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+            <li class="nav-item ms-lg-2">
+              <a href="portal/index.html" class="nav-link text-warning fw-semibold"><i class="bi bi-shield-lock-fill me-1"></i>Staff Portal</a>
+            </li>
+            <li class="nav-item ms-lg-2">
+              <a href="contact.html" class="btn btn-custom-primary">Get a Quote <i class="bi bi-arrow-right-short fs-5"></i></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Inner Page Banner -->
+  <section class="py-5 bg-dark text-white position-relative" style="background: linear-gradient(135deg, #0B0F19 0%, #2B2E83 100%);">
+    <div class="container py-4 text-center">
+      <h1 class="display-4 fw-bold text-white mb-2">Our Work &amp; Case Studies</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-center mb-0">
+          <li class="breadcrumb-item"><a href="index.html" class="text-info text-decoration-none">Home</a></li>
+          <li class="breadcrumb-item active text-white-50" aria-current="page">Portfolio</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Portfolio Gallery Section -->
+  <section class="py-5">
+    <div class="container py-4">
+      <div class="text-center mb-5 reveal-on-scroll">
+        <span class="section-subtitle">PROJECT SHOWCASE</span>
+        <h2 class="section-title">Delivered Projects in Chitwan</h2>
+        <p class="section-description">Filter by category to inspect our hardware, security, and networking installations.</p>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="text-center mb-5 reveal-on-scroll">
+        <button type="button" class="portfolio-filter-btn active" data-filter="all">All</button>
+        <button type="button" class="portfolio-filter-btn" data-filter="cctv">CCTV &amp; Cameras</button>
+        <button type="button" class="portfolio-filter-btn" data-filter="safety">Fire Safety</button>
+        <button type="button" class="portfolio-filter-btn" data-filter="access">Biometrics &amp; Gates</button>
+        <button type="button" class="portfolio-filter-btn" data-filter="hardware">Computer &amp; Laptop</button>
+        <button type="button" class="portfolio-filter-btn" data-filter="networking">Routers &amp; PoE</button>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="row g-4" id="portfolioGallery">
+        
+        <!-- Project 1: CCTV & DVR -->
+        <div class="col-lg-4 col-md-6 portfolio-item-wrapper" data-category="cctv">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=600&q=80" alt="Bank CCTV & DVR Setup" class="portfolio-img">
+            <div class="portfolio-overlay">
+              <h4>Bank CCTV &amp; DVR Setup</h4>
+              <p>Category: CCTV &bull; Narayangarh</p>
+              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=600&q=80" data-title="Bank CCTV &amp; DVR Setup" data-desc="Installation of 16-channel HD IP CCTV cameras, Digital Video Recorder (DVR) storage array, and remote phone view."><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Biometric Access Gate -->
+        <div class="col-lg-4 col-md-6 portfolio-item-wrapper" data-category="access">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80" alt="Biometric & Access Gate" class="portfolio-img">
+            <div class="portfolio-overlay">
+              <h4>Biometric &amp; Access Gate Setup</h4>
+              <p>Category: Biometrics &bull; Bharatpur</p>
+              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80" data-title="Biometric &amp; Access Gate Setup" data-desc="Smart fingerprint biometric attendance device paired with magnetic access control door gate."><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: Fire Safety -->
+        <div class="col-lg-4 col-md-6 portfolio-item-wrapper" data-category="safety">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=600&q=80" alt="Fire Extinguisher Installation" class="portfolio-img">
+            <div class="portfolio-overlay">
+              <h4>Commercial Fire Safety Setup</h4>
+              <p>Category: Fire Safety &bull; Chitwan</p>
+              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=600&q=80" data-title="Commercial Fire Safety Setup" data-desc="Complete ABC Dry Powder &amp; CO2 Fire Extinguisher installation and emergency safety audit."><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4: PoE Switch Networking -->
+        <div class="col-lg-4 col-md-6 portfolio-item-wrapper" data-category="networking">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80" alt="PoE Switch & Router LAN" class="portfolio-img">
+            <div class="portfolio-overlay">
+              <h4>24-Port PoE Switch Network</h4>
+              <p>Category: Routers &amp; Switches &bull; Narayangarh</p>
+              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80" data-title="24-Port PoE Switch Network" data-desc="Enterprise Dual-Band router, Gigabit switches, and 24-Port PoE switches feeding 30+ IP cameras."><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 5: Computer & Laptop Sales -->
+        <div class="col-lg-4 col-md-6 portfolio-item-wrapper" data-category="hardware">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80" alt="Laptop & Computer Lab Setup" class="portfolio-img">
+            <div class="portfolio-overlay">
+              <h4>Computer Lab &amp; Laptop Setup</h4>
+              <p>Category: Computer &amp; Laptop &bull; Chitwan</p>
+              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80" data-title="Computer Lab &amp; Laptop Setup" data-desc="Sales and setup of 25 desktop PCs, laptops, and printer networking for educational institute."><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 6: Currency Counting Machine -->
+        <div class="col-lg-4 col-md-6 portfolio-item-wrapper" data-category="access">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="Money Counting Machine Deployment" class="portfolio-img">
+            <div class="portfolio-overlay">
+              <h4>Money Counting Machine Deployment</h4>
+              <p>Category: Money Machine &bull; Narayangarh</p>
+              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" data-title="Money Counting Machine Deployment" data-desc="Deployment of heavy-duty currency counting machines with fake note detection in financial counters."><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer class="footer-section">
+    <div class="container">
+      <div class="row g-4">
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <img src="Logo.jpeg" alt="Germon IT Solution Logo" class="footer-logo">
+            <div class="brand-text">
+              <span class="brand-name text-white">GERMON IT</span>
+              <span class="brand-subname text-info">SOLUTION PVT. LTD.</span>
+            </div>
+          </div>
+          <p class="text-muted mb-4">Premier IT company based in Ganesh Market, Narayangarh, Chitwan, Nepal. Specialized in CCTV surveillance, Fiber Optics, Computer Sales &amp; Repair, Web &amp; Custom Software Engineering.</p>
+          <div class="top-bar bg-transparent p-0">
+            <div class="social-icons">
+              <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+              <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+              <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6">
+          <h4 class="footer-title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html"><i class="bi bi-chevron-right"></i> Home</a></li>
+            <li><a href="about.html"><i class="bi bi-chevron-right"></i> About Us</a></li>
+            <li><a href="services.html"><i class="bi bi-chevron-right"></i> Our Services</a></li>
+            <li><a href="portfolio.html"><i class="bi bi-chevron-right"></i> Portfolio</a></li>
+            <li><a href="contact.html"><i class="bi bi-chevron-right"></i> Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <h4 class="footer-title">Our Key Services</h4>
+          <ul class="footer-links">
+            <li><a href="services.html"><i class="bi bi-camera-video"></i> CCTV &amp; Wi-Fi Cameras</a></li>
+            <li><a href="services.html"><i class="bi bi-fire"></i> Fire Extinguishers &amp; Safety</a></li>
+            <li><a href="services.html"><i class="bi bi-fingerprint"></i> Biometric &amp; Access Control</a></li>
+            <li><a href="services.html"><i class="bi bi-laptop"></i> Laptop/Computer Sales &amp; Repair</a></li>
+            <li><a href="services.html"><i class="bi bi-router"></i> Routers, Switches &amp; PoE</a></li>
+            <li><a href="services.html"><i class="bi bi-hdd"></i> DVR/NVR Installation &amp; AMC</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <h4 class="footer-title">Contact Info</h4>
+          <div class="footer-contact-item">
+            <i class="bi bi-geo-alt-fill footer-contact-icon"></i>
+            <span>Ganesh Market, Narayangarh, Chitwan, Nepal</span>
+          </div>
+          <div class="footer-contact-item">
+            <i class="bi bi-telephone-fill footer-contact-icon"></i>
+            <span>+977-9855084949<br>+977-9866284949</span>
+          </div>
+          <div class="footer-contact-item">
+            <i class="bi bi-envelope-fill footer-contact-icon"></i>
+            <span>germonitchitwan@gmail.com</span>
+          </div>
+          <div class="footer-contact-item">
+            <i class="bi bi-clock-fill footer-contact-icon"></i>
+            <span>Sun - Fri: 9:00 AM - 6:00 PM</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom text-center">
+        <p class="mb-0">&copy; <script>document.write(new Date().getFullYear())</script> Germon IT Solution Pvt. Ltd. All Rights Reserved. Designed for Excellence in Chitwan, Nepal.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#" class="back-to-top" aria-label="Back to Top"><i class="bi bi-arrow-up-short fs-3"></i></a>
+
+  <!-- Portfolio Lightbox Preview Modal -->
+  <div class="modal fade" id="portfolioPreviewModal" tabindex="-1" aria-labelledby="portfolioModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content glass-card border-0">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold text-primary" id="portfolioModalTitle">Project Preview</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center p-4">
+          <img src="" id="portfolioModalImage" class="img-fluid rounded-3 mb-3 shadow" alt="Project Zoom">
+          <p id="portfolioModalDesc" class="text-muted"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom Scripts -->
+  <script src="js/animation.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

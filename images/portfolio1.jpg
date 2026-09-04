@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <rect width="600" height="400" fill="#2B2E83"/>
+  <circle cx="300" cy="200" r="120" fill="#18A8E8" opacity="0.3"/>
+  <path d="M100 200 Q 300 50, 500 200 T 900 200" stroke="#F5000D" stroke-width="8" fill="none"/>
+  <text x="300" y="320" font-family="'Montserrat', sans-serif" font-weight="700" font-size="22" fill="#FFFFFF" text-anchor="middle">Fiber Optic Splicing Project</text>
+</svg>

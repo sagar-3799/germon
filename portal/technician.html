@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Technician Mobile Workspace | Germon IT Solution</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/portal.css">
+  <style>
+    /* Mobile-optimized touch styles */
+    body {
+      background-color: #F1F5F9;
+      padding-bottom: 60px;
+    }
+    .tech-app-header {
+      background: linear-gradient(135deg, #1E215C 0%, #2B2E83 100%);
+      color: #FFF;
+      padding: 18px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 1020;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    .job-badge-pill {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .touch-btn {
+      min-height: 48px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .photo-dropzone {
+      border: 2px dashed #94A3B8;
+      border-radius: 12px;
+      background: #F8FAFC;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+    }
+    .photo-dropzone input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Tech Mobile App Header -->
+  <header class="tech-app-header">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2">
+        <img src="../logo.jpeg" alt="Germon IT" class="rounded-2" style="width: 38px; height: 38px; object-fit: cover; border: 1px solid #FFF;">
+        <div>
+          <div class="fw-bold fs-6 lh-1" id="techUserName">Technician Workspace</div>
+          <small class="text-info" id="techUserRole">Field Service App</small>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-sm btn-outline-light py-1 px-2" onclick="renderMyJobs()" title="Refresh">
+          <i class="bi bi-arrow-clockwise"></i>
+        </button>
+        <button class="btn btn-sm btn-danger py-1 px-2" onclick="GermonStore.logout()" title="Logout">
+          <i class="bi bi-box-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter & Tab bar -->
+  <div class="bg-white border-bottom px-3 py-2 d-flex justify-content-between align-items-center">
+    <div class="fw-bold text-dark small text-uppercase letter-spacing-1">
+      <i class="bi bi-tools text-primary me-1"></i> My Assigned Tasks (<span id="assignedCount">0</span>)
+    </div>
+    <select id="techStatusFilter" class="form-select form-select-sm" style="width: 140px;" onchange="renderMyJobs()">
+      <option value="all">All Jobs</option>
+      <option value="in_progress">🟠 In Progress</option>
+      <option value="assigned">🔵 Assigned</option>
+      <option value="on_hold">🟣 On Hold</option>
+      <option value="completed">🟢 Completed</option>
+    </select>
+  </div>
+
+  <!-- Job Cards Container -->
+  <div class="container py-3" id="techJobsContainer">
+    <!-- Populated via JS -->
+  </div>
+
+  <!-- JOB UPDATE MODAL (Full Mobile Sheet) -->
+  <div class="modal fade" id="updateJobModal" tabindex="-1" aria-labelledby="updateJobModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-sm-down modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header bg-primary text-white py-3">
+          <h5 class="modal-title fw-bold" id="updateJobModalLabel">
+            <i class="bi bi-pencil-square me-2"></i>Update Job: <span id="modalJobId">JOB-2026-0001</span>
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="updateJobForm">
+          <div class="modal-body p-3 p-md-4">
+            
+            <!-- Client Summary Card -->
+            <div class="p-3 bg-light rounded-3 mb-3 border">
+              <h5 class="fw-bold text-dark mb-1" id="modalClientName">Hotel Bharatpur Heights</h5>
+              <div class="small text-muted mb-2">
+                <i class="bi bi-geo-alt-fill text-danger me-1"></i><span id="modalLocation">Chowk Narayangarh</span>
+              </div>
+              <div class="d-flex gap-2">
+                <a href="#" id="modalCallBtn" class="btn btn-sm btn-outline-primary fw-semibold"><i class="bi bi-telephone-fill me-1"></i>Call Client</a>
+                <a href="#" id="modalMapBtn" target="_blank" class="btn btn-sm btn-outline-danger fw-semibold"><i class="bi bi-geo-alt me-1"></i>Open Google Maps</a>
+              </div>
+            </div>
+
+            <!-- Status Changer -->
+            <div class="mb-3">
+              <label class="form-label fw-bold small text-muted text-uppercase">Current Work Status <span class="text-danger">*</span></label>
+              <select class="form-select form-select-lg fw-bold" id="modalStatusSelect" onchange="handleStatusChangeUI()">
+                <option value="assigned">🔵 Assigned (Not Started)</option>
+                <option value="in_progress">🟠 In Progress (Work Started on Site)</option>
+                <option value="on_hold">🟣 On Hold (Waiting for Parts / Client)</option>
+                <option value="completed">🟢 Completed (Work Finished &amp; Verified)</option>
+              </select>
+            </div>
+
+            <!-- Hold Reason Field (Conditional) -->
+            <div class="mb-3 d-none" id="holdReasonGroup">
+              <label class="form-label fw-bold small text-danger text-uppercase">Reason for Putting Job On Hold <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="modalHoldReason" rows="2" placeholder="e.g. Electricity power cut on site / Client requested postponement / Awaiting 8-port PoE switch"></textarea>
+            </div>
+
+            <!-- Work Notes / Technician Log -->
+            <div class="mb-3">
+              <label class="form-label fw-bold small text-muted text-uppercase">Technician Remarks / Work Progress Note</label>
+              <textarea class="form-control" id="modalTechNote" rows="3" placeholder="Detail what work was accomplished, DVR channels configured, camera positions, testing done..."></textarea>
+            </div>
+
+            <!-- Materials Used Tracker -->
+            <div class="mb-3 p-3 bg-white rounded-3 border">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label fw-bold small text-muted text-uppercase mb-0">Materials &amp; Items Used</label>
+                <button type="button" class="btn btn-xs btn-outline-primary btn-sm py-0 px-2" onclick="addMaterialRow()">
+                  <i class="bi bi-plus-circle"></i> Add Item
+                </button>
+              </div>
+              <div id="materialsListContainer">
+                <!-- Dynamically populated material rows -->
+              </div>
+            </div>
+
+            <!-- Before / After Photos with Automatic Compression -->
+            <div class="mb-3 p-3 bg-white rounded-3 border">
+              <label class="form-label fw-bold small text-muted text-uppercase mb-1">
+                <i class="bi bi-camera-fill text-primary me-1"></i>Before &amp; After Work Photos
+              </label>
+              <p class="small text-muted mb-2">Photos are automatically compressed (under 200KB) to save phone mobile data and hosting storage.</p>
+
+              <div class="row g-3">
+                <!-- Before Photo -->
+                <div class="col-6">
+                  <div class="photo-dropzone">
+                    <input type="file" accept="image/*" capture="environment" id="beforePhotoInput" onchange="handlePhotoUpload(this, 'before')">
+                    <div id="beforePhotoPlaceholder">
+                      <i class="bi bi-camera fs-2 text-muted"></i>
+                      <div class="small fw-semibold mt-1">Before Photo</div>
+                    </div>
+                    <img id="beforePhotoPreview" src="" class="img-fluid rounded d-none" style="max-height: 120px; object-fit: cover;" alt="Before">
+                  </div>
+                </div>
+
+                <!-- After Photo -->
+                <div class="col-6">
+                  <div class="photo-dropzone">
+                    <input type="file" accept="image/*" capture="environment" id="afterPhotoInput" onchange="handlePhotoUpload(this, 'after')">
+                    <div id="afterPhotoPlaceholder">
+                      <i class="bi bi-camera-fill fs-2 text-success"></i>
+                      <div class="small fw-semibold mt-1">After Photo</div>
+                    </div>
+                    <img id="afterPhotoPreview" src="" class="img-fluid rounded d-none" style="max-height: 120px; object-fit: cover;" alt="After">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Customer Digital Signature Pad (Shown when completing job) -->
+            <div class="mb-3 p-3 bg-white rounded-3 border" id="signatureSection">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label class="form-label fw-bold small text-muted text-uppercase mb-0">
+                  <i class="bi bi-pen-fill text-danger me-1"></i>Customer Handover Signature
+                </label>
+                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" onclick="clearSignatureCanvas()">
+                  <i class="bi bi-eraser"></i> Clear
+                </button>
+              </div>
+              <p class="small text-muted mb-2">Have customer sign below using their finger on your phone screen.</p>
+              
+              <div class="signature-pad-wrapper">
+                <canvas id="signatureCanvas" class="signature-canvas"></canvas>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer bg-light border-0 py-3">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4 fw-bold touch-btn">
+              <i class="bi bi-check2-circle fs-5"></i> Save &amp; Update Job
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/store.js"></script>
+  <script>
+    let activeJobForUpdate = null;
+    let signaturePadCanvas = null;
+    let signatureCtx = null;
+    let isDrawing = false;
+    let hasSigned = false;
+
+    let tempPhotos = { before: '', after: '' };
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const currentUser = GermonStore.getCurrentUser();
+      if (!currentUser) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      document.getElementById('techUserName').textContent = currentUser.name;
+      document.getElementById('techUserRole').textContent = `${currentUser.role.toUpperCase()} &bull; Germon IT Narayangarh`;
+
+      initSignaturePad();
+      renderMyJobs();
+    });
+
+    function renderMyJobs() {
+      const currentUser = GermonStore.getCurrentUser();
+      const statusFilter = document.getElementById('techStatusFilter').value;
+
+      // Technicians see assigned jobs, Admin/Staff can see all or preview
+      let filterObj = {};
+      if (currentUser.role === 'technician') {
+        filterObj.techId = currentUser.id;
+      }
+      if (statusFilter !== 'all') {
+        filterObj.status = statusFilter;
+      }
+
+      const jobs = GermonStore.getJobs(filterObj);
+      document.getElementById('assignedCount').textContent = jobs.length;
+      const container = document.getElementById('techJobsContainer');
+      container.innerHTML = '';
+
+      if (jobs.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-5 text-muted bg-white rounded-4 p-4 shadow-sm">
+            <i class="bi bi-check2-all fs-1 text-success d-block mb-2"></i>
+            <h5 class="fw-bold">No Active Jobs</h5>
+            <p class="small text-muted mb-0">You have no tasks matching this filter right now. Enjoy your break or check with office dispatch!</p>
+          </div>
+        `;
+        return;
+      }
+
+      jobs.forEach(job => {
+        const cleanPhone = (job.phone || '').replace(/[^0-9]/g, '');
+        const waText = encodeURIComponent(`Namaste ${job.contactPerson}! I am ${job.assignedTechName || 'your technician'} from Germon IT Solution Narayangarh. I am working on your ${job.workType}.`);
+
+        container.innerHTML += `
+          <div class="tech-job-card">
+            <div class="tech-job-header">
+              <div>
+                <span class="badge bg-light text-dark font-monospace">${job.id}</span>
+                <span class="badge bg-${job.priority === 'emergency' ? 'danger' : 'warning'} ms-1">${job.priority.toUpperCase()}</span>
+              </div>
+              <span class="job-badge-pill status-${job.status}-badge">${formatStatus(job.status)}</span>
+            </div>
+
+            <div class="tech-job-body">
+              <h5 class="fw-bold text-dark mb-1">${escapeHtml(job.clientName)}</h5>
+              <div class="text-muted small mb-2">
+                <i class="bi bi-person me-1"></i>${escapeHtml(job.contactPerson)} &bull; 
+                <a href="tel:${cleanPhone}" class="text-primary fw-bold text-decoration-none">${job.phone}</a>
+              </div>
+
+              <div class="p-2 bg-light rounded-3 small mb-3 border">
+                <div class="fw-semibold text-primary"><i class="bi bi-tools me-1"></i>${escapeHtml(job.workType)}</div>
+                <div class="text-muted mt-1">${escapeHtml(job.description)}</div>
+                ${job.holdReason ? `<div class="text-danger mt-1"><strong>Hold Reason:</strong> ${escapeHtml(job.holdReason)}</div>` : ''}
+              </div>
+
+              <!-- Location and Navigation -->
+              <div class="d-flex align-items-center justify-content-between mb-3 small">
+                <div class="text-secondary text-truncate me-2">
+                  <i class="bi bi-geo-alt-fill text-danger me-1"></i>${escapeHtml(job.location)}
+                </div>
+                ${job.mapUrl ? `
+                  <a href="${job.mapUrl}" target="_blank" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 flex-shrink-0">
+                    <i class="bi bi-cursor-fill"></i> Navigate
+                  </a>
+                ` : ''}
+              </div>
+
+              <!-- Mobile Quick Actions -->
+              <div class="d-grid gap-2">
+                <button class="btn btn-primary touch-btn shadow-sm" onclick="openUpdateModal('${job.id}')">
+                  <i class="bi bi-pencil-square"></i> Update Status / Materials / Photos
+                </button>
+
+                <div class="d-flex gap-2">
+                  <a href="tel:${cleanPhone}" class="btn btn-outline-secondary w-50 touch-btn">
+                    <i class="bi bi-telephone-fill text-success"></i> Call Client
+                  </a>
+                  <a href="https://wa.me/${cleanPhone}?text=${waText}" target="_blank" class="btn btn-outline-secondary w-50 touch-btn">
+                    <i class="bi bi-whatsapp text-success"></i> WhatsApp
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // Open Update Modal
+    function openUpdateModal(jobId) {
+      activeJobForUpdate = GermonStore.getJobById(jobId);
+      if (!activeJobForUpdate) return;
+
+      document.getElementById('modalJobId').textContent = activeJobForUpdate.id;
+      document.getElementById('modalClientName').textContent = activeJobForUpdate.clientName;
+      document.getElementById('modalLocation').textContent = activeJobForUpdate.location;
+
+      const cleanPhone = (activeJobForUpdate.phone || '').replace(/[^0-9]/g, '');
+      document.getElementById('modalCallBtn').href = `tel:${cleanPhone}`;
+      
+      const mapBtn = document.getElementById('modalMapBtn');
+      if (activeJobForUpdate.mapUrl) {
+        mapBtn.href = activeJobForUpdate.mapUrl;
+        mapBtn.classList.remove('d-none');
+      } else {
+        mapBtn.classList.add('d-none');
+      }
+
+      document.getElementById('modalStatusSelect').value = activeJobForUpdate.status;
+      document.getElementById('modalHoldReason').value = activeJobForUpdate.holdReason || '';
+      document.getElementById('modalTechNote').value = '';
+
+      handleStatusChangeUI();
+
+      // Populate Materials
+      const matContainer = document.getElementById('materialsListContainer');
+      matContainer.innerHTML = '';
+      if (activeJobForUpdate.materialsUsed && activeJobForUpdate.materialsUsed.length > 0) {
+        activeJobForUpdate.materialsUsed.forEach(m => addMaterialRow(m.item, m.qty, m.billable));
+      } else {
+        addMaterialRow('', '', true);
+      }
+
+      // Photos
+      tempPhotos.before = activeJobForUpdate.photos?.before || '';
+      tempPhotos.after = activeJobForUpdate.photos?.after || '';
+
+      updatePhotoPreviewUI('before', tempPhotos.before);
+      updatePhotoPreviewUI('after', tempPhotos.after);
+
+      // Signature
+      clearSignatureCanvas();
+      if (activeJobForUpdate.signature) {
+        loadSignatureImage(activeJobForUpdate.signature);
+      }
+
+      const modal = new bootstrap.Modal(document.getElementById('updateJobModal'));
+      modal.show();
+
+      // Resize canvas on modal open for accurate coordinate mapping
+      setTimeout(() => resizeCanvas(), 300);
+    }
+
+    function handleStatusChangeUI() {
+      const status = document.getElementById('modalStatusSelect').value;
+      const holdGrp = document.getElementById('holdReasonGroup');
+      if (status === 'on_hold') {
+        holdGrp.classList.remove('d-none');
+      } else {
+        holdGrp.classList.add('d-none');
+      }
+    }
+
+    // Material Row Manager
+    function addMaterialRow(item = '', qty = '', billable = true) {
+      const container = document.getElementById('materialsListContainer');
+      const rowId = 'mat-' + Math.random().toString(36).substr(2, 6);
+
+      const div = document.createElement('div');
+      div.className = 'row g-2 align-items-center mb-2 material-row';
+      div.id = rowId;
+      div.innerHTML = `
+        <div class="col-6">
+          <input type="text" class="form-control form-control-sm mat-item" placeholder="Material (e.g. CAT6, BNC, Switch)" value="${escapeHtml(item)}">
+        </div>
+        <div class="col-3">
+          <input type="text" class="form-control form-control-sm mat-qty" placeholder="Qty (e.g. 50m)" value="${escapeHtml(qty)}">
+        </div>
+        <div class="col-2">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input mat-billable" type="checkbox" ${billable ? 'checked' : ''} title="Billable to Client">
+            <label class="form-check-label small" style="font-size: 0.7rem;">Bill</label>
+          </div>
+        </div>
+        <div class="col-1 text-end">
+          <button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="document.getElementById('${rowId}').remove()">
+            <i class="bi bi-x-circle-fill"></i>
+          </button>
+        </div>
+      `;
+      container.appendChild(div);
+    }
+
+    // Photo Upload with Client-Side Compression
+    async function handlePhotoUpload(inputEl, type) {
+      if (!inputEl.files || inputEl.files.length === 0) return;
+      const file = inputEl.files[0];
+
+      try {
+        // Automatically compress down to ~200KB Base64 JPEG
+        const compressedDataUrl = await GermonStore.compressImage(file, 1280, 0.72);
+        tempPhotos[type] = compressedDataUrl;
+        updatePhotoPreviewUI(type, compressedDataUrl);
+      } catch (err) {
+        alert('Could not compress photo: ' + err.message);
+      }
+    }
+
+    function updatePhotoPreviewUI(type, dataUrl) {
+      const placeholder = document.getElementById(`${type}PhotoPlaceholder`);
+      const preview = document.getElementById(`${type}PhotoPreview`);
+      if (dataUrl) {
+        preview.src = dataUrl;
+        preview.classList.remove('d-none');
+        placeholder.classList.add('d-none');
+      } else {
+        preview.src = '';
+        preview.classList.add('d-none');
+        placeholder.classList.remove('d-none');
+      }
+    }
+
+    // HTML5 Touch Signature Pad
+    function initSignaturePad() {
+      signaturePadCanvas = document.getElementById('signatureCanvas');
+      if (!signaturePadCanvas) return;
+      signatureCtx = signaturePadCanvas.getContext('2d');
+
+      // Mouse events
+      signaturePadCanvas.addEventListener('mousedown', startDrawing);
+      signaturePadCanvas.addEventListener('mousemove', draw);
+      signaturePadCanvas.addEventListener('mouseup', stopDrawing);
+      signaturePadCanvas.addEventListener('mouseleave', stopDrawing);
+
+      // Touch events (Mobile phones)
+      signaturePadCanvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+      signaturePadCanvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+      signaturePadCanvas.addEventListener('touchend', stopDrawing);
+    }
+
+    function resizeCanvas() {
+      if (!signaturePadCanvas) return;
+      const rect = signaturePadCanvas.getBoundingClientRect();
+      signaturePadCanvas.width = rect.width;
+      signaturePadCanvas.height = rect.height;
+      signatureCtx.strokeStyle = '#1E293B';
+      signatureCtx.lineWidth = 2.5;
+      signatureCtx.lineCap = 'round';
+      signatureCtx.lineJoin = 'round';
+    }
+
+    function getCoords(e) {
+      const rect = signaturePadCanvas.getBoundingClientRect();
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
+    }
+
+    function startDrawing(e) {
+      isDrawing = true;
+      hasSigned = true;
+      const coords = getCoords(e);
+      signatureCtx.beginPath();
+      signatureCtx.moveTo(coords.x, coords.y);
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const coords = getCoords(e);
+      signatureCtx.lineTo(coords.x, coords.y);
+      signatureCtx.stroke();
+    }
+
+    function stopDrawing() {
+      isDrawing = false;
+    }
+
+    function handleTouchStart(e) {
+      e.preventDefault();
+      if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        startDrawing({ clientX: touch.clientX, clientY: touch.clientY });
+      }
+    }
+
+    function handleTouchMove(e) {
+      e.preventDefault();
+      if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        draw({ clientX: touch.clientX, clientY: touch.clientY });
+      }
+    }
+
+    function clearSignatureCanvas() {
+      if (!signatureCtx || !signaturePadCanvas) return;
+      signatureCtx.clearRect(0, 0, signaturePadCanvas.width, signaturePadCanvas.height);
+      hasSigned = false;
+    }
+
+    function loadSignatureImage(dataUrl) {
+      const img = new Image();
+      img.onload = function () {
+        signatureCtx.drawImage(img, 0, 0, signaturePadCanvas.width, signaturePadCanvas.height);
+        hasSigned = true;
+      };
+      img.src = dataUrl;
+    }
+
+    // Handle Form Submit
+    document.getElementById('updateJobForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!activeJobForUpdate) return;
+
+      const newStatus = document.getElementById('modalStatusSelect').value;
+      const holdReason = document.getElementById('modalHoldReason').value.trim();
+      const techNote = document.getElementById('modalTechNote').value.trim();
+
+      if (newStatus === 'on_hold' && !holdReason) {
+        alert('Please specify the reason for putting the job on hold.');
+        return;
+      }
+
+      // Collect Materials
+      const materials = [];
+      document.querySelectorAll('.material-row').forEach(row => {
+        const item = row.querySelector('.mat-item').value.trim();
+        const qty = row.querySelector('.mat-qty').value.trim();
+        const billable = row.querySelector('.mat-billable').checked;
+        if (item) {
+          materials.push({ item, qty, billable });
+        }
+      });
+
+      // Collect Signature
+      let signatureData = activeJobForUpdate.signature || '';
+      if (hasSigned && signaturePadCanvas) {
+        signatureData = signaturePadCanvas.toDataURL('image/png');
+      }
+
+      const updates = {
+        holdReason: holdReason,
+        note: techNote || `Technician updated status to ${newStatus}`,
+        materialsUsed: materials,
+        photos: tempPhotos,
+        signature: signatureData
+      };
+
+      GermonStore.updateJobStatus(activeJobForUpdate.id, newStatus, updates);
+
+      // Close Modal & Refresh
+      const modalEl = document.getElementById('updateJobModal');
+      const modalInstance = bootstrap.Modal.getInstance(modalEl);
+      modalInstance.hide();
+
+      alert(`Job ${activeJobForUpdate.id} successfully updated!`);
+      renderMyJobs();
+    });
+
+    function formatStatus(status) {
+      switch (status) {
+        case 'pending': return 'Pending';
+        case 'assigned': return 'Assigned';
+        case 'in_progress': return 'In Progress';
+        case 'on_hold': return 'On Hold';
+        case 'completed': return 'Completed';
+        default: return status;
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

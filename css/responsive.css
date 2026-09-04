@@ -1,0 +1,133 @@
+/* ==========================================================================
+   GERMON IT SOLUTION PVT. LTD. - Responsive Media Queries
+   ========================================================================== */
+
+/* Large Desktop (1200px and up) */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+/* Medium Desktop / Laptops (992px to 1199px) */
+@media (max-width: 1199px) {
+  .hero-title {
+    font-size: 2.75rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .service-card {
+    margin-bottom: 25px;
+  }
+}
+
+/* Tablets (768px to 991px) */
+@media (max-width: 991px) {
+  .top-bar {
+    font-size: 0.8rem;
+  }
+  
+  .hero-slide {
+    height: auto;
+    padding: 100px 0 80px;
+    min-height: 520px;
+  }
+
+  .hero-title {
+    font-size: 2.25rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+  }
+
+  .navbar-nav {
+    padding: 15px 0;
+  }
+
+  .nav-link::after {
+    display: none;
+  }
+
+  .counter-box {
+    margin-bottom: 30px;
+  }
+
+  .contact-form-card {
+    padding: 25px;
+    margin-top: 30px;
+  }
+
+  .map-container {
+    height: 350px;
+  }
+}
+
+/* Mobile Devices (576px to 767px) */
+@media (max-width: 767px) {
+  .hero-title {
+    font-size: 1.85rem;
+  }
+
+  .section-title {
+    font-size: 1.65rem;
+  }
+
+  .counter-number {
+    font-size: 2.5rem;
+  }
+
+  .btn-custom-primary,
+  .btn-custom-secondary,
+  .btn-custom-outline {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 12px 20px;
+  }
+
+  .portfolio-filter-btn {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    margin: 3px;
+  }
+
+  .portfolio-img {
+    height: 220px;
+  }
+
+  .footer-section {
+    padding-top: 50px;
+  }
+}
+
+/* Small Mobile Devices (Under 575px) */
+@media (max-width: 575px) {
+  .brand-name {
+    font-size: 1.05rem;
+  }
+
+  .brand-subname {
+    font-size: 0.75rem;
+  }
+
+  .navbar-brand-logo {
+    height: 38px;
+  }
+
+  .hero-slide {
+    padding: 80px 0 60px;
+  }
+
+  .testimonial-card {
+    padding: 22px;
+  }
+
+  .contact-info-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}

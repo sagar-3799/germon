@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="heroBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0F19"/>
+      <stop offset="50%" stop-color="#2B2E83"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="glowRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5000D" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#18A8E8" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#heroBg)"/>
+  <!-- Decorative Abstract Geometric Mesh -->
+  <circle cx="1500" cy="300" r="450" fill="url(#glowRed)"/>
+  <circle cx="300" cy="800" r="350" fill="#18A8E8" opacity="0.15"/>
+  <path d="M0 700 Q 400 500, 960 750 T 1920 600 L 1920 1080 L 0 1080 Z" fill="rgba(255,255,255,0.02)"/>
+  <g stroke="rgba(255,255,255,0.08)" stroke-width="1.5" fill="none">
+    <line x1="0" y1="200" x2="1920" y2="200"/>
+    <line x1="0" y1="400" x2="1920" y2="400"/>
+    <line x1="0" y1="600" x2="1920" y2="600"/>
+    <line x1="0" y1="800" x2="1920" y2="800"/>
+    <line x1="400" y1="0" x2="400" y2="1080"/>
+    <line x1="800" y1="0" x2="800" y2="1080"/>
+    <line x1="1200" y1="0" x2="1200" y2="1080"/>
+    <line x1="1600" y1="0" x2="1600" y2="1080"/>
+  </g>
+</svg>

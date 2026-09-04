@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Office Dashboard | Germon IT Work Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body>
+
+  <!-- Navigation Bar Placeholder -->
+  <div id="portalNavPlaceholder"></div>
+
+  <!-- Main Dashboard Container -->
+  <div class="container-fluid px-3 px-lg-4 py-4">
+    
+    <!-- Top Greeting & Quick Action Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+      <div>
+        <h2 class="fw-bold mb-1 text-dark">
+          <i class="bi bi-grid-fill text-primary me-2"></i>Office Work Dashboard
+        </h2>
+        <p class="text-muted small mb-0">
+          Germon IT Solution Pvt. Ltd. &bull; Narayangarh, Chitwan &bull; Realtime Operation Center
+        </p>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-primary fw-semibold d-inline-flex align-items-center gap-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#newJobModal">
+          <i class="bi bi-plus-circle-fill fs-5"></i> New Work Entry
+        </button>
+        <button type="button" class="btn btn-outline-secondary fw-semibold d-inline-flex align-items-center gap-2" onclick="refreshDashboard()">
+          <i class="bi bi-arrow-clockwise"></i> Refresh
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI Metric Cards Grid -->
+    <div class="row g-3 mb-4" id="kpiStatsRow">
+      <!-- Generated via JS -->
+    </div>
+
+    <!-- Web Inquiries Notice Bar (From contact.html) -->
+    <div id="webInquiriesSection" class="mb-4 d-none">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden border-start border-4 border-warning">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-bell-fill me-1"></i>New</span>
+            <h5 class="fw-bold mb-0 text-dark">Website Inquiries &amp; Service Requests (<span id="inquiryCount">0</span>)</h5>
+          </div>
+          <small class="text-muted">Submissions received via public Contact form</small>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th class="ps-3">ID / Time</th>
+                  <th>Client / Contact</th>
+                  <th>Service Requested</th>
+                  <th>Location</th>
+                  <th>Urgency</th>
+                  <th class="text-end pe-3">Action</th>
+                </tr>
+              </thead>
+              <tbody id="inquiriesTableBody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Work Orders Section with Filter -->
+    <div class="data-table-card">
+      <div class="data-table-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div>
+          <h5 class="fw-bold mb-1 text-dark"><i class="bi bi-card-checklist me-2 text-primary"></i>Active Work Orders &amp; Technician Tracking</h5>
+          <p class="text-muted small mb-0">Monitor field status, assign technicians, navigate site via Google Maps, or contact via WhatsApp</p>
+        </div>
+
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <!-- Status Filter -->
+          <select id="statusFilter" class="form-select form-select-sm" style="width: 150px;" onchange="applyFilters()">
+            <option value="all">All Statuses</option>
+            <option value="pending">🟡 Pending</option>
+            <option value="assigned">🔵 Assigned</option>
+            <option value="in_progress">🟠 In Progress</option>
+            <option value="on_hold">🟣 On Hold</option>
+            <option value="completed">🟢 Completed</option>
+          </select>
+
+          <!-- Technician Filter -->
+          <select id="techFilter" class="form-select form-select-sm" style="width: 170px;" onchange="applyFilters()">
+            <option value="all">All Technicians</option>
+            <!-- Populated via JS -->
+          </select>
+
+          <!-- Search Box -->
+          <div class="input-group input-group-sm" style="width: 220px;">
+            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+            <input type="text" id="searchInput" class="form-control" placeholder="Search client/phone/ID..." onkeyup="applyFilters()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Jobs Table -->
+      <div class="table-responsive">
+        <table class="custom-table table">
+          <thead>
+            <tr>
+              <th>Job ID</th>
+              <th>Client &amp; Location</th>
+              <th>Work Details</th>
+              <th>Assigned Technician</th>
+              <th>Status</th>
+              <th>Amount / Due</th>
+              <th class="text-end pe-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="jobsTableBody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NEW WORK ORDER MODAL -->
+  <div class="modal fade" id="newJobModal" tabindex="-1" aria-labelledby="newJobModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-primary text-white border-0 py-3">
+          <h5 class="modal-title fw-bold" id="newJobModalLabel"><i class="bi bi-tools me-2"></i>New Work / Job Entry</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="newJobForm">
+          <div class="modal-body p-4">
+            <div class="row g-3">
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Client / Customer Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="jobClientName" placeholder="e.g. Hotel Bharatpur Heights" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Contact Person &amp; Phone <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="jobContactPerson" placeholder="Contact Person" required>
+                  <input type="tel" class="form-control" id="jobPhone" placeholder="98XXXXXXXX" required>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Work Category <span class="text-danger">*</span></label>
+                <select class="form-select" id="jobWorkType" required>
+                  <option value="CCTV Installation & Maintenance">CCTV Installation &amp; Maintenance</option>
+                  <option value="Smart Wi-Fi Cameras">Smart Wi-Fi Cameras</option>
+                  <option value="DVR & NVR Installation & AMC">DVR &amp; NVR Installation &amp; AMC</option>
+                  <option value="Biometric Attendance Machines">Biometric Attendance Machines</option>
+                  <option value="Access Control Door & Gate Systems">Access Control Door &amp; Gate Systems</option>
+                  <option value="Routers, Switches & PoE Switches">Routers, Switches &amp; PoE Switches</option>
+                  <option value="Fiber Splicing & Optical Network">Fiber Splicing &amp; Optical Network</option>
+                  <option value="Laptop & Computer Sales & Repair">Laptop &amp; Computer Sales &amp; Repair</option>
+                  <option value="Printer Sales, Repair & Refilling">Printer Sales, Repair &amp; Refilling</option>
+                  <option value="Fire Extinguishers & Safety">Fire Extinguishers &amp; Safety</option>
+                  <option value="IT Consultancy & AMC Contract">IT Consultancy &amp; AMC Contract</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Job Priority</label>
+                <select class="form-select" id="jobPriority">
+                  <option value="medium">Medium Priority</option>
+                  <option value="low">Low Priority</option>
+                  <option value="high">High Priority</option>
+                  <option value="emergency">🚨 Critical / Emergency</option>
+                </select>
+              </div>
+
+              <div class="col-md-8">
+                <label class="form-label fw-semibold small">Location &amp; Landmark <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="jobLocation" placeholder="e.g. Lions Chowk, 2nd floor above Sunrise Bank" required>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Google Maps Link</label>
+                <input type="url" class="form-control" id="jobMapUrl" placeholder="https://maps.app.goo.gl/...">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Assign Field Technician</label>
+                <select class="form-select" id="jobAssignedTech">
+                  <option value="">-- Select Technician --</option>
+                  <!-- Populated via JS -->
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Scheduled Execution Date</label>
+                <input type="date" class="form-control" id="jobScheduledDate">
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Work Scope / Detailed Description <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="jobDescription" rows="3" placeholder="Describe camera quantity, router configuration, cabling route, materials required..." required></textarea>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Estimated Amount (NPR)</label>
+                <input type="number" class="form-control" id="jobEstimatedAmount" placeholder="e.g. 45000">
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Advance Paid (NPR)</label>
+                <input type="number" class="form-control" id="jobAdvanceAmount" placeholder="e.g. 20000">
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Payment Mode</label>
+                <select class="form-select" id="jobPaymentMode">
+                  <option value="Cash">Cash</option>
+                  <option value="Fonepay">Fonepay QR</option>
+                  <option value="eSewa">eSewa</option>
+                  <option value="Khalti">Khalti</option>
+                  <option value="Bank Transfer">Bank Transfer</option>
+                  <option value="Cheque">Cheque</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer bg-light border-0 py-3">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4 fw-bold">Save &amp; Dispatch Job</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOB CARD / PRINT SLIP MODAL -->
+  <div class="modal fade" id="printJobModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold">Job Card / Work Order Receipt</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4" id="printableJobCard">
+          <div class="p-4 border rounded-3 bg-white" style="font-size: 0.95rem;">
+            <!-- Print Header -->
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+              <div>
+                <h3 class="fw-bold mb-1 text-primary">GERMON IT SOLUTION PVT. LTD.</h3>
+                <p class="small text-muted mb-0">Ganesh Market, Narayangarh, Chitwan, Nepal</p>
+                <p class="small text-muted mb-0">Phone: +977-9855084949, +977-9866284949 | PAN: 609876543</p>
+              </div>
+              <div class="text-end">
+                <span class="badge bg-primary fs-6 px-3 py-2 mb-1" id="printJobId">JOB-2026-0001</span>
+                <div class="small text-muted" id="printDate">Date: 2026-09-04</div>
+              </div>
+            </div>
+
+            <!-- Client & Job Info -->
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <div class="p-2 bg-light rounded-2">
+                  <div class="fw-bold text-dark" id="printClientName">Hotel Bharatpur Heights</div>
+                  <div class="small text-muted" id="printContact">Contact: Kiran Gurung (9855012345)</div>
+                  <div class="small text-muted" id="printLocation">Location: Chowk Narayangarh, Chitwan</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="p-2 bg-light rounded-2">
+                  <div class="fw-bold text-dark">Service: <span id="printWorkType" class="text-primary">CCTV Installation</span></div>
+                  <div class="small text-muted" id="printTech">Assigned Tech: Ram Thapa</div>
+                  <div class="small text-muted" id="printStatus">Status: In Progress</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <div class="fw-bold small text-muted text-uppercase">Work Scope:</div>
+              <div class="p-2 bg-light rounded-2" id="printDescription">CCTV and cabling installation</div>
+            </div>
+
+            <!-- Materials -->
+            <div class="mb-3">
+              <div class="fw-bold small text-muted text-uppercase">Materials Installed / Used:</div>
+              <ul class="list-group list-group-flush small" id="printMaterialsList">
+                <li class="list-group-item px-0">No special materials logged</li>
+              </ul>
+            </div>
+
+            <!-- Payment Summary -->
+            <div class="row border-top pt-3 mb-4">
+              <div class="col-6">
+                <div class="small text-muted">Payment Mode: <strong id="printPayMode">Cash</strong></div>
+              </div>
+              <div class="col-6 text-end">
+                <div>Estimated: <strong id="printEstimated">NPR 0</strong></div>
+                <div>Paid / Advance: <strong class="text-success" id="printPaid">NPR 0</strong></div>
+                <div class="fs-6 fw-bold text-danger">Due Balance: <span id="printDue">NPR 0</span></div>
+              </div>
+            </div>
+
+            <!-- Signatures -->
+            <div class="row mt-4 pt-4 border-top text-center">
+              <div class="col-6">
+                <div style="height: 45px;" id="printClientSignContainer"></div>
+                <div class="border-top pt-1 small fw-bold text-muted">Customer Handover Signature</div>
+              </div>
+              <div class="col-6">
+                <div style="height: 45px;"></div>
+                <div class="border-top pt-1 small fw-bold text-muted">Germon IT Authorized Signature</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="window.print()"><i class="bi bi-printer-fill me-2"></i> Print Job Slip</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    // Initialize Dashboard
+    document.addEventListener('DOMContentLoaded', function () {
+      initDashboard();
+    });
+
+    function initDashboard() {
+      populateTechDropdowns();
+      renderKPIs();
+      renderWebInquiries();
+      renderJobsTable();
+      document.getElementById('jobScheduledDate').value = new Date().toISOString().split('T')[0];
+    }
+
+    function refreshDashboard() {
+      initDashboard();
+    }
+
+    // Populate Technicians in Select Dropdowns
+    function populateTechDropdowns() {
+      const users = GermonStore.getUsers();
+      const techs = users.filter(u => u.role === 'technician' && u.status === 'active');
+
+      const filterSelect = document.getElementById('techFilter');
+      filterSelect.innerHTML = '<option value="all">All Technicians</option>';
+
+      const jobSelect = document.getElementById('jobAssignedTech');
+      jobSelect.innerHTML = '<option value="">-- Unassigned --</option>';
+
+      techs.forEach(t => {
+        filterSelect.innerHTML += `<option value="${t.id}">${t.name} (${t.phone})</option>`;
+        jobSelect.innerHTML += `<option value="${t.id}" data-name="${t.name}">${t.name} - ${t.specialities ? t.specialities.join(', ') : ''}</option>`;
+      });
+    }
+
+    // Render Metric Cards
+    function renderKPIs() {
+      const jobs = GermonStore.getJobs();
+      const clients = GermonStore.getClients();
+
+      const totalClients = clients.length;
+      const todayStr = new Date().toISOString().split('T')[0];
+      const todayWork = jobs.filter(j => j.scheduledDate === todayStr).length;
+
+      const pending = jobs.filter(j => j.status === 'pending').length;
+      const inProgress = jobs.filter(j => j.status === 'in_progress').length;
+      const onHold = jobs.filter(j => j.status === 'on_hold').length;
+      const completed = jobs.filter(j => j.status === 'completed').length;
+
+      let totalDue = 0;
+      jobs.forEach(j => {
+        const est = Number(j.finalAmount || j.estimatedAmount || 0);
+        const paid = Number(j.paidAmount || 0);
+        if (est > paid) totalDue += (est - paid);
+      });
+
+      const row = document.getElementById('kpiStatsRow');
+      row.innerHTML = `
+        <div class="col-6 col-lg-2">
+          <div class="stat-card accent-primary">
+            <div class="stat-card-accent"></div>
+            <div class="stat-label">Total Clients</div>
+            <div class="stat-value text-primary">${totalClients}</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="stat-card accent-info">
+            <div class="stat-card-accent"></div>
+            <div class="stat-label">Today's Work</div>
+            <div class="stat-value text-info">${todayWork}</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="stat-card accent-warning">
+            <div class="stat-card-accent"></div>
+            <div class="stat-label">Pending / Unassigned</div>
+            <div class="stat-value text-warning">${pending}</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="stat-card accent-purple">
+            <div class="stat-card-accent"></div>
+            <div class="stat-label">In Progress / Hold</div>
+            <div class="stat-value text-purple" style="color: #8B5CF6;">${inProgress + onHold}</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="stat-card accent-success">
+            <div class="stat-card-accent"></div>
+            <div class="stat-label">Completed</div>
+            <div class="stat-value text-success">${completed}</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="stat-card accent-danger">
+            <div class="stat-card-accent"></div>
+            <div class="stat-label">Receivable Due</div>
+            <div class="stat-value text-danger fs-5 mt-2">Rs. ${totalDue.toLocaleString('en-IN')}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Render Web Inquiries from contact.html
+    function renderWebInquiries() {
+      const list = GermonStore.getWebInquiries().filter(i => i.status === 'New');
+      const section = document.getElementById('webInquiriesSection');
+      const tbody = document.getElementById('inquiriesTableBody');
+
+      if (list.length === 0) {
+        section.classList.add('d-none');
+        return;
+      }
+
+      section.classList.remove('d-none');
+      document.getElementById('inquiryCount').textContent = list.length;
+
+      tbody.innerHTML = '';
+      list.forEach(inq => {
+        const timeAgo = new Date(inq.date).toLocaleDateString() + ' ' + new Date(inq.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const waMsg = encodeURIComponent(`Namaste ${inq.name}! Thank you for contacting Germon IT Solution Narayangarh regarding ${inq.service}. Our technician is ready to assist you.`);
+
+        tbody.innerHTML += `
+          <tr>
+            <td class="ps-3">
+              <span class="badge bg-light text-dark border">${inq.id}</span>
+              <div class="small text-muted mt-1">${timeAgo}</div>
+            </td>
+            <td>
+              <div class="fw-bold text-dark">${escapeHtml(inq.name)}</div>
+              <div class="small text-muted"><i class="bi bi-telephone me-1"></i>${inq.phone}</div>
+            </td>
+            <td>
+              <span class="badge bg-primary bg-opacity-10 text-primary fw-semibold">${escapeHtml(inq.service)}</span>
+              <div class="small text-muted text-truncate" style="max-width: 250px;">${escapeHtml(inq.message || inq.subject)}</div>
+            </td>
+            <td>
+              <div class="small"><i class="bi bi-geo-alt-fill text-danger me-1"></i>${escapeHtml(inq.location)}</div>
+            </td>
+            <td>
+              <span class="badge bg-${inq.urgency === 'Emergency' ? 'danger' : (inq.urgency === 'Urgent' ? 'warning text-dark' : 'secondary')}">${inq.urgency}</span>
+            </td>
+            <td class="text-end pe-3">
+              <div class="btn-group btn-group-sm">
+                <a href="https://wa.me/${inq.phone.replace(/[^0-9]/g, '')}?text=${waMsg}" target="_blank" class="btn btn-outline-success" title="Chat on WhatsApp">
+                  <i class="bi bi-whatsapp"></i>
+                </a>
+                <button class="btn btn-primary" onclick="convertInquiry('${inq.id}')">
+                  <i class="bi bi-arrow-right-circle me-1"></i> Convert to Job
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function convertInquiry(inqId) {
+      const list = GermonStore.getWebInquiries();
+      const inq = list.find(i => i.id === inqId);
+      if (!inq) return;
+
+      document.getElementById('jobClientName').value = inq.name;
+      document.getElementById('jobContactPerson').value = inq.name;
+      document.getElementById('jobPhone').value = inq.phone;
+      document.getElementById('jobLocation').value = inq.location;
+      document.getElementById('jobDescription').value = `[Web Inquiry Ref: ${inq.id}]\n${inq.message || inq.subject}`;
+
+      // Select service
+      const selectEl = document.getElementById('jobWorkType');
+      for (let i = 0; i < selectEl.options.length; i++) {
+        if (selectEl.options[i].value.includes(inq.service) || inq.service.includes(selectEl.options[i].value)) {
+          selectEl.selectedIndex = i;
+          break;
+        }
+      }
+
+      GermonStore.markInquiryConverted(inqId);
+      const modal = new bootstrap.Modal(document.getElementById('newJobModal'));
+      modal.show();
+      renderWebInquiries();
+    }
+
+    // Render Jobs Table
+    function renderJobsTable() {
+      const status = document.getElementById('statusFilter').value;
+      const techId = document.getElementById('techFilter').value;
+      const search = document.getElementById('searchInput').value;
+
+      const jobs = GermonStore.getJobs({ status, techId, search });
+      const tbody = document.getElementById('jobsTableBody');
+      tbody.innerHTML = '';
+
+      if (jobs.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-5 text-muted">
+              <i class="bi bi-clipboard-x fs-1 d-block mb-2"></i>
+              No work orders match the current criteria.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      jobs.forEach(job => {
+        const est = Number(job.finalAmount || job.estimatedAmount || 0);
+        const paid = Number(job.paidAmount || 0);
+        const due = est - paid;
+
+        const cleanPhone = (job.phone || '').replace(/[^0-9]/g, '');
+        const waText = encodeURIComponent(`Namaste ${job.contactPerson}! Regarding your ${job.workType} (Job ID: ${job.id}) by Germon IT Solution.`);
+
+        tbody.innerHTML += `
+          <tr>
+            <td>
+              <span class="fw-bold text-primary font-monospace">${job.id}</span>
+              <div class="mt-1">
+                <span class="badge badge-priority-${job.priority}">${job.priority.toUpperCase()}</span>
+              </div>
+              <div class="small text-muted mt-1">${job.scheduledDate}</div>
+            </td>
+            <td>
+              <div class="fw-bold text-dark">${escapeHtml(job.clientName)}</div>
+              <div class="small text-muted"><i class="bi bi-person me-1"></i>${escapeHtml(job.contactPerson)} &bull; ${job.phone}</div>
+              <div class="small text-secondary mt-1">
+                <i class="bi bi-geo-alt-fill text-danger me-1"></i>${escapeHtml(job.location)}
+              </div>
+            </td>
+            <td>
+              <div class="fw-semibold text-dark">${escapeHtml(job.workType)}</div>
+              <div class="small text-muted text-truncate" style="max-width: 260px;" title="${escapeHtml(job.description)}">
+                ${escapeHtml(job.description)}
+              </div>
+              ${job.holdReason ? `<div class="small text-danger mt-1"><strong>Reason on Hold:</strong> ${escapeHtml(job.holdReason)}</div>` : ''}
+            </td>
+            <td>
+              ${job.assignedTechName ? `
+                <div class="fw-semibold"><i class="bi bi-person-badge text-info me-1"></i>${escapeHtml(job.assignedTechName)}</div>
+              ` : `
+                <span class="badge bg-secondary">Unassigned</span>
+              `}
+            </td>
+            <td>
+              <span class="badge-status status-${job.status}-badge">
+                <i class="bi bi-circle-fill" style="font-size: 0.5rem;"></i> ${formatStatus(job.status)}
+              </span>
+            </td>
+            <td>
+              <div class="small">Total: <strong>Rs. ${est.toLocaleString('en-IN')}</strong></div>
+              <div class="small text-success">Paid: Rs. ${paid.toLocaleString('en-IN')}</div>
+              ${due > 0 ? `<div class="small text-danger fw-bold">Due: Rs. ${due.toLocaleString('en-IN')}</div>` : `<span class="badge bg-success bg-opacity-25 text-success">Paid</span>`}
+            </td>
+            <td class="text-end pe-3">
+              <div class="d-inline-flex gap-1">
+                <!-- Phone Call -->
+                <a href="tel:${cleanPhone}" class="btn-action-icon phone" title="Call Client">
+                  <i class="bi bi-telephone-fill"></i>
+                </a>
+                <!-- WhatsApp -->
+                <a href="https://wa.me/${cleanPhone}?text=${waText}" target="_blank" class="btn-action-icon whatsapp" title="Chat on WhatsApp">
+                  <i class="bi bi-whatsapp"></i>
+                </a>
+                <!-- Google Maps Link -->
+                ${job.mapUrl ? `
+                  <a href="${job.mapUrl}" target="_blank" class="btn-action-icon map" title="Open Google Maps">
+                    <i class="bi bi-geo-alt-fill"></i>
+                  </a>
+                ` : ''}
+                <!-- Print Job Slip -->
+                <button class="btn-action-icon" title="Print Job Card" onclick="openPrintModal('${job.id}')">
+                  <i class="bi bi-printer-fill"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function applyFilters() {
+      renderJobsTable();
+    }
+
+    // Handle New Job Creation
+    document.getElementById('newJobForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const techSelect = document.getElementById('jobAssignedTech');
+      const selectedTechOpt = techSelect.options[techSelect.selectedIndex];
+
+      const jobData = {
+        clientName: document.getElementById('jobClientName').value.trim(),
+        contactPerson: document.getElementById('jobContactPerson').value.trim(),
+        phone: document.getElementById('jobPhone').value.trim(),
+        workType: document.getElementById('jobWorkType').value,
+        priority: document.getElementById('jobPriority').value,
+        location: document.getElementById('jobLocation').value.trim(),
+        mapUrl: document.getElementById('jobMapUrl').value.trim(),
+        assignedTechId: techSelect.value,
+        assignedTechName: selectedTechOpt ? selectedTechOpt.getAttribute('data-name') : '',
+        scheduledDate: document.getElementById('jobScheduledDate').value,
+        description: document.getElementById('jobDescription').value.trim(),
+        estimatedAmount: document.getElementById('jobEstimatedAmount').value || 0,
+        advanceAmount: document.getElementById('jobAdvanceAmount').value || 0,
+        paymentMode: document.getElementById('jobPaymentMode').value
+      };
+
+      const newJob = GermonStore.createJob(jobData);
+
+      // Reset & Close Modal
+      document.getElementById('newJobForm').reset();
+      const modalEl = document.getElementById('newJobModal');
+      const modalInstance = bootstrap.Modal.getInstance(modalEl);
+      modalInstance.hide();
+
+      alert(`Job ${newJob.id} has been created and assigned successfully!`);
+      initDashboard();
+    });
+
+    // Open Print Modal
+    function openPrintModal(jobId) {
+      const job = GermonStore.getJobById(jobId);
+      if (!job) return;
+
+      document.getElementById('printJobId').textContent = job.id;
+      document.getElementById('printDate').textContent = 'Date: ' + (job.scheduledDate || 'Today');
+      document.getElementById('printClientName').textContent = job.clientName;
+      document.getElementById('printContact').textContent = `Contact: ${job.contactPerson} (${job.phone})`;
+      document.getElementById('printLocation').textContent = `Location: ${job.location}`;
+      document.getElementById('printWorkType').textContent = job.workType;
+      document.getElementById('printTech').textContent = `Assigned Tech: ${job.assignedTechName || 'None'}`;
+      document.getElementById('printStatus').textContent = `Status: ${formatStatus(job.status)}`;
+      document.getElementById('printDescription').textContent = job.description;
+
+      const est = Number(job.finalAmount || job.estimatedAmount || 0);
+      const paid = Number(job.paidAmount || 0);
+      const due = est - paid;
+
+      document.getElementById('printPayMode').textContent = job.paymentMode || 'Cash';
+      document.getElementById('printEstimated').textContent = `NPR ${est.toLocaleString('en-IN')}`;
+      document.getElementById('printPaid').textContent = `NPR ${paid.toLocaleString('en-IN')}`;
+      document.getElementById('printDue').textContent = `NPR ${due.toLocaleString('en-IN')}`;
+
+      // Materials
+      const matUl = document.getElementById('printMaterialsList');
+      matUl.innerHTML = '';
+      if (job.materialsUsed && job.materialsUsed.length > 0) {
+        job.materialsUsed.forEach(m => {
+          matUl.innerHTML += `<li class="list-group-item px-0 d-flex justify-content-between"><span>${escapeHtml(m.item)}</span> <strong>${m.qty}</strong></li>`;
+        });
+      } else {
+        matUl.innerHTML = '<li class="list-group-item px-0 text-muted">No materials logged for this order.</li>';
+      }
+
+      // Signature
+      const signDiv = document.getElementById('printClientSignContainer');
+      if (job.signature) {
+        signDiv.innerHTML = `<img src="${job.signature}" style="max-height: 42px;" alt="Signature">`;
+      } else {
+        signDiv.innerHTML = '';
+      }
+
+      const modal = new bootstrap.Modal(document.getElementById('printJobModal'));
+      modal.show();
+    }
+
+    function formatStatus(status) {
+      switch (status) {
+        case 'pending': return 'Pending';
+        case 'assigned': return 'Assigned';
+        case 'in_progress': return 'In Progress';
+        case 'on_hold': return 'On Hold';
+        case 'completed': return 'Completed';
+        case 'cancelled': return 'Cancelled';
+        default: return status;
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

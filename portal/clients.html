@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clients &amp; Equipment Warranty | Germon IT Solution</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body>
+
+  <!-- Navigation Bar Placeholder -->
+  <div id="portalNavPlaceholder"></div>
+
+  <div class="container-fluid px-3 px-lg-4 py-4">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+      <div>
+        <h2 class="fw-bold mb-1 text-dark"><i class="bi bi-building text-primary me-2"></i>Client Profiles &amp; Hardware Warranty Vault</h2>
+        <p class="text-muted small mb-0">Manage customer directories, location landmarks, and equipment serial numbers &amp; warranty expiries.</p>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-primary fw-semibold" data-bs-toggle="modal" data-bs-target="#newClientModal">
+          <i class="bi bi-person-plus-fill me-1"></i> Add New Client
+        </button>
+        <button class="btn btn-outline-primary fw-semibold" data-bs-toggle="modal" data-bs-target="#newEquipmentModal">
+          <i class="bi bi-cpu me-1"></i> Register Equipment
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs: Clients vs Equipment -->
+    <ul class="nav nav-pills mb-4" id="clientTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active fw-bold" id="clients-tab" data-bs-toggle="pill" data-bs-target="#clients-view" type="button" role="tab">
+          <i class="bi bi-people-fill me-1"></i> All Clients (<span id="clientTotalCount">0</span>)
+        </button>
+      </li>
+      <li class="nav-item ms-2" role="presentation">
+        <button class="nav-link fw-bold" id="equipment-tab" data-bs-toggle="pill" data-bs-target="#equipment-view" type="button" role="tab">
+          <i class="bi bi-shield-check me-1"></i> Equipment &amp; Warranty Tracker (<span id="eqTotalCount">0</span>)
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      
+      <!-- TAB 1: CLIENTS VIEW -->
+      <div class="tab-pane fade show active" id="clients-view" role="tabpanel">
+        <div class="data-table-card">
+          <div class="data-table-header d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0 text-dark">Registered Customer Directory</h5>
+            <div class="input-group input-group-sm" style="width: 250px;">
+              <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+              <input type="text" id="clientSearch" class="form-control" placeholder="Search by name/phone..." onkeyup="renderClients()">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="custom-table table">
+              <thead>
+                <tr>
+                  <th>Client ID</th>
+                  <th>Client / Business Name</th>
+                  <th>Contact Person &amp; Phone</th>
+                  <th>Location &amp; Landmark</th>
+                  <th>PAN / VAT</th>
+                  <th>Type</th>
+                  <th class="text-end pe-3">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="clientsTableBody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: EQUIPMENT & WARRANTY VIEW -->
+      <div class="tab-pane fade" id="equipment-view" role="tabpanel">
+        <div class="data-table-card">
+          <div class="data-table-header d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="fw-bold mb-0 text-dark">Hardware Serial Numbers &amp; Warranty Registry</h5>
+              <p class="small text-muted mb-0">Never lose track of CCTV cameras, NVRs, Routers, or Biometric warranties in Chitwan</p>
+            </div>
+            <div class="input-group input-group-sm" style="width: 250px;">
+              <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+              <input type="text" id="eqSearch" class="form-control" placeholder="Search S/N or Brand..." onkeyup="renderEquipment()">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="custom-table table">
+              <thead>
+                <tr>
+                  <th>Client Name</th>
+                  <th>Device Category</th>
+                  <th>Brand &amp; Model</th>
+                  <th>Serial Number (S/N)</th>
+                  <th>Install Date</th>
+                  <th>Warranty Expiry</th>
+                  <th>Warranty Status</th>
+                </tr>
+              </thead>
+              <tbody id="equipmentTableBody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- NEW CLIENT MODAL -->
+  <div class="modal fade" id="newClientModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-primary text-white border-0 py-3">
+          <h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Register New Client</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="newClientForm">
+          <div class="modal-body p-4">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Company / Client Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="newClientName" placeholder="e.g. Hotel Bharatpur Heights" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Contact Person Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="newClientContact" placeholder="e.g. Kiran Gurung" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Mobile / Phone Number <span class="text-danger">*</span></label>
+                <input type="tel" class="form-control" id="newClientPhone" placeholder="98XXXXXXXX" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Email Address</label>
+                <input type="email" class="form-control" id="newClientEmail" placeholder="client@domain.com">
+              </div>
+              <div class="col-md-8">
+                <label class="form-label fw-semibold small">Office / Site Address <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="newClientAddress" placeholder="e.g. Lions Chowk, Narayangarh" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Client Category</label>
+                <select class="form-select" id="newClientType">
+                  <option value="Corporate">Corporate / Hotel</option>
+                  <option value="Hospital / Clinic">Hospital / Clinic</option>
+                  <option value="Retail / Commercial">Retail / Store</option>
+                  <option value="Industrial">Factory / Mill</option>
+                  <option value="Residential">Residential / Home</option>
+                </select>
+              </div>
+              <div class="col-md-8">
+                <label class="form-label fw-semibold small">Landmark / Directions</label>
+                <input type="text" class="form-control" id="newClientLandmark" placeholder="e.g. Near Lions Chowk, Opposite Sunrise Bank, 2nd floor">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">PAN / VAT No.</label>
+                <input type="text" class="form-control" id="newClientPan" placeholder="e.g. 609876543">
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Google Maps Location Link</label>
+                <input type="url" class="form-control" id="newClientMap" placeholder="https://maps.app.goo.gl/...">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light border-0">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4 fw-bold">Save Client</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW EQUIPMENT MODAL -->
+  <div class="modal fade" id="newEquipmentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-primary text-white border-0 py-3">
+          <h5 class="modal-title fw-bold"><i class="bi bi-cpu me-2"></i>Register Equipment &amp; Warranty</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="newEquipmentForm">
+          <div class="modal-body p-4">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Select Client <span class="text-danger">*</span></label>
+                <select class="form-select" id="eqClientSelect" required>
+                  <!-- Populated via JS -->
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Device Category <span class="text-danger">*</span></label>
+                <select class="form-select" id="eqCategory" required>
+                  <option value="CCTV / NVR">CCTV / NVR</option>
+                  <option value="Smart Wi-Fi Camera">Smart Wi-Fi Camera</option>
+                  <option value="Router & PoE Switch">Router &amp; PoE Switch</option>
+                  <option value="Biometric Attendance">Biometric Attendance</option>
+                  <option value="Access Control Gate">Access Control Gate</option>
+                  <option value="Fire Safety / Cylinder">Fire Safety / Cylinder</option>
+                  <option value="Computer / Server">Computer / Server</option>
+                  <option value="Printer">Printer</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Brand &amp; Model <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="eqBrandModel" placeholder="e.g. Hikvision 16-Channel 4K NVR" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Serial Number (S/N) <span class="text-danger">*</span></label>
+                <input type="text" class="form-control font-monospace" id="eqSerialNumber" placeholder="e.g. HIK-NVR-99882" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Installation Date</label>
+                <input type="date" class="form-control" id="eqInstallDate">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Warranty Expiry Date <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="eqExpiryDate" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Hardware Notes / Configuration Details</label>
+                <textarea class="form-control" id="eqNotes" rows="2" placeholder="e.g. Includes 4TB SkyHawk HDD, 2 years full replacement warranty"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light border-0">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4 fw-bold">Register Equipment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      renderClients();
+      renderEquipment();
+      populateClientSelect();
+      document.getElementById('eqInstallDate').value = new Date().toISOString().split('T')[0];
+    });
+
+    function renderClients() {
+      const q = (document.getElementById('clientSearch').value || '').toLowerCase();
+      let clients = GermonStore.getClients();
+
+      if (q) {
+        clients = clients.filter(c => 
+          c.name.toLowerCase().includes(q) || 
+          c.phone.includes(q) || 
+          c.contactPerson.toLowerCase().includes(q)
+        );
+      }
+
+      document.getElementById('clientTotalCount').textContent = clients.length;
+      const tbody = document.getElementById('clientsTableBody');
+      tbody.innerHTML = '';
+
+      if (clients.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-5 text-muted">No clients found.</td></tr>`;
+        return;
+      }
+
+      clients.forEach(c => {
+        const cleanPhone = (c.phone || '').replace(/[^0-9]/g, '');
+        const waText = encodeURIComponent(`Namaste ${c.contactPerson}! Connecting from Germon IT Solution Narayangarh.`);
+
+        tbody.innerHTML += `
+          <tr>
+            <td><span class="badge bg-light text-dark border font-monospace">${c.id}</span></td>
+            <td>
+              <div class="fw-bold text-dark">${escapeHtml(c.name)}</div>
+              <div class="small text-muted">${c.email || 'No email registered'}</div>
+            </td>
+            <td>
+              <div class="fw-semibold text-dark">${escapeHtml(c.contactPerson)}</div>
+              <div class="small text-muted"><i class="bi bi-telephone me-1"></i>${c.phone}</div>
+            </td>
+            <td>
+              <div class="small fw-semibold text-dark">${escapeHtml(c.address)}</div>
+              <div class="small text-secondary"><i class="bi bi-geo-alt-fill text-danger me-1"></i>${escapeHtml(c.landmark || 'No landmark')}</div>
+            </td>
+            <td><span class="small font-monospace text-muted">${c.panVat || 'N/A'}</span></td>
+            <td><span class="badge bg-secondary bg-opacity-10 text-secondary">${c.type}</span></td>
+            <td class="text-end pe-3">
+              <div class="d-inline-flex gap-1">
+                <a href="tel:${cleanPhone}" class="btn-action-icon phone" title="Call"><i class="bi bi-telephone-fill"></i></a>
+                <a href="https://wa.me/${cleanPhone}?text=${waText}" target="_blank" class="btn-action-icon whatsapp" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                ${c.mapUrl ? `<a href="${c.mapUrl}" target="_blank" class="btn-action-icon map" title="Google Map"><i class="bi bi-geo-alt-fill"></i></a>` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function renderEquipment() {
+      const q = (document.getElementById('eqSearch').value || '').toLowerCase();
+      let eqList = GermonStore.getEquipment();
+      const clients = GermonStore.getClients();
+
+      if (q) {
+        eqList = eqList.filter(e => 
+          e.brandModel.toLowerCase().includes(q) || 
+          e.serialNumber.toLowerCase().includes(q) ||
+          e.deviceType.toLowerCase().includes(q)
+        );
+      }
+
+      document.getElementById('eqTotalCount').textContent = eqList.length;
+      const tbody = document.getElementById('equipmentTableBody');
+      tbody.innerHTML = '';
+
+      if (eqList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-5 text-muted">No hardware equipment registered.</td></tr>`;
+        return;
+      }
+
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      eqList.forEach(e => {
+        const client = clients.find(c => c.id === e.clientId);
+        const isExpired = e.warrantyExpiry < todayStr;
+
+        tbody.innerHTML += `
+          <tr>
+            <td>
+              <div class="fw-bold text-dark">${client ? escapeHtml(client.name) : 'Unknown Client'}</div>
+              <div class="small text-muted">${client ? client.address : ''}</div>
+            </td>
+            <td><span class="badge bg-primary bg-opacity-10 text-primary fw-semibold">${escapeHtml(e.deviceType)}</span></td>
+            <td>
+              <div class="fw-semibold text-dark">${escapeHtml(e.brandModel)}</div>
+              <div class="small text-muted">${escapeHtml(e.notes || '')}</div>
+            </td>
+            <td>
+              <span class="font-monospace fw-bold text-dark bg-light px-2 py-1 border rounded">${escapeHtml(e.serialNumber)}</span>
+            </td>
+            <td class="small text-muted">${e.installedDate}</td>
+            <td class="small fw-semibold ${isExpired ? 'text-danger' : 'text-success'}">${e.warrantyExpiry}</td>
+            <td>
+              ${isExpired ? `
+                <span class="badge bg-danger"><i class="bi bi-exclamation-triangle-fill me-1"></i>Expired</span>
+              ` : `
+                <span class="badge bg-success"><i class="bi bi-shield-fill-check me-1"></i>In Warranty</span>
+              `}
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function populateClientSelect() {
+      const clients = GermonStore.getClients();
+      const sel = document.getElementById('eqClientSelect');
+      sel.innerHTML = '<option value="">-- Choose Client --</option>';
+      clients.forEach(c => {
+        sel.innerHTML += `<option value="${c.id}">${escapeHtml(c.name)} (${c.address})</option>`;
+      });
+    }
+
+    // Save Client
+    document.getElementById('newClientForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const clientData = {
+        name: document.getElementById('newClientName').value.trim(),
+        contactPerson: document.getElementById('newClientContact').value.trim(),
+        phone: document.getElementById('newClientPhone').value.trim(),
+        email: document.getElementById('newClientEmail').value.trim(),
+        address: document.getElementById('newClientAddress').value.trim(),
+        landmark: document.getElementById('newClientLandmark').value.trim(),
+        panVat: document.getElementById('newClientPan').value.trim(),
+        type: document.getElementById('newClientType').value,
+        mapUrl: document.getElementById('newClientMap').value.trim()
+      };
+
+      GermonStore.addClient(clientData);
+      document.getElementById('newClientForm').reset();
+      bootstrap.Modal.getInstance(document.getElementById('newClientModal')).hide();
+      alert('Client successfully added!');
+      renderClients();
+      populateClientSelect();
+    });
+
+    // Save Equipment
+    document.getElementById('newEquipmentForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const eqData = {
+        clientId: document.getElementById('eqClientSelect').value,
+        deviceType: document.getElementById('eqCategory').value,
+        brandModel: document.getElementById('eqBrandModel').value.trim(),
+        serialNumber: document.getElementById('eqSerialNumber').value.trim(),
+        installedDate: document.getElementById('eqInstallDate').value,
+        warrantyExpiry: document.getElementById('eqExpiryDate').value,
+        notes: document.getElementById('eqNotes').value.trim()
+      };
+
+      GermonStore.addEquipment(eqData);
+      document.getElementById('newEquipmentForm').reset();
+      bootstrap.Modal.getInstance(document.getElementById('newEquipmentModal')).hide();
+      alert('Equipment registered successfully!');
+      renderEquipment();
+    });
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work Orders Management | Germon IT Solution</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body>
+
+  <!-- Navigation Bar Placeholder -->
+  <div id="portalNavPlaceholder"></div>
+
+  <div class="container-fluid px-3 px-lg-4 py-4">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+      <div>
+        <h2 class="fw-bold mb-1 text-dark"><i class="bi bi-tools text-primary me-2"></i>Work &amp; Job Orders Registry</h2>
+        <p class="text-muted small mb-0">Track full service history, material usage, before/after photos, and customer sign-offs.</p>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a href="dashboard.html" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left me-1"></i> Dashboard
+        </a>
+      </div>
+    </div>
+
+    <!-- Filter Card -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+      <div class="card-body p-3">
+        <div class="row g-2 align-items-center">
+          <div class="col-md-3">
+            <div class="input-group">
+              <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+              <input type="text" id="filterSearch" class="form-control" placeholder="Search ID, client, technician..." onkeyup="renderWorks()">
+            </div>
+          </div>
+          <div class="col-md-2">
+            <select id="filterStatus" class="form-select" onchange="renderWorks()">
+              <option value="all">All Statuses</option>
+              <option value="pending">🟡 Pending</option>
+              <option value="assigned">🔵 Assigned</option>
+              <option value="in_progress">🟠 In Progress</option>
+              <option value="on_hold">🟣 On Hold</option>
+              <option value="completed">🟢 Completed</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <select id="filterTech" class="form-select" onchange="renderWorks()">
+              <option value="all">All Technicians</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <select id="filterPriority" class="form-select" onchange="renderWorks()">
+              <option value="all">All Priorities</option>
+              <option value="low">Low Priority</option>
+              <option value="medium">Medium Priority</option>
+              <option value="high">High Priority</option>
+              <option value="emergency">🚨 Emergency</option>
+            </select>
+          </div>
+          <div class="col-md-2 text-end">
+            <button class="btn btn-outline-secondary w-100" onclick="resetFilters()">
+              <i class="bi bi-x-circle me-1"></i> Reset Filters
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Jobs Table -->
+    <div class="data-table-card">
+      <div class="table-responsive">
+        <table class="custom-table table">
+          <thead>
+            <tr>
+              <th>Job ID</th>
+              <th>Client Details</th>
+              <th>Work Type &amp; Scope</th>
+              <th>Assigned Technician</th>
+              <th>Status &amp; Date</th>
+              <th>Proof &amp; Signature</th>
+              <th class="text-end pe-3">Action</th>
+            </tr>
+          </thead>
+          <tbody id="worksTableBody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JOB DETAIL & TIMELINE MODAL -->
+  <div class="modal fade" id="jobDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-primary text-white border-0 py-3">
+          <h5 class="modal-title fw-bold">
+            <i class="bi bi-info-circle me-2"></i>Job Details: <span id="detailJobId">JOB-0001</span>
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <div class="p-3 bg-light rounded-3 h-100">
+                <div class="small text-muted text-uppercase fw-bold">Client Information</div>
+                <h5 class="fw-bold mb-1" id="detailClientName">Hotel Bharatpur Heights</h5>
+                <div class="small text-muted" id="detailContact">Contact: Kiran Gurung (9855012345)</div>
+                <div class="small text-muted" id="detailLocation">Location: Chowk Narayangarh</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 bg-light rounded-3 h-100">
+                <div class="small text-muted text-uppercase fw-bold">Order Details</div>
+                <div class="fw-bold text-primary" id="detailWorkType">CCTV Installation</div>
+                <div class="small text-muted" id="detailTech">Tech: Ram Thapa</div>
+                <div class="small text-muted" id="detailStatus">Status: In Progress</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <h6 class="fw-bold small text-muted text-uppercase">Work Description:</h6>
+            <p class="p-3 bg-light rounded-3 mb-0" id="detailDescription"></p>
+          </div>
+
+          <!-- Materials Used -->
+          <div class="mb-3">
+            <h6 class="fw-bold small text-muted text-uppercase">Materials &amp; Cables Used:</h6>
+            <ul class="list-group" id="detailMaterialsList"></ul>
+          </div>
+
+          <!-- Photos Before & After -->
+          <div class="mb-4">
+            <h6 class="fw-bold small text-muted text-uppercase">Before &amp; After Inspection Photos:</h6>
+            <div class="row g-3" id="detailPhotosRow"></div>
+          </div>
+
+          <!-- Signature -->
+          <div class="mb-3" id="detailSignatureContainer"></div>
+
+          <!-- Activity Logs -->
+          <h6 class="fw-bold small text-muted text-uppercase mb-2">Activity Timeline:</h6>
+          <div class="list-group small" id="detailLogsList"></div>
+        </div>
+        <div class="modal-footer bg-light border-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      populateTechFilter();
+      renderWorks();
+    });
+
+    function populateTechFilter() {
+      const users = GermonStore.getUsers().filter(u => u.role === 'technician');
+      const sel = document.getElementById('filterTech');
+      users.forEach(u => {
+        sel.innerHTML += `<option value="${u.id}">${u.name}</option>`;
+      });
+    }
+
+    function renderWorks() {
+      const search = document.getElementById('filterSearch').value;
+      const status = document.getElementById('filterStatus').value;
+      const techId = document.getElementById('filterTech').value;
+      const priority = document.getElementById('filterPriority').value;
+
+      let jobs = GermonStore.getJobs({ search, status, techId });
+      if (priority !== 'all') {
+        jobs = jobs.filter(j => j.priority === priority);
+      }
+
+      const tbody = document.getElementById('worksTableBody');
+      tbody.innerHTML = '';
+
+      if (jobs.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-5 text-muted">
+              No matching work orders found.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      jobs.forEach(job => {
+        const est = Number(job.finalAmount || job.estimatedAmount || 0);
+        const paid = Number(job.paidAmount || 0);
+
+        tbody.innerHTML += `
+          <tr>
+            <td>
+              <span class="fw-bold text-primary font-monospace">${job.id}</span>
+              <div class="mt-1">
+                <span class="badge badge-priority-${job.priority}">${job.priority.toUpperCase()}</span>
+              </div>
+            </td>
+            <td>
+              <div class="fw-bold text-dark">${escapeHtml(job.clientName)}</div>
+              <div class="small text-muted">${escapeHtml(job.contactPerson)} &bull; ${job.phone}</div>
+              <div class="small text-secondary">${escapeHtml(job.location)}</div>
+            </td>
+            <td>
+              <div class="fw-semibold text-dark">${escapeHtml(job.workType)}</div>
+              <div class="small text-muted text-truncate" style="max-width: 250px;">${escapeHtml(job.description)}</div>
+            </td>
+            <td>
+              <div class="fw-semibold"><i class="bi bi-person-fill text-info me-1"></i>${escapeHtml(job.assignedTechName || 'Unassigned')}</div>
+            </td>
+            <td>
+              <span class="badge-status status-${job.status}-badge mb-1">${formatStatus(job.status)}</span>
+              <div class="small text-muted">${job.scheduledDate}</div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                ${job.photos?.after || job.photos?.before ? `<span class="badge bg-info text-dark"><i class="bi bi-camera me-1"></i>Photos</span>` : ''}
+                ${job.signature ? `<span class="badge bg-success"><i class="bi bi-pen me-1"></i>Signed</span>` : ''}
+                ${!job.photos?.after && !job.signature ? `<span class="small text-muted">None</span>` : ''}
+              </div>
+            </td>
+            <td class="text-end pe-3">
+              <button class="btn btn-sm btn-outline-primary" onclick="openJobDetail('${job.id}')">
+                <i class="bi bi-eye"></i> View Full
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function resetFilters() {
+      document.getElementById('filterSearch').value = '';
+      document.getElementById('filterStatus').value = 'all';
+      document.getElementById('filterTech').value = 'all';
+      document.getElementById('filterPriority').value = 'all';
+      renderWorks();
+    }
+
+    function openJobDetail(jobId) {
+      const job = GermonStore.getJobById(jobId);
+      if (!job) return;
+
+      document.getElementById('detailJobId').textContent = job.id;
+      document.getElementById('detailClientName').textContent = job.clientName;
+      document.getElementById('detailContact').textContent = `Contact: ${job.contactPerson} (${job.phone})`;
+      document.getElementById('detailLocation').textContent = `Location: ${job.location}`;
+      document.getElementById('detailWorkType').textContent = job.workType;
+      document.getElementById('detailTech').textContent = `Assigned: ${job.assignedTechName || 'None'}`;
+      document.getElementById('detailStatus').textContent = `Status: ${formatStatus(job.status)}`;
+      document.getElementById('detailDescription').textContent = job.description;
+
+      // Materials
+      const matList = document.getElementById('detailMaterialsList');
+      matList.innerHTML = '';
+      if (job.materialsUsed && job.materialsUsed.length > 0) {
+        job.materialsUsed.forEach(m => {
+          matList.innerHTML += `<li class="list-group-item d-flex justify-content-between"><span>${escapeHtml(m.item)} ${m.billable ? '<span class="badge bg-primary ms-1">Billable</span>' : ''}</span> <strong>${m.qty}</strong></li>`;
+        });
+      } else {
+        matList.innerHTML = '<li class="list-group-item text-muted">No materials recorded.</li>';
+      }
+
+      // Photos
+      const photoRow = document.getElementById('detailPhotosRow');
+      photoRow.innerHTML = '';
+      if (job.photos?.before) {
+        photoRow.innerHTML += `
+          <div class="col-6">
+            <div class="photo-preview-box">
+              <img src="${job.photos.before}" alt="Before">
+              <span class="photo-preview-tag">Before Work</span>
+            </div>
+          </div>
+        `;
+      }
+      if (job.photos?.after) {
+        photoRow.innerHTML += `
+          <div class="col-6">
+            <div class="photo-preview-box">
+              <img src="${job.photos.after}" alt="After">
+              <span class="photo-preview-tag bg-success">After Work</span>
+            </div>
+          </div>
+        `;
+      }
+      if (!job.photos?.before && !job.photos?.after) {
+        photoRow.innerHTML = '<div class="col-12 text-muted small">No photos uploaded for this job.</div>';
+      }
+
+      // Signature
+      const signDiv = document.getElementById('detailSignatureContainer');
+      if (job.signature) {
+        signDiv.innerHTML = `
+          <h6 class="fw-bold small text-muted text-uppercase">Customer Handover Signature:</h6>
+          <div class="p-2 border rounded-3 bg-light d-inline-block">
+            <img src="${job.signature}" style="max-height: 55px;" alt="Signature">
+          </div>
+        `;
+      } else {
+        signDiv.innerHTML = '';
+      }
+
+      // Logs
+      const logsList = document.getElementById('detailLogsList');
+      logsList.innerHTML = '';
+      if (job.logs && job.logs.length > 0) {
+        job.logs.forEach(l => {
+          logsList.innerHTML += `
+            <div class="list-group-item">
+              <div class="d-flex justify-content-between">
+                <strong>${escapeHtml(l.user)}</strong>
+                <span class="text-muted">${l.time}</span>
+              </div>
+              <div class="text-secondary">${escapeHtml(l.note)}</div>
+            </div>
+          `;
+        });
+      }
+
+      const modal = new bootstrap.Modal(document.getElementById('jobDetailModal'));
+      modal.show();
+    }
+
+    function formatStatus(status) {
+      switch (status) {
+        case 'pending': return 'Pending';
+        case 'assigned': return 'Assigned';
+        case 'in_progress': return 'In Progress';
+        case 'on_hold': return 'On Hold';
+        case 'completed': return 'Completed';
+        case 'cancelled': return 'Cancelled';
+        default: return status;
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing &amp; Payments | Germon IT Solution</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body>
+
+  <!-- Navigation Bar Placeholder -->
+  <div id="portalNavPlaceholder"></div>
+
+  <div class="container-fluid px-3 px-lg-4 py-4">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+      <div>
+        <h2 class="fw-bold mb-1 text-dark"><i class="bi bi-cash-stack text-success me-2"></i>Job Costing &amp; Payment Ledger</h2>
+        <p class="text-muted small mb-0">Record advances, monitor due receivables, and track Fonepay, eSewa, and Cash collections.</p>
+      </div>
+    </div>
+
+    <!-- Financial Stats Row -->
+    <div class="row g-3 mb-4" id="paymentStatsRow">
+      <!-- Populated via JS -->
+    </div>
+
+    <!-- Payments Table Card -->
+    <div class="data-table-card">
+      <div class="data-table-header d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold mb-0 text-dark">Job Payment Records</h5>
+        <div class="input-group input-group-sm" style="width: 250px;">
+          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+          <input type="text" id="paymentSearch" class="form-control" placeholder="Search client or Job ID..." onkeyup="renderPayments()">
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="custom-table table">
+          <thead>
+            <tr>
+              <th>Job ID</th>
+              <th>Client &amp; Service</th>
+              <th>Estimated Cost</th>
+              <th>Advance</th>
+              <th>Paid Amount</th>
+              <th>Remaining Due</th>
+              <th>Payment Mode</th>
+              <th>Status</th>
+              <th class="text-end pe-3">Action</th>
+            </tr>
+          </thead>
+          <tbody id="paymentsTableBody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COLLECT PAYMENT MODAL -->
+  <div class="modal fade" id="collectPayModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-success text-white border-0 py-3">
+          <h5 class="modal-title fw-bold"><i class="bi bi-cash me-2"></i>Collect / Update Payment</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="collectPayForm">
+          <div class="modal-body p-4">
+            <input type="hidden" id="payJobId">
+            <div class="mb-3">
+              <label class="form-label fw-bold small text-muted text-uppercase">Client &amp; Job:</label>
+              <div class="fw-bold fs-6 text-dark" id="payClientSummary">Hotel Bharatpur (JOB-2026-0001)</div>
+            </div>
+            
+            <div class="row g-3">
+              <div class="col-6">
+                <label class="form-label fw-semibold small">Total Bill (NPR)</label>
+                <input type="number" class="form-control fw-bold" id="payTotalAmount" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold small">Total Received (NPR)</label>
+                <input type="number" class="form-control fw-bold text-success" id="payPaidAmount" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Payment Mode</label>
+                <select class="form-select" id="payModeSelect">
+                  <option value="Fonepay">Fonepay QR</option>
+                  <option value="Cash">Cash</option>
+                  <option value="eSewa">eSewa</option>
+                  <option value="Khalti">Khalti</option>
+                  <option value="Bank Transfer">Bank Transfer</option>
+                  <option value="Cheque">Cheque</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Payment Note / Cheque or Txn ID</label>
+                <input type="text" class="form-control" id="payTxnNote" placeholder="e.g. Fonepay Txn ID #998822 or Cheque #102938">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light border-0">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success px-4 fw-bold">Update Payment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      renderPayments();
+    });
+
+    function renderPayments() {
+      const q = (document.getElementById('paymentSearch').value || '').toLowerCase();
+      let jobs = GermonStore.getJobs();
+
+      if (q) {
+        jobs = jobs.filter(j => 
+          j.id.toLowerCase().includes(q) || 
+          j.clientName.toLowerCase().includes(q) || 
+          j.workType.toLowerCase().includes(q)
+        );
+      }
+
+      // Calculate Stats
+      let totalEst = 0;
+      let totalPaid = 0;
+      let totalDue = 0;
+
+      jobs.forEach(j => {
+        const est = Number(j.finalAmount || j.estimatedAmount || 0);
+        const paid = Number(j.paidAmount || 0);
+        totalEst += est;
+        totalPaid += paid;
+        if (est > paid) totalDue += (est - paid);
+      });
+
+      document.getElementById('paymentStatsRow').innerHTML = `
+        <div class="col-md-4">
+          <div class="stat-card accent-primary">
+            <div class="stat-card-accent"></div>
+            <div class="stat-label">Total Job Invoiced</div>
+            <div class="stat-value text-primary">Rs. ${totalEst.toLocaleString('en-IN')}</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card accent-success">
+            <div class="stat-card-accent"></div>
+            <div class="stat-label">Total Cash &amp; Digital Collected</div>
+            <div class="stat-value text-success">Rs. ${totalPaid.toLocaleString('en-IN')}</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card accent-danger">
+            <div class="stat-card-accent"></div>
+            <div class="stat-label">Total Outstanding Due</div>
+            <div class="stat-value text-danger">Rs. ${totalDue.toLocaleString('en-IN')}</div>
+          </div>
+        </div>
+      `;
+
+      const tbody = document.getElementById('paymentsTableBody');
+      tbody.innerHTML = '';
+
+      if (jobs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-5 text-muted">No records found.</td></tr>`;
+        return;
+      }
+
+      jobs.forEach(j => {
+        const est = Number(j.finalAmount || j.estimatedAmount || 0);
+        const adv = Number(j.advanceAmount || 0);
+        const paid = Number(j.paidAmount || 0);
+        const due = est - paid;
+
+        let statusBadge = '<span class="badge bg-success">Paid</span>';
+        if (due > 0 && paid > 0) statusBadge = '<span class="badge bg-warning text-dark">Partial</span>';
+        if (paid === 0) statusBadge = '<span class="badge bg-danger">Pending</span>';
+
+        tbody.innerHTML += `
+          <tr>
+            <td><strong class="text-primary font-monospace">${j.id}</strong></td>
+            <td>
+              <div class="fw-bold text-dark">${escapeHtml(j.clientName)}</div>
+              <div class="small text-muted">${escapeHtml(j.workType)}</div>
+            </td>
+            <td><strong>Rs. ${est.toLocaleString('en-IN')}</strong></td>
+            <td class="text-muted">Rs. ${adv.toLocaleString('en-IN')}</td>
+            <td class="text-success fw-bold">Rs. ${paid.toLocaleString('en-IN')}</td>
+            <td class="${due > 0 ? 'text-danger fw-bold' : 'text-muted'}">Rs. ${due.toLocaleString('en-IN')}</td>
+            <td><span class="badge bg-light text-dark border">${j.paymentMode || 'Cash'}</span></td>
+            <td>${statusBadge}</td>
+            <td class="text-end pe-3">
+              <button class="btn btn-sm btn-outline-success" onclick="openCollectModal('${j.id}')">
+                <i class="bi bi-wallet2 me-1"></i> Collect
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function openCollectModal(jobId) {
+      const job = GermonStore.getJobById(jobId);
+      if (!job) return;
+
+      document.getElementById('payJobId').value = job.id;
+      document.getElementById('payClientSummary').textContent = `${job.clientName} (${job.id})`;
+      document.getElementById('payTotalAmount').value = Number(job.finalAmount || job.estimatedAmount || 0);
+      document.getElementById('payPaidAmount').value = Number(job.paidAmount || 0);
+      document.getElementById('payModeSelect').value = job.paymentMode || 'Fonepay';
+      document.getElementById('payTxnNote').value = '';
+
+      const modal = new bootstrap.Modal(document.getElementById('collectPayModal'));
+      modal.show();
+    }
+
+    document.getElementById('collectPayForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const jobId = document.getElementById('payJobId').value;
+      const total = Number(document.getElementById('payTotalAmount').value);
+      const paid = Number(document.getElementById('payPaidAmount').value);
+      const mode = document.getElementById('payModeSelect').value;
+      const note = document.getElementById('payTxnNote').value.trim();
+
+      const job = GermonStore.getJobById(jobId);
+      if (job) {
+        job.finalAmount = total;
+        job.paidAmount = paid;
+        job.paymentMode = mode;
+        job.paymentStatus = (paid >= total) ? 'paid' : ((paid > 0) ? 'partial' : 'pending');
+
+        if (note) {
+          job.logs.push({
+            time: new Date().toISOString().split('T')[0],
+            user: GermonStore.getCurrentUser()?.name || 'Staff',
+            note: `Payment updated: Rs. ${paid} via ${mode} (${note})`
+          });
+        }
+
+        GermonStore.logAudit('PAYMENT_UPDATE', `Updated payment for ${jobId}: Rs. ${paid}`);
+        GermonStore.saveDB(GermonStore.getDB());
+      }
+
+      bootstrap.Modal.getInstance(document.getElementById('collectPayModal')).hide();
+      alert(`Payment for ${jobId} updated successfully!`);
+      renderPayments();
+    });
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

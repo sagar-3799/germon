@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backup &amp; Cloud Deployment | Germon IT Solution</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body>
+
+  <!-- Navigation Bar Placeholder -->
+  <div id="portalNavPlaceholder"></div>
+
+  <div class="container-fluid px-3 px-lg-4 py-4">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+      <div>
+        <h2 class="fw-bold mb-1 text-dark"><i class="bi bi-cloud-arrow-down-fill text-primary me-2"></i>Database Backup &amp; Deployment Center</h2>
+        <p class="text-muted small mb-0">Protect your Germon IT records with 1-click downloads and verify your Cloudflare Pages / GitHub Pages hosting.</p>
+      </div>
+    </div>
+
+    <!-- 1-Click Backup Options Row -->
+    <div class="row g-4 mb-4">
+      
+      <!-- JSON Backup Card -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100 p-4 bg-white">
+          <div class="stat-icon bg-primary bg-opacity-10 text-primary mb-3 fs-3">
+            <i class="bi bi-filetype-json"></i>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">JSON Full Backup</h5>
+          <p class="small text-muted mb-4">Export the entire portal database (clients, jobs, equipment, passwords, users) into a single offline JSON file.</p>
+          <button class="btn btn-primary fw-bold mt-auto" onclick="GermonStore.exportJSON()">
+            <i class="bi bi-download me-2"></i> Download JSON (.json)
+          </button>
+        </div>
+      </div>
+
+      <!-- MySQL SQL Dump Card -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100 p-4 bg-white">
+          <div class="stat-icon bg-success bg-opacity-10 text-success mb-3 fs-3">
+            <i class="bi bi-filetype-sql"></i>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">MySQL SQL Dump</h5>
+          <p class="small text-muted mb-4">Generates standard MySQL/MariaDB compatible SQL with table schemas and insert queries for cPanel phpMyAdmin.</p>
+          <button class="btn btn-success fw-bold mt-auto" onclick="GermonStore.exportSQL()">
+            <i class="bi bi-file-earmark-code me-2"></i> Download SQL (.sql)
+          </button>
+        </div>
+      </div>
+
+      <!-- Restore Card -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100 p-4 bg-white">
+          <div class="stat-icon bg-warning bg-opacity-10 text-warning mb-3 fs-3">
+            <i class="bi bi-arrow-counterclockwise"></i>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">Restore from Backup</h5>
+          <p class="small text-muted mb-3">Restore your records from a previously downloaded JSON backup file.</p>
+          <input type="file" id="restoreFileInput" class="form-control form-control-sm mb-3" accept=".json">
+          <button class="btn btn-outline-warning text-dark fw-bold mt-auto" onclick="handleRestore()">
+            <i class="bi bi-upload me-1"></i> Upload &amp; Restore
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Cloudflare Pages & GitHub Pages Deployment Guide -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white overflow-hidden">
+      <div class="card-header bg-light py-3 border-0">
+        <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-github me-2 text-dark"></i>How to Publish on Cloudflare Pages &amp; GitHub Pages</h5>
+      </div>
+      <div class="card-body p-4">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <h6 class="fw-bold text-primary mb-2">Option A: Deploy to GitHub Pages</h6>
+            <ol class="small text-muted ps-3 mb-0 lh-lg">
+              <li>Open your project folder in terminal or Git Bash.</li>
+              <li>Commit all files: <code>git add . && git commit -m "Germon IT Portal Complete"</code></li>
+              <li>Push to your GitHub repository: <code>git push origin main</code></li>
+              <li>In your GitHub Repo: Go to <strong>Settings &rarr; Pages</strong>.</li>
+              <li>Under <strong>Branch</strong>, select <code>main</code> and click <strong>Save</strong>.</li>
+              <li>Your site will go live at <code>https://&lt;username&gt;.github.io/&lt;repo&gt;/</code>!</li>
+            </ol>
+          </div>
+          <div class="col-md-6">
+            <h6 class="fw-bold text-warning text-dark mb-2">Option B: Deploy to Cloudflare Pages (Recommended - Fastest in Nepal)</h6>
+            <ol class="small text-muted ps-3 mb-0 lh-lg">
+              <li>Log in to your free <strong>Cloudflare Dashboard</strong>.</li>
+              <li>Navigate to <strong>Workers &amp; Pages &rarr; Create Application &rarr; Pages &rarr; Connect to Git</strong>.</li>
+              <li>Select your GitHub repository <code>Germon-IT-Website</code>.</li>
+              <li>Leave Build settings empty (Framework preset: None, Output directory: root).</li>
+              <li>Click <strong>Save and Deploy</strong>.</li>
+              <li>Your portal and website will be live worldwide on Cloudflare's ultra-fast edge CDN with free SSL!</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security Audit Log Card -->
+    <div class="data-table-card">
+      <div class="data-table-header d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-clock-history me-2 text-secondary"></i>System Activity &amp; Audit Logs</h5>
+        <button class="btn btn-sm btn-outline-danger" onclick="confirmResetDB()">
+          <i class="bi bi-trash me-1"></i> Reset to Factory Data
+        </button>
+      </div>
+      <div class="table-responsive">
+        <table class="custom-table table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>User</th>
+              <th>Action Category</th>
+              <th>Operation Details</th>
+            </tr>
+          </thead>
+          <tbody id="auditLogsBody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      renderLogs();
+    });
+
+    function renderLogs() {
+      const logs = GermonStore.getAuditLogs();
+      const tbody = document.getElementById('auditLogsBody');
+      tbody.innerHTML = '';
+
+      if (logs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-muted">No audit logs recorded yet.</td></tr>`;
+        return;
+      }
+
+      logs.forEach(l => {
+        let badgeColor = 'bg-secondary';
+        if (l.action.includes('CREDENTIAL')) badgeColor = 'bg-danger';
+        if (l.action.includes('STATUS') || l.action.includes('JOB')) badgeColor = 'bg-primary';
+        if (l.action.includes('PAYMENT')) badgeColor = 'bg-success';
+
+        tbody.innerHTML += `
+          <tr>
+            <td class="small text-muted font-monospace">${l.timestamp}</td>
+            <td><strong>${escapeHtml(l.user)}</strong></td>
+            <td><span class="badge ${badgeColor}">${l.action}</span></td>
+            <td class="text-dark small">${escapeHtml(l.detail)}</td>
+          </tr>
+        `;
+      });
+    }
+
+    function handleRestore() {
+      const fileInput = document.getElementById('restoreFileInput');
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert('Please select a valid .json backup file to restore.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const success = GermonStore.restoreDatabase(e.target.result);
+        if (success) {
+          alert('Database successfully restored from backup file!');
+          location.reload();
+        } else {
+          alert('Invalid backup file structure. Restoration failed.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function confirmResetDB() {
+      if (confirm('Are you sure you want to reset all portal records to the factory demo state? Any unsaved changes will be replaced.')) {
+        GermonStore.resetToDefault();
+        alert('Database reset to factory default data.');
+        location.reload();
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

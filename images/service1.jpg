@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <linearGradient id="serv1Bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#2B2E83"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#serv1Bg)"/>
+  <!-- CCTV Camera Illustration -->
+  <g transform="translate(180, 100)">
+    <path d="M40 80 L180 30 L220 110 L80 160 Z" fill="#F5000D"/>
+    <circle cx="200" cy="70" r="30" fill="#18A8E8"/>
+    <circle cx="200" cy="70" r="14" fill="#FFFFFF"/>
+    <rect x="20" y="70" width="30" height="120" fill="#E2E8F0" rx="4"/>
+  </g>
+  <text x="300" y="330" font-family="'Montserrat', sans-serif" font-weight="700" font-size="24" fill="#FFFFFF" text-anchor="middle">CCTV Installation &amp; Security</text>
+</svg>

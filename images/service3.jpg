@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <linearGradient id="serv3Bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#F5000D"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#serv3Bg)"/>
+  <!-- Code & Web Browser Window -->
+  <rect x="120" y="80" width="360" height="220" rx="10" fill="#FFFFFF" opacity="0.95"/>
+  <rect x="120" y="80" width="360" height="35" rx="10" fill="#2B2E83"/>
+  <circle cx="145" cy="97" r="5" fill="#F5000D"/>
+  <circle cx="160" cy="97" r="5" fill="#FFC107"/>
+  <circle cx="175" cy="97" r="5" fill="#4CAF50"/>
+  <text x="150" y="150" font-family="'Poppins', monospace" font-size="16" fill="#2B2E83">&lt;code&gt; Software Dev &lt;/code&gt;</text>
+  <text x="300" y="340" font-family="'Montserrat', sans-serif" font-weight="700" font-size="24" fill="#FFFFFF" text-anchor="middle">Software &amp; Web Development</text>
+</svg>

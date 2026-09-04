@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <linearGradient id="serv2Bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2B2E83"/>
+      <stop offset="100%" stop-color="#18A8E8"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#serv2Bg)"/>
+  <!-- Network Topology Graphic -->
+  <g stroke="#FFFFFF" stroke-width="3" fill="none" opacity="0.8">
+    <line x1="300" y1="120" x2="180" y2="230"/>
+    <line x1="300" y1="120" x2="420" y2="230"/>
+    <line x1="180" y1="230" x2="420" y2="230"/>
+  </g>
+  <circle cx="300" cy="120" r="30" fill="#F5000D"/>
+  <circle cx="180" cy="230" r="25" fill="#18A8E8"/>
+  <circle cx="420" cy="230" r="25" fill="#FFFFFF"/>
+  <text x="300" y="340" font-family="'Montserrat', sans-serif" font-weight="700" font-size="24" fill="#FFFFFF" text-anchor="middle">Networking &amp; Infrastructure</text>
+</svg>

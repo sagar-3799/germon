@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="t2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5000D"/>
+      <stop offset="100%" stop-color="#2B2E83"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#t2)"/>
+  <circle cx="200" cy="150" r="65" fill="#FFFFFF"/>
+  <path d="M100 350 C100 240, 300 240, 300 350 Z" fill="#FFFFFF"/>
+  <text x="200" y="375" font-family="'Montserrat', sans-serif" font-weight="700" font-size="18" fill="#18A8E8" text-anchor="middle">Senior Network Lead</text>
+</svg>

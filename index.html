@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Germon IT Solution Pvt. Ltd. | CCTV, Fire Safety, Networking & Computer Sales & Repair Chitwan</title>
+  <meta name="description" content="Germon IT Solution Pvt. Ltd. in Ganesh Market, Narayangarh, Chitwan provides CCTV, Smart Wi-Fi Cameras, DVR/NVR, Fire Extinguishers, Attendance Machines, Access Control, Currency Counting Machines, Laptop & Computer Sales/Repair, Routers & PoE Switches.">
+  <meta name="keywords" content="Germon IT, CCTV Chitwan, Fire Extinguisher Nepal, Biometric Attendance Narayangarh, Wifi Camera, Money Counting Machine, Access Control Gate, Laptop Repair Chitwan, PoE Switch, DVR NVR Installation">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Germon IT Solution Pvt. Ltd. | CCTV, Networking & Tech Solutions Chitwan">
+  <meta property="og:description" content="CCTV, Fire Extinguisher, Biometric Attendance, Wi-Fi Camera, Printer, Money Counting Machine, Access Control Gate, Computer Sales & Repair, Router & PoE Switch, DVR/NVR Maintenance.">
+  <meta property="og:image" content="Logo.jpeg">
+  <meta property="og:type" content="website">
+
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animation.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ITStore",
+    "name": "Germon IT Solution Pvt. Ltd.",
+    "image": "Logo.jpeg",
+    "telephone": "+977-9855084949",
+    "email": "germonitchitwan@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Ganesh Market, Narayangarh",
+      "addressLocality": "Chitwan",
+      "addressCountry": "NP"
+    },
+    "openingHours": "Su-Fr 09:00-18:00"
+  }
+  </script>
+</head>
+<body>
+
+
+  <!-- Header / Navigation Bar -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+      <div class="container">
+        <a class="navbar-brand navbar-brand-wrapper" href="index.html">
+          <img src="Logo.jpeg" alt="Germon IT Solution Logo" class="navbar-brand-logo">
+          <div class="brand-text">
+            <span class="brand-name">GERMON IT</span>
+            <span class="brand-subname">SOLUTION PVT. LTD.</span>
+          </div>
+        </a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="bi bi-list fs-1 text-primary"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMain">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+            <li class="nav-item">
+              <a class="nav-link active" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="services.html">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="portfolio.html">Portfolio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+            <li class="nav-item ms-lg-2">
+              <a href="portal/index.html" class="nav-link text-warning fw-semibold"><i class="bi bi-shield-lock-fill me-1"></i>Staff Portal</a>
+            </li>
+            <li class="nav-item ms-lg-2">
+              <a href="contact.html" class="btn btn-custom-primary">Get a Service <i class="bi bi-arrow-right-short fs-5"></i></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Carousel Slider Section -->
+  <section class="hero-slider-section">
+    <canvas id="hero-particles"></canvas>
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="6000">
+      <div class="carousel-inner">
+
+        <!-- Slide 1 -->
+        <div class="carousel-item active">
+          <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=1920&q=80');">
+            <div class="container">
+              <div class="row align-items-center">
+                <div class="col-lg-6 col-xl-7">
+                  <div class="hero-badge animate-fade-down">
+                    <i class="bi bi-shield-check"></i> Complete Security, Hardware &amp; IT Solutions in Nepal
+                  </div>
+                  <h1 class="hero-title animate-fade-left">Reliable IT &amp; Security Solutions for Your Business</h1>
+                  <p class="hero-subtitle animate-fade-left delay-100">
+                    Your One-Stop Tech Partner in Narayangarh: <span id="heroTypingText" class="text-info fw-bold"></span>
+                  </p>
+                  <div class="d-flex flex-wrap gap-3 animate-fade-up delay-200">
+                    <a href="services.html" class="btn btn-custom-primary">Explore All Services <i class="bi bi-grid-fill"></i></a>
+                    <a href="contact.html" class="btn btn-custom-outline text-white border-white">Contact Us <i class="bi bi-telephone"></i></a>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-xl-5 d-none d-lg-block animate-fade-left">
+                  <div class="hero-card-box">
+                    <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+                      <h3 class="h5 text-white mb-0 font-heading"><i class="bi bi-shield-lock-fill text-danger me-2"></i> Our Key Offerings</h3>
+                      <span class="badge bg-danger rounded-pill px-3 py-2">Chitwan, Nepal</span>
+                    </div>
+                    
+                    <div class="hero-feature-item">
+                      <div class="hero-feature-icon bg-primary bg-opacity-25 text-info">
+                        <i class="bi bi-camera-video-fill"></i>
+                      </div>
+                      <div>
+                        <h4 class="h6 text-white mb-1">CCTV &amp; Smart Security</h4>
+                        <small class="text-white-50">HD IP Cameras, DVR/NVR Setup</small>
+                      </div>
+                    </div>
+
+                    <div class="hero-feature-item">
+                      <div class="hero-feature-icon bg-danger bg-opacity-25 text-danger">
+                        <i class="bi bi-fire"></i>
+                      </div>
+                      <div>
+                        <h4 class="h6 text-white mb-1">Fire Safety &amp; Access Control</h4>
+                        <small class="text-white-50">Extinguishers &amp; Biometric Gates</small>
+                      </div>
+                    </div>
+
+                    <div class="hero-feature-item">
+                      <div class="hero-feature-icon bg-info bg-opacity-25 text-info">
+                        <i class="bi bi-router-fill"></i>
+                      </div>
+                      <div>
+                        <h4 class="h6 text-white mb-1">Networking &amp; PoE Hardware</h4>
+                        <small class="text-white-50">Gigabit Routers &amp; Network Switches</small>
+                      </div>
+                    </div>
+
+                    <div class="hero-feature-item">
+                      <div class="hero-feature-icon bg-success bg-opacity-25 text-success">
+                        <i class="bi bi-laptop-fill"></i>
+                      </div>
+                      <div>
+                        <h4 class="h6 text-white mb-1">Computer Sales &amp; Repair</h4>
+                        <small class="text-white-50">Laptop Repair &amp; Printer Sales</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-item">
+          <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1920&q=80');">
+            <div class="container">
+              <div class="row align-items-center">
+                <div class="col-lg-6 col-xl-7">
+                  <div class="hero-badge">
+                    <i class="bi bi-router"></i> Routers, Switches &amp; PoE Networking
+                  </div>
+                  <h1 class="hero-title">CCTV, DVR/NVR &amp; Networking Hardware</h1>
+                  <p class="hero-subtitle">High-performance PoE switches, Gigabit Routers, Wi-Fi cameras, and HD Digital Video Recorders (DVR/NVR) installation and maintenance.</p>
+                  <div class="d-flex flex-wrap gap-3">
+                    <a href="services.html" class="btn btn-custom-secondary">Networking Solutions</a>
+                    <a href="contact.html" class="btn btn-custom-outline text-white border-white">Request Quote</a>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-xl-5 d-none d-lg-block">
+                  <div class="hero-card-box">
+                    <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+                      <h3 class="h5 text-white mb-0 font-heading"><i class="bi bi-hdd-network-fill text-info me-2"></i> Networking Specs</h3>
+                      <span class="badge bg-info text-dark rounded-pill px-3 py-2">High Speed</span>
+                    </div>
+                    
+                    <div class="hero-feature-item">
+                      <div class="hero-feature-icon bg-info bg-opacity-25 text-info">
+                        <i class="bi bi-router-fill"></i>
+                      </div>
+                      <div>
+                        <h4 class="h6 text-white mb-1">Gigabit &amp; Wi-Fi Routers</h4>
+                        <small class="text-white-50">High speed multi-device connectivity</small>
+                      </div>
+                    </div>
+
+                    <div class="hero-feature-item">
+                      <div class="hero-feature-icon bg-primary bg-opacity-25 text-info">
+                        <i class="bi bi-ethernet"></i>
+                      </div>
+                      <div>
+                        <h4 class="h6 text-white mb-1">Managed PoE Switches</h4>
+                        <small class="text-white-50">Power over Ethernet for IP Cameras</small>
+                      </div>
+                    </div>
+
+                    <div class="hero-feature-item">
+                      <div class="hero-feature-icon bg-danger bg-opacity-25 text-danger">
+                        <i class="bi bi-hdd-rack-fill"></i>
+                      </div>
+                      <div>
+                        <h4 class="h6 text-white mb-1">DVR / NVR Storage Systems</h4>
+                        <small class="text-white-50">Continuous recording &amp; mobile view</small>
+                      </div>
+                    </div>
+
+                    <div class="hero-feature-item">
+                      <div class="hero-feature-icon bg-warning bg-opacity-25 text-warning">
+                        <i class="bi bi-tools"></i>
+                      </div>
+                      <div>
+                        <h4 class="h6 text-white mb-1">Structured Cabling &amp; Setup</h4>
+                        <small class="text-white-50">Professional setup &amp; AMC support</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="carousel-item">
+          <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=1920&q=80');">
+            <div class="container">
+              <div class="row align-items-center">
+                <div class="col-lg-6 col-xl-7">
+                  <div class="hero-badge">
+                    <i class="bi bi-fire"></i> Safety &amp; Access Control Systems
+                  </div>
+                  <h1 class="hero-title">Fire Extinguishers, Access Control &amp; Sales</h1>
+                  <p class="hero-subtitle">Fire Extinguishers, Smart Access Control Door Gates, Biometric Attendance, Money Counting Machines, Printer sales &amp; Laptop Repair.</p>
+                  <div class="d-flex flex-wrap gap-3">
+                    <a href="services.html" class="btn btn-custom-primary">View Products</a>
+                    <a href="contact.html" class="btn btn-custom-outline text-white border-white">Get Started</a>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-xl-5 d-none d-lg-block">
+                  <div class="hero-card-box">
+                    <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+                      <h3 class="h5 text-white mb-0 font-heading"><i class="bi bi-shield-check text-warning me-2"></i> Safety &amp; Control</h3>
+                      <span class="badge bg-warning text-dark rounded-pill px-3 py-2">Certified</span>
+                    </div>
+                    
+                    <div class="hero-feature-item">
+                      <div class="hero-feature-icon bg-danger bg-opacity-25 text-danger">
+                        <i class="bi bi-fire"></i>
+                      </div>
+                      <div>
+                        <h4 class="h6 text-white mb-1">ABC Fire Extinguishers</h4>
+                        <small class="text-white-50">Safety certified extinguishers &amp; refills</small>
+                      </div>
+                    </div>
+
+                    <div class="hero-feature-item">
+                      <div class="hero-feature-icon bg-primary bg-opacity-25 text-info">
+                        <i class="bi bi-fingerprint"></i>
+                      </div>
+                      <div>
+                        <h4 class="h6 text-white mb-1">Biometric &amp; Access Gates</h4>
+                        <small class="text-white-50">Fingerprint, card &amp; face attendance</small>
+                      </div>
+                    </div>
+
+                    <div class="hero-feature-item">
+                      <div class="hero-feature-icon bg-success bg-opacity-25 text-success">
+                        <i class="bi bi-cash-stack"></i>
+                      </div>
+                      <div>
+                        <h4 class="h6 text-white mb-1">Money Counting Machines</h4>
+                        <small class="text-white-50">Fake note detection currency counters</small>
+                      </div>
+                    </div>
+
+                    <div class="hero-feature-item">
+                      <div class="hero-feature-icon bg-info bg-opacity-25 text-info">
+                        <i class="bi bi-printer-fill"></i>
+                      </div>
+                      <div>
+                        <h4 class="h6 text-white mb-1">Printer Sales &amp; Laptop Repair</h4>
+                        <small class="text-white-50">Chip-level servicing &amp; office tech</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev" aria-label="Previous Slide">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next" aria-label="Next Slide">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Key Highlights / Feature Cards Section -->
+  <section class="py-5 bg-light">
+    <div class="container py-4">
+      <div class="row g-4">
+        
+        <div class="col-md-4 reveal-on-scroll">
+          <div class="feature-card">
+            <div class="feature-icon-box">
+              <i class="bi bi-camera-video"></i>
+            </div>
+            <h3 class="h4 mb-3">CCTV &amp; Wi-Fi Cameras</h3>
+            <p class="text-muted mb-0">HD IP Cameras, 360° Wi-Fi Smart Cameras, DVR &amp; NVR installation, remote mobile view, and annual maintenance in Chitwan.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 reveal-on-scroll delay-100">
+          <div class="feature-card feature-card-red">
+            <div class="feature-icon-box">
+              <i class="bi bi-shield-check"></i>
+            </div>
+            <h3 class="h4 mb-3">Fire Safety &amp; Access Control</h3>
+            <p class="text-muted mb-0">ABC Fire Extinguishers, Biometric Attendance machines, Smart Access Control Door Gates, and Currency Counting Machines.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 reveal-on-scroll delay-200">
+          <div class="feature-card">
+            <div class="feature-icon-box">
+              <i class="bi bi-laptop"></i>
+            </div>
+            <h3 class="h4 mb-3">Computer Sales &amp; Networking</h3>
+            <p class="text-muted mb-0">Laptop &amp; Desktop Sales/Repair, Printer servicing, Routers, Switches, PoE Switches, and structured enterprise cabling.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Company Introduction Section -->
+  <section class="py-5">
+    <div class="container py-4">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6 reveal-on-scroll">
+          <div class="position-relative">
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="About Germon IT Solution Team" class="img-fluid rounded-4 shadow-lg">
+            <div class="glass-card position-absolute bottom-0 end-0 p-4 m-3 d-none d-sm-block max-w-xs border-danger">
+              <div class="d-flex align-items-center gap-3">
+                <i class="bi bi-patch-check-fill text-danger fs-1"></i>
+                <div>
+                  <h4 class="h6 mb-0 text-dark">100% Quality Guaranteed</h4>
+                  <small class="text-muted">Ganesh Market, Narayangarh, Chitwan</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 reveal-on-scroll delay-200">
+          <span class="section-subtitle">ABOUT GERMON IT SOLUTION</span>
+          <h2 class="section-title">Your Complete Security, Hardware &amp; IT Service Provider</h2>
+          <p class="lead text-dark mb-4">Germon IT Solution Pvt. Ltd. located at Ganesh Market, Narayangarh, Chitwan, Nepal is a premier provider of comprehensive security systems, fire safety equipment, office automation tools, and IT infrastructure.</p>
+          <p class="text-muted mb-4">We specialize in CCTV &amp; Wi-Fi Cameras, DVR/NVR Installation, Fire Extinguishers, Biometric Attendance, Access Control Door Gates, Money Counting Machines, Printer sales/repair, Laptop/Desktop chip-level repair, Routers, Network Switches &amp; PoE Switches.</p>
+
+          <div class="row g-3 mb-4">
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-danger"></i>
+                <span class="fw-semibold">CCTV &amp; Wi-Fi Camera Setup</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-danger"></i>
+                <span class="fw-semibold">Fire Extinguishers &amp; Safety</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-danger"></i>
+                <span class="fw-semibold">Biometric &amp; Access Door Gates</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-danger"></i>
+                <span class="fw-semibold">Money Counting Machines</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-danger"></i>
+                <span class="fw-semibold">Laptop &amp; Desktop Sales/Repair</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-danger"></i>
+                <span class="fw-semibold">Routers, Switches &amp; PoE Switches</span>
+              </div>
+            </div>
+          </div>
+
+          <a href="about.html" class="btn btn-custom-secondary">Learn More About Us <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Services Showcase Section -->
+  <section class="py-5 bg-light">
+    <div class="container py-4">
+      <div class="text-center mb-5 reveal-on-scroll">
+        <span class="section-subtitle">OUR SPECIALIZED PRODUCTS &amp; SERVICES</span>
+        <h2 class="section-title">What We Do Best</h2>
+        <p class="section-description">Complete sales, installation, configuration, and annual maintenance (AMC) across Chitwan.</p>
+      </div>
+
+      <div class="row g-4">
+        
+        <!-- Service 1: CCTV & Wi-Fi Camera -->
+        <div class="col-lg-4 col-md-6 reveal-on-scroll">
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=600&q=80" alt="CCTV & Wi-Fi Camera">
+              <div class="service-icon-badge"><i class="bi bi-camera-video-fill"></i></div>
+            </div>
+            <div class="service-content">
+              <h3 class="service-title">CCTV &amp; Wi-Fi Cameras</h3>
+              <p class="service-desc">IP &amp; Analog CCTV, Smart Wi-Fi 360° Wireless Cameras with night vision, motion alert, and remote mobile viewing.</p>
+              <a href="services.html" class="btn btn-sm btn-custom-outline w-100">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 2: DVR & NVR Installation -->
+        <div class="col-lg-4 col-md-6 reveal-on-scroll delay-100">
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80" alt="DVR NVR Installation">
+              <div class="service-icon-badge"><i class="bi bi-hdd-fill"></i></div>
+            </div>
+            <div class="service-content">
+              <h3 class="service-title">DVR &amp; NVR Installation &amp; AMC</h3>
+              <p class="service-desc">Digital Video Recorder (DVR) &amp; Network Video Recorder (NVR) setup, hard drive storage backup, and regular maintenance.</p>
+              <a href="services.html" class="btn btn-sm btn-custom-outline w-100">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 3: Fire Extinguisher -->
+        <div class="col-lg-4 col-md-6 reveal-on-scroll delay-200">
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=600&q=80" alt="Fire Extinguisher">
+              <div class="service-icon-badge"><i class="bi bi-fire"></i></div>
+            </div>
+            <div class="service-content">
+              <h3 class="service-title">Fire Extinguishers &amp; Safety</h3>
+              <p class="service-desc">Supply, refilling, inspection, and installation of ABC Dry Powder and CO2 Fire Extinguishers for commercial safety.</p>
+              <a href="services.html" class="btn btn-sm btn-custom-outline w-100">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 4: Biometric Attendance -->
+        <div class="col-lg-4 col-md-6 reveal-on-scroll">
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=600&q=80" alt="Biometric Attendance">
+              <div class="service-icon-badge"><i class="bi bi-fingerprint"></i></div>
+            </div>
+            <div class="service-content">
+              <h3 class="service-title">Biometric Attendance Machines</h3>
+              <p class="service-desc">Fingerprint, Face Recognition, and RFID Card attendance machines with automatic time log &amp; payroll software.</p>
+              <a href="services.html" class="btn btn-sm btn-custom-outline w-100">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 5: Access Control Gate -->
+        <div class="col-lg-4 col-md-6 reveal-on-scroll delay-100">
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80" alt="Access Control Gate">
+              <div class="service-icon-badge"><i class="bi bi-door-closed-fill"></i></div>
+            </div>
+            <div class="service-content">
+              <h3 class="service-title">Access Control Door &amp; Gate</h3>
+              <p class="service-desc">Magnetic door locks, biometric door access control, smart RFID gates, and office entry security systems.</p>
+              <a href="services.html" class="btn btn-sm btn-custom-outline w-100">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 6: Money Counting Machine -->
+        <div class="col-lg-4 col-md-6 reveal-on-scroll delay-200">
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="Money Counting Machine">
+              <div class="service-icon-badge"><i class="bi bi-cash-stack"></i></div>
+            </div>
+            <div class="service-content">
+              <h3 class="service-title">Money / Counting Machines</h3>
+              <p class="service-desc">Heavy-duty currency counting machines with fake note detection (UV, MG, IR) for banks, shops, and businesses.</p>
+              <a href="services.html" class="btn btn-sm btn-custom-outline w-100">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 7: Laptop & Computer Sales/Repair -->
+        <div class="col-lg-4 col-md-6 reveal-on-scroll">
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80" alt="Laptop & Computer Sales/Repair">
+              <div class="service-icon-badge"><i class="bi bi-laptop"></i></div>
+            </div>
+            <div class="service-content">
+              <h3 class="service-title">Laptop &amp; Computer Sales/Repair</h3>
+              <p class="service-desc">Brand new &amp; refurbished laptop/desktop sales, chip-level motherboard repair, screen replacement, and SSD upgrades.</p>
+              <a href="services.html" class="btn btn-sm btn-custom-outline w-100">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 8: Router, Switch & PoE Switch -->
+        <div class="col-lg-4 col-md-6 reveal-on-scroll delay-100">
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=600&q=80" alt="Router Switch & PoE Switch">
+              <div class="service-icon-badge"><i class="bi bi-router-fill"></i></div>
+            </div>
+            <div class="service-content">
+              <h3 class="service-title">Routers, Switches &amp; PoE Switches</h3>
+              <p class="service-desc">High-speed dual-band Wi-Fi routers, Gigabit Network Switches, and 4/8/16/24 Port PoE Switches for camera networks.</p>
+              <a href="services.html" class="btn btn-sm btn-custom-outline w-100">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 9: Printer & Cartridges -->
+        <div class="col-lg-4 col-md-6 reveal-on-scroll delay-200">
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=600&q=80" alt="Printer Sales & Repair">
+              <div class="service-icon-badge"><i class="bi bi-printer-fill"></i></div>
+            </div>
+            <div class="service-content">
+              <h3 class="service-title">Printer Sales, Repair &amp; Refilling</h3>
+              <p class="service-desc">LaserJet &amp; InkTank printer sales, toner cartridge refilling, printhead unclogging, and paper jam maintenance.</p>
+              <a href="services.html" class="btn btn-sm btn-custom-outline w-100">View Details</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-5">
+        <a href="services.html" class="btn btn-custom-primary">View All Services &amp; Products <i class="bi bi-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Animated Counter Statistics Section -->
+  <section class="counter-section">
+    <div class="container">
+      <div class="row g-4">
+        
+        <div class="col-lg-3 col-6">
+          <div class="counter-box">
+            <div class="counter-icon"><i class="bi bi-award-fill"></i></div>
+            <div class="counter-number" data-target="10" data-suffix="+">0</div>
+            <div class="counter-title">Years Experience</div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+          <div class="counter-box">
+            <div class="counter-icon"><i class="bi bi-emoji-smile-fill"></i></div>
+            <div class="counter-number" data-target="500" data-suffix="+">0</div>
+            <div class="counter-title">Happy Clients</div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+          <div class="counter-box">
+            <div class="counter-icon"><i class="bi bi-check-circle-fill"></i></div>
+            <div class="counter-number" data-target="1200" data-suffix="+">0</div>
+            <div class="counter-title">Projects Completed</div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+          <div class="counter-box">
+            <div class="counter-icon"><i class="bi bi-headset"></i></div>
+            <div class="counter-number" data-target="24" data-suffix="/7">0</div>
+            <div class="counter-title">Dedicated Support</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Highlights Preview -->
+  <section class="py-5">
+    <div class="container py-4">
+      <div class="text-center mb-5 reveal-on-scroll">
+        <span class="section-subtitle">RECENT INSTALLATIONS &amp; WORK</span>
+        <h2 class="section-title">Our Featured Installations</h2>
+        <p class="section-description">Take a look at how Germon IT Solution Pvt. Ltd. serves businesses across Narayangarh &amp; Chitwan.</p>
+      </div>
+
+      <div class="row g-4">
+        
+        <div class="col-lg-4 col-md-6 reveal-on-scroll">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=600&q=80" alt="Bank CCTV & DVR Setup" class="portfolio-img">
+            <div class="portfolio-overlay">
+              <h4>HD CCTV &amp; DVR Installation</h4>
+              <p>Category: CCTV Security &bull; Narayangarh</p>
+              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=600&q=80" data-title="HD CCTV &amp; DVR Installation" data-desc="Complete 16-Channel HD IP CCTV camera and DVR storage setup for commercial building."><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 reveal-on-scroll delay-100">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80" alt="Access Control & Biometric Gate" class="portfolio-img">
+            <div class="portfolio-overlay">
+              <h4>Biometric &amp; Access Control Gate</h4>
+              <p>Category: Access Control &bull; Bharatpur</p>
+              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80" data-title="Biometric &amp; Access Control Gate" data-desc="Smart fingerprint and RFID card access control magnetic door installation."><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 reveal-on-scroll delay-200">
+          <div class="portfolio-item">
+            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80" alt="PoE Switch & Router Network" class="portfolio-img">
+            <div class="portfolio-overlay">
+              <h4>Gigabit Router &amp; PoE Switch Network</h4>
+              <p>Category: Networking &bull; Chitwan</p>
+              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80" data-title="Gigabit Router &amp; PoE Switch Network" data-desc="Structured networking with 24-Port PoE switches, Routers, and high-speed LAN cabling."><i class="bi bi-zoom-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-5">
+        <a href="portfolio.html" class="btn btn-custom-secondary">Explore Full Gallery <i class="bi bi-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Testimonials Section -->
+  <section class="py-5 bg-light">
+    <div class="container py-4">
+      <div class="text-center mb-5 reveal-on-scroll">
+        <span class="section-subtitle">TESTIMONIALS</span>
+        <h2 class="section-title">What Our Clients Say</h2>
+        <p class="section-description">Trusted by local businesses, banks, institutions, and shops throughout Chitwan, Nepal.</p>
+      </div>
+
+      <div class="row g-4">
+        
+        <div class="col-lg-4 col-md-6 reveal-on-scroll">
+          <div class="testimonial-card">
+            <i class="bi bi-quote testimonial-quote-icon"></i>
+            <p class="mb-4">"Germon IT Solution installed Wi-Fi CCTV cameras and a 16-channel DVR at our store in Ganesh Market. Their PoE switch networking and mobile view setup are top-notch!"</p>
+            <div class="testimonial-user">
+              <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80" alt="Client" class="testimonial-user-img">
+              <div>
+                <h4 class="h6 mb-0 text-dark">Ramesh Shrestha</h4>
+                <small class="text-muted">Business Owner, Narayangarh</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 reveal-on-scroll delay-100">
+          <div class="testimonial-card">
+            <i class="bi bi-quote testimonial-quote-icon"></i>
+            <p class="mb-4">"We bought biometric attendance machines, access control door gates, and fire extinguishers from Germon IT. Extremely professional installation!"</p>
+            <div class="testimonial-user">
+              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80" alt="Client" class="testimonial-user-img">
+              <div>
+                <h4 class="h6 mb-0 text-dark">Sunita Gurung</h4>
+                <small class="text-muted">Academic Coordinator, Bharatpur</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 reveal-on-scroll delay-200">
+          <div class="testimonial-card">
+            <i class="bi bi-quote testimonial-quote-icon"></i>
+            <p class="mb-4">"Their money counting machine and laptop chip-level repair service saved our business operations. Great emergency AMC support!"</p>
+            <div class="testimonial-user">
+              <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&q=80" alt="Client" class="testimonial-user-img">
+              <div>
+                <h4 class="h6 mb-0 text-dark">Bikash Adhikari</h4>
+                <small class="text-muted">IT Manager, Chitwan Enterprises</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Banner -->
+  <section class="py-5 position-relative text-white" style="background: linear-gradient(135deg, #F5000D 0%, #2B2E83 100%);">
+    <div class="container py-4 text-center">
+      <h2 class="text-white fw-bold mb-3">Need CCTV, Fire Safety, Attendance, or Laptop Repairs?</h2>
+      <p class="lead mb-4 text-white-50">Reach out to Germon IT Solution Pvt. Ltd. today for prompt, certified sales, installation, and AMC services in Narayangarh, Chitwan.</p>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="contact.html" class="btn btn-light btn-lg px-4 rounded-pill fw-bold text-danger">Get Free Quote</a>
+        <a href="tel:+9779855084949" class="btn btn-outline-light btn-lg px-4 rounded-pill fw-bold"><i class="bi bi-telephone-fill me-2"></i> Call +977-9855084949</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer class="footer-section">
+    <div class="container">
+      <div class="row g-4">
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <img src="Logo.jpeg" alt="Germon IT Solution Logo" class="footer-logo">
+            <div class="brand-text">
+              <span class="brand-name text-white">GERMON IT</span>
+              <span class="brand-subname text-info">SOLUTION PVT. LTD.</span>
+            </div>
+          </div>
+          <p class="text-muted mb-4">Premier IT &amp; Security company in Ganesh Market, Narayangarh, Chitwan, Nepal. Specialized in CCTV, Fire Extinguishers, Biometric Attendance, Wi-Fi Cameras, Printers, Money Counting Machines, Access Control Gates, Laptop/Computer Sales &amp; Repair, Routers, Switches, PoE Switches, and DVR/NVR Installation &amp; Maintenance.</p>
+          <div class="top-bar bg-transparent p-0">
+            <div class="social-icons">
+              <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+              <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+              <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-6">
+          <h4 class="footer-title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html"><i class="bi bi-chevron-right"></i> Home</a></li>
+            <li><a href="about.html"><i class="bi bi-chevron-right"></i> About Us</a></li>
+            <li><a href="services.html"><i class="bi bi-chevron-right"></i> Our Services</a></li>
+            <li><a href="portfolio.html"><i class="bi bi-chevron-right"></i> Portfolio</a></li>
+            <li><a href="contact.html"><i class="bi bi-chevron-right"></i> Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <h4 class="footer-title">Our Key Services</h4>
+          <ul class="footer-links">
+            <li><a href="services.html"><i class="bi bi-camera-video"></i> CCTV &amp; Wi-Fi Cameras</a></li>
+            <li><a href="services.html"><i class="bi bi-fire"></i> Fire Extinguishers &amp; Safety</a></li>
+            <li><a href="services.html"><i class="bi bi-fingerprint"></i> Biometric &amp; Access Control</a></li>
+            <li><a href="services.html"><i class="bi bi-laptop"></i> Laptop/Computer Sales &amp; Repair</a></li>
+            <li><a href="services.html"><i class="bi bi-router"></i> Routers, Switches &amp; PoE</a></li>
+            <li><a href="services.html"><i class="bi bi-hdd"></i> DVR/NVR Installation &amp; AMC</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <h4 class="footer-title">Contact Info</h4>
+          <div class="footer-contact-item">
+            <i class="bi bi-geo-alt-fill footer-contact-icon"></i>
+            <span>Ganesh Market, Narayangarh, Chitwan, Nepal</span>
+          </div>
+          <div class="footer-contact-item">
+            <i class="bi bi-telephone-fill footer-contact-icon"></i>
+            <span>+977-9855084949<br>+977-9866284949</span>
+          </div>
+          <div class="footer-contact-item">
+            <i class="bi bi-envelope-fill footer-contact-icon"></i>
+            <span>germonitchitwan@gmail.com</span>
+          </div>
+          <div class="footer-contact-item">
+            <i class="bi bi-clock-fill footer-contact-icon"></i>
+            <span>Sun - Fri: 9:00 AM - 6:00 PM</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom text-center">
+        <p class="mb-0">&copy; <script>document.write(new Date().getFullYear())</script> Germon IT Solution Pvt. Ltd. All Rights Reserved. Designed for Excellence in Chitwan, Nepal.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#" class="back-to-top" aria-label="Back to Top"><i class="bi bi-arrow-up-short fs-3"></i></a>
+
+  <!-- Portfolio Lightbox Preview Modal -->
+  <div class="modal fade" id="portfolioPreviewModal" tabindex="-1" aria-labelledby="portfolioModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content glass-card border-0">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold text-primary" id="portfolioModalTitle">Project Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center p-4">
+          <img src="" id="portfolioModalImage" class="img-fluid rounded-3 mb-3 shadow" alt="Project Zoom">
+          <p id="portfolioModalDesc" class="text-muted"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom Scripts -->
+  <script src="js/particles.js"></script>
+  <script src="js/counter.js"></script>
+  <script src="js/animation.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

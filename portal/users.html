@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Accounts &amp; 10-User Quota | Germon IT Solution</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body>
+
+  <!-- Navigation Bar Placeholder -->
+  <div id="portalNavPlaceholder"></div>
+
+  <div class="container-fluid px-3 px-lg-4 py-4">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+      <div>
+        <h2 class="fw-bold mb-1 text-dark"><i class="bi bi-people-fill text-primary me-2"></i>Team Accounts &amp; 10-User Enforcer</h2>
+        <p class="text-muted small mb-0">Role-based access control for Germon IT Super Admin, Office Staff, and Field Technicians.</p>
+      </div>
+
+      <div>
+        <button class="btn btn-primary fw-semibold" onclick="openAddUserModal()">
+          <i class="bi bi-person-plus-fill me-1"></i> Add Team Member
+        </button>
+      </div>
+    </div>
+
+    <!-- 10 User Quota Meter Card -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 p-4 bg-white">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+          <h5 class="fw-bold mb-0 text-dark">System Active License Slots</h5>
+          <small class="text-muted">Maximum allowed active accounts in Version 1.0 is strictly 10.</small>
+        </div>
+        <div>
+          <span class="fs-4 fw-bold text-primary" id="quotaCount">10</span> <span class="text-muted fs-6">/ 10 Active Slots</span>
+        </div>
+      <div class="progress" style="height: 12px;" id="quotaProgressBar">
+        <!-- Dynamically rendered -->
+      </div>
+      <div class="d-flex flex-wrap gap-4 mt-3 small text-muted" id="quotaLegend">
+        <!-- Dynamically rendered -->
+      </div>
+    </div>
+
+    <!-- Users Table Card -->
+    <div class="data-table-card">
+      <div class="data-table-header d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold mb-0 text-dark">Registered Team Members</h5>
+      </div>
+
+      <div class="table-responsive">
+        <table class="custom-table table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Full Name</th>
+              <th>System Role</th>
+              <th>Email / Login</th>
+              <th>Mobile Number</th>
+              <th>Specialities / Skills</th>
+              <th>Status</th>
+              <th class="text-end pe-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ADD USER MODAL -->
+  <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-primary text-white border-0 py-3">
+          <h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Create New Team Member</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="addUserForm">
+          <div class="modal-body p-4">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Full Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="newUserName" placeholder="e.g. Shyam Karki" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold small">Role <span class="text-danger">*</span></label>
+                <select class="form-select" id="newUserRole" required>
+                  <option value="technician">Field Technician</option>
+                  <option value="staff">Office Staff</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold small">Mobile Phone <span class="text-danger">*</span></label>
+                <input type="tel" class="form-control" id="newUserPhone" placeholder="98XXXXXXXX" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Email Address <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" id="newUserEmail" placeholder="Enter email address" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Password <span class="text-danger">*</span></label>
+                <input type="password" class="form-control" id="newUserPass" placeholder="Create account password" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Specialities (comma separated)</label>
+                <input type="text" class="form-control" id="newUserSkills" placeholder="e.g. CCTV, Fiber, Biometrics">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light border-0">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4 fw-bold">Add Account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT USER / ADMIN PROFILE MODAL -->
+  <div class="modal fade" id="editUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-primary text-white border-0 py-3">
+          <h5 class="modal-title fw-bold"><i class="bi bi-person-gear me-2"></i>Edit Account &amp; Password</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="editUserForm">
+          <input type="hidden" id="editUserId">
+          <div class="modal-body p-4">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Full Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="editUserName" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold small">Role</label>
+                <input type="text" class="form-control bg-light text-muted fw-bold text-uppercase" id="editUserRole" readonly>
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold small">Mobile Phone <span class="text-danger">*</span></label>
+                <input type="tel" class="form-control" id="editUserPhone" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Email Address (Login ID) <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" id="editUserEmail" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Password (Change Password)</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="editUserPass" placeholder="Leave empty to keep current password">
+                  <button class="btn btn-outline-secondary" type="button" onclick="toggleEditPassVisibility()">
+                    <i class="bi bi-eye" id="editPassEye"></i>
+                  </button>
+                </div>
+                <div class="form-text small text-muted">Enter a new password if you want to update it.</div>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Specialities / Responsibilities</label>
+                <input type="text" class="form-control" id="editUserSkills" placeholder="e.g. Super Admin, CCTV, Fiber">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light border-0">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4 fw-bold">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      renderUsers();
+    });
+
+    function renderUsers() {
+      const users = GermonStore.getUsers();
+      const activeUsers = users.filter(u => u.status === 'active');
+      const activeCount = activeUsers.length;
+      document.getElementById('quotaCount').textContent = activeCount;
+
+      const adminCount = activeUsers.filter(u => u.role === 'admin').length;
+      const staffCount = activeUsers.filter(u => u.role === 'staff').length;
+      const techCount = activeUsers.filter(u => u.role === 'technician').length;
+      const freeSlots = Math.max(0, 10 - activeCount);
+
+      // Render Dynamic Progress Bar
+      const progressBar = document.getElementById('quotaProgressBar');
+      progressBar.innerHTML = `
+        <div class="progress-bar bg-danger" role="progressbar" style="width: ${adminCount * 10}%;" title="${adminCount} Admin"></div>
+        <div class="progress-bar bg-primary" role="progressbar" style="width: ${staffCount * 10}%;" title="${staffCount} Office Staff"></div>
+        <div class="progress-bar bg-success" role="progressbar" style="width: ${techCount * 10}%;" title="${techCount} Technicians"></div>
+        <div class="progress-bar bg-light" role="progressbar" style="width: ${freeSlots * 10}%;" title="${freeSlots} Free Slots"></div>
+      `;
+
+      // Render Dynamic Legend
+      const legend = document.getElementById('quotaLegend');
+      legend.innerHTML = `
+        <div><i class="bi bi-circle-fill text-danger me-1"></i> ${adminCount} Admin (Sagar)</div>
+        <div><i class="bi bi-circle-fill text-primary me-1"></i> ${staffCount} Office Staff</div>
+        <div><i class="bi bi-circle-fill text-success me-1"></i> ${techCount} Technicians</div>
+        <div class="text-success fw-bold"><i class="bi bi-plus-circle me-1"></i> ${freeSlots} Available Slot${freeSlots === 1 ? '' : 's'}</div>
+      `;
+
+      const tbody = document.getElementById('usersTableBody');
+      tbody.innerHTML = '';
+
+      users.forEach(u => {
+        const isActive = u.status === 'active';
+        const isSuperAdmin = u.id === 'usr-01';
+
+        tbody.innerHTML += `
+          <tr>
+            <td><span class="font-monospace text-muted">${u.id}</span></td>
+            <td>
+              <div class="fw-bold text-dark">${escapeHtml(u.name)}</div>
+              ${isSuperAdmin ? '<span class="badge bg-danger bg-opacity-10 text-danger small">Master Account</span>' : ''}
+            </td>
+            <td>
+              <span class="user-role-badge role-${u.role}">${u.role}</span>
+            </td>
+            <td><span class="text-muted">${u.email}</span></td>
+            <td><strong>${u.phone}</strong></td>
+            <td>
+              <span class="small text-secondary">${u.specialities ? u.specialities.join(', ') : 'All Services'}</span>
+            </td>
+            <td>
+              ${isActive ? `
+                <span class="badge bg-success">Active</span>
+              ` : `
+                <span class="badge bg-secondary">Inactive</span>
+              `}
+            </td>
+            <td class="text-end pe-3">
+              <div class="d-inline-flex gap-1">
+                <button class="btn btn-sm btn-outline-primary" onclick="openEditUserModal('${u.id}')" title="Edit Profile & Password">
+                  <i class="bi bi-pencil-fill"></i> Edit
+                </button>
+                ${!isSuperAdmin ? `
+                  <button class="btn btn-sm ${isActive ? 'btn-outline-warning' : 'btn-outline-success'}" onclick="toggleStatus('${u.id}')">
+                    ${isActive ? '<i class="bi bi-pause-fill"></i> Deactivate' : '<i class="bi bi-play-fill"></i> Activate'}
+                  </button>
+                ` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function openEditUserModal(userId) {
+      const users = GermonStore.getUsers();
+      const u = users.find(user => user.id === userId);
+      if (!u) return;
+
+      document.getElementById('editUserId').value = u.id;
+      document.getElementById('editUserName').value = u.name;
+      document.getElementById('editUserRole').value = u.role;
+      document.getElementById('editUserPhone').value = u.phone;
+      document.getElementById('editUserEmail').value = u.email;
+      document.getElementById('editUserPass').value = '';
+      document.getElementById('editUserSkills').value = u.specialities ? u.specialities.join(', ') : '';
+
+      const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+      modal.show();
+    }
+
+    function toggleEditPassVisibility() {
+      const inp = document.getElementById('editUserPass');
+      const eye = document.getElementById('editPassEye');
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        eye.className = 'bi bi-eye-slash';
+      } else {
+        inp.type = 'password';
+        eye.className = 'bi bi-eye';
+      }
+    }
+
+    document.getElementById('editUserForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      try {
+        const userId = document.getElementById('editUserId').value;
+        const skillsVal = document.getElementById('editUserSkills').value;
+        const skillsArray = skillsVal ? skillsVal.split(',').map(s => s.trim()) : [];
+        const passVal = document.getElementById('editUserPass').value.trim();
+
+        const updateData = {
+          name: document.getElementById('editUserName').value.trim(),
+          phone: document.getElementById('editUserPhone').value.trim(),
+          email: document.getElementById('editUserEmail').value.trim(),
+          specialities: skillsArray
+        };
+
+        if (passVal) {
+          updateData.pass = passVal;
+        }
+
+        GermonStore.updateUser(userId, updateData);
+        bootstrap.Modal.getInstance(document.getElementById('editUserModal')).hide();
+        alert('User details and password updated successfully!');
+        location.reload();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    function openAddUserModal() {
+      const activeCount = GermonStore.getActiveUserCount();
+      if (activeCount >= 10) {
+        alert('Cannot add new user: Maximum 10 active users quota is currently full!\n\nTo add a new employee, please deactivate an inactive staff or technician account first.');
+        return;
+      }
+      const modal = new bootstrap.Modal(document.getElementById('addUserModal'));
+      modal.show();
+    }
+
+    function toggleStatus(userId) {
+      try {
+        const newStatus = GermonStore.toggleUserStatus(userId);
+        alert(`User status updated to: ${newStatus}`);
+        renderUsers();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    document.getElementById('addUserForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      try {
+        const skillsVal = document.getElementById('newUserSkills').value;
+        const skillsArray = skillsVal ? skillsVal.split(',').map(s => s.trim()) : [];
+
+        GermonStore.addUser({
+          name: document.getElementById('newUserName').value.trim(),
+          role: document.getElementById('newUserRole').value,
+          phone: document.getElementById('newUserPhone').value.trim(),
+          email: document.getElementById('newUserEmail').value.trim(),
+          pass: document.getElementById('newUserPass').value,
+          specialities: skillsArray,
+          status: 'active'
+        });
+
+        document.getElementById('addUserForm').reset();
+        bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
+        alert('New user successfully added to the 10-user quota!');
+        renderUsers();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

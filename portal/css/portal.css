@@ -1,0 +1,408 @@
+/* ==========================================================================
+   GERMON IT SOLUTION PVT. LTD. - Office Work & Technician Portal Styles
+   ========================================================================== */
+
+:root {
+  --germon-blue: #2B2E83;
+  --germon-blue-dark: #1E215C;
+  --germon-blue-light: #3D42B0;
+  --germon-sky: #18A8E8;
+  --germon-red: #F5000D;
+  --germon-dark: #0F172A;
+  --germon-slate: #1E293B;
+  --germon-gray: #64748B;
+  --germon-light: #F8FAFC;
+  --germon-card-bg: #FFFFFF;
+  --germon-border: #E2E8F0;
+  
+  --status-pending: #F59E0B;
+  --status-assigned: #3B82F6;
+  --status-progress: #EC4899;
+  --status-hold: #8B5CF6;
+  --status-completed: #10B981;
+  --status-cancelled: #EF4444;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  background-color: var(--germon-light);
+  color: #1E293B;
+  min-height: 100vh;
+}
+
+/* Navbar */
+.portal-navbar {
+  background: linear-gradient(135deg, var(--germon-slate) 0%, var(--germon-blue) 100%);
+  border-bottom: 2px solid rgba(24, 168, 232, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.portal-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.portal-logo-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.portal-brand-text {
+  line-height: 1.1;
+}
+
+.portal-brand-title {
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+.portal-brand-subtitle {
+  color: var(--germon-sky);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: block;
+}
+
+.portal-nav-link {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+
+.portal-nav-link:hover,
+.portal-nav-link.active {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+.portal-nav-link.active {
+  border-bottom: 2px solid var(--germon-sky);
+}
+
+/* User Badge */
+.user-role-badge {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.role-admin {
+  background-color: #EF4444;
+  color: #FFF;
+}
+
+.role-staff {
+  background-color: #3B82F6;
+  color: #FFF;
+}
+
+.role-technician {
+  background-color: #10B981;
+  color: #FFF;
+}
+
+/* Metric Cards */
+.stat-card {
+  background: #FFFFFF;
+  border-radius: 14px;
+  padding: 1.25rem;
+  border: 1px solid var(--germon-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(43, 46, 131, 0.08);
+}
+
+.stat-card-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.stat-card.accent-primary .stat-card-accent { background-color: var(--germon-blue); }
+.stat-card.accent-warning .stat-card-accent { background-color: var(--status-pending); }
+.stat-card.accent-info .stat-card-accent { background-color: var(--status-assigned); }
+.stat-card.accent-purple .stat-card-accent { background-color: var(--status-hold); }
+.stat-card.accent-success .stat-card-accent { background-color: var(--status-completed); }
+.stat-card.accent-danger .stat-card-accent { background-color: var(--germon-red); }
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--germon-gray);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+/* Status Badges */
+.badge-status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-pending-badge { background: #FEF3C7; color: #B45309; }
+.status-assigned-badge { background: #DBEAFE; color: #1D4ED8; }
+.status-in_progress-badge { background: #FCE7F3; color: #BE185D; }
+.status-on_hold-badge { background: #EDE9FE; color: #6D28D9; }
+.status-completed-badge { background: #D1FAE5; color: #047857; }
+.status-cancelled-badge { background: #FEE2E2; color: #B91C1C; }
+
+/* Priority Badges */
+.badge-priority-low { background: #F1F5F9; color: #475569; }
+.badge-priority-medium { background: #E0F2FE; color: #0369A1; }
+.badge-priority-high { background: #FFEDD5; color: #C2410C; }
+.badge-priority-emergency { background: #FEE2E2; color: #DC2626; font-weight: 800; animation: pulse 1.5s infinite; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Data Table Container */
+.data-table-card {
+  background: #FFFFFF;
+  border-radius: 14px;
+  border: 1px solid var(--germon-border);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.data-table-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--germon-border);
+  background-color: #FAFAFC;
+}
+
+.custom-table {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.custom-table th {
+  background-color: #F8FAFC;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--germon-border);
+}
+
+.custom-table td {
+  padding: 13px 16px;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--germon-border);
+  font-size: 0.9rem;
+}
+
+.custom-table tr:hover td {
+  background-color: #F8FAFC;
+}
+
+/* Job Action Buttons */
+.btn-action-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 0.9rem;
+  border: 1px solid var(--germon-border);
+  background: #FFFFFF;
+  color: #475569;
+  transition: all 0.15s ease;
+}
+
+.btn-action-icon:hover {
+  background-color: var(--germon-blue);
+  color: #FFF;
+  border-color: var(--germon-blue);
+}
+
+.btn-action-icon.whatsapp:hover {
+  background-color: #25D366;
+  border-color: #25D366;
+  color: #FFF;
+}
+
+.btn-action-icon.phone:hover {
+  background-color: #0284C7;
+  border-color: #0284C7;
+  color: #FFF;
+}
+
+.btn-action-icon.map:hover {
+  background-color: #EA4335;
+  border-color: #EA4335;
+  color: #FFF;
+}
+
+/* Technician View Specifics */
+.tech-job-card {
+  background: #FFFFFF;
+  border-radius: 14px;
+  border: 1px solid var(--germon-border);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.tech-job-card:active {
+  transform: scale(0.99);
+}
+
+.tech-job-header {
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #1E293B 0%, #2B2E83 100%);
+  color: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tech-job-body {
+  padding: 1.25rem;
+}
+
+.tech-action-btn {
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Digital Signature Canvas */
+.signature-pad-wrapper {
+  background: #FFFFFF;
+  border: 2px dashed #CBD5E1;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.signature-canvas {
+  width: 100%;
+  height: 180px;
+  background-color: #FCFDFE;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.signature-clear-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 0.75rem;
+}
+
+/* Photo Upload Preview */
+.photo-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.photo-preview-box {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  border: 1px solid var(--germon-border);
+  background: #F1F5F9;
+}
+
+.photo-preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-preview-tag {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #FFF;
+}
+
+/* Printable Job Receipt */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printableJobCard, #printableJobCard * {
+    visibility: visible;
+  }
+  #printableJobCard {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    background: #FFF;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
