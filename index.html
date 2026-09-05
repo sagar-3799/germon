@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -56,12 +56,15 @@
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
       <div class="container">
         <a class="navbar-brand navbar-brand-wrapper" href="index.html">
-          <img src="logo.jpeg" alt="Germon IT Solution Logo" class="navbar-brand-logo">
-          <div class="brand-text">
-            <span class="brand-name">GERMON IT</span>
-            <span class="brand-subname">SOLUTION PVT. LTD.</span>
-          </div>
+          <img src="images/logo.jpeg" alt="Germon IT Solution Logo" class="navbar-brand-logo">
         </a>
+
+        <!-- Mobile Staff Portal Icon (Left side of hamburger toggler) -->
+        <div class="d-flex align-items-center ms-auto me-2 d-lg-none">
+          <a href="portal/index.html" class="btn btn-sm btn-staff-portal rounded-circle p-0 d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px;" title="Staff Portal" aria-label="Staff Portal">
+            <i class="bi bi-person-badge-fill fs-6"></i>
+          </a>
+        </div>
 
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
           <span class="bi bi-list fs-1 text-primary"></span>
@@ -84,8 +87,10 @@
             <li class="nav-item">
               <a class="nav-link" href="contact.html">Contact</a>
             </li>
-            <li class="nav-item ms-lg-2">
-              <a href="portal/index.html" class="nav-link text-warning fw-semibold"><i class="bi bi-shield-lock-fill me-1"></i>Staff Portal</a>
+            <li class="nav-item ms-lg-2 d-none d-lg-block">
+              <a href="portal/index.html" class="btn btn-sm btn-staff-portal rounded-circle p-0 d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px;" title="Staff Portal" aria-label="Staff Portal">
+                <i class="bi bi-person-badge-fill fs-6"></i>
+              </a>
             </li>
             <li class="nav-item ms-lg-2">
               <a href="contact.html" class="btn btn-custom-primary">Get a Service <i class="bi bi-arrow-right-short fs-5"></i></a>
@@ -244,7 +249,7 @@
 
         <!-- Slide 3 -->
         <div class="carousel-item">
-          <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=1280&q=65');">
+          <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=1280&q=65');">
             <div class="container">
               <div class="row align-items-center">
                 <div class="col-lg-6 col-xl-7">
@@ -461,7 +466,7 @@
         <div class="col-lg-4 col-md-6 reveal-on-scroll delay-100">
           <div class="service-card">
             <div class="service-img-wrapper">
-              <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=65" alt="DVR NVR Installation" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1597852074816-d933c7d2b988?auto=format&fit=crop&w=600&q=65" alt="DVR NVR Installation" loading="lazy">
               <div class="service-icon-badge"><i class="bi bi-hdd-fill"></i></div>
             </div>
             <div class="service-content">
@@ -476,7 +481,7 @@
         <div class="col-lg-4 col-md-6 reveal-on-scroll delay-200">
           <div class="service-card">
             <div class="service-img-wrapper">
-              <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=600&q=65" alt="Fire Extinguisher" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=600&q=65" alt="Fire Extinguisher" loading="lazy">
               <div class="service-icon-badge"><i class="bi bi-fire"></i></div>
             </div>
             <div class="service-content">
@@ -506,7 +511,7 @@
         <div class="col-lg-4 col-md-6 reveal-on-scroll delay-100">
           <div class="service-card">
             <div class="service-img-wrapper">
-              <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=65" alt="Access Control Gate" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=65" alt="Access Control Gate" loading="lazy">
               <div class="service-icon-badge"><i class="bi bi-door-closed-fill"></i></div>
             </div>
             <div class="service-content">
@@ -521,7 +526,7 @@
         <div class="col-lg-4 col-md-6 reveal-on-scroll delay-200">
           <div class="service-card">
             <div class="service-img-wrapper">
-              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=65" alt="Money Counting Machine" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1580519542036-c47de6196ba5?auto=format&fit=crop&w=600&q=65" alt="Money Counting Machine" loading="lazy">
               <div class="service-icon-badge"><i class="bi bi-cash-stack"></i></div>
             </div>
             <div class="service-content">
@@ -585,6 +590,46 @@
     </div>
   </section>
 
+  <!-- Animated Counter Statistics Section -->
+  <section class="counter-section">
+    <div class="container">
+      <div class="row g-4">
+        
+        <div class="col-lg-3 col-6">
+          <div class="counter-box">
+            <div class="counter-icon"><i class="bi bi-award-fill"></i></div>
+            <div class="counter-number" data-target="3" data-suffix="+">0</div>
+            <div class="counter-title">Years Experience (Est. 2079 BS)</div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+          <div class="counter-box">
+            <div class="counter-icon"><i class="bi bi-emoji-smile-fill"></i></div>
+            <div class="counter-number" data-target="500" data-suffix="+">0</div>
+            <div class="counter-title">Happy Clients</div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+          <div class="counter-box">
+            <div class="counter-icon"><i class="bi bi-check-circle-fill"></i></div>
+            <div class="counter-number" data-target="1200" data-suffix="+">0</div>
+            <div class="counter-title">Projects Completed</div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+          <div class="counter-box">
+            <div class="counter-icon"><i class="bi bi-clock-fill"></i></div>
+            <div class="counter-time">9:00 AM - 7:00 PM</div>
+            <div class="counter-title">Support Hours</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
   <!-- Portfolio Highlights Preview -->
   <section class="py-5">
@@ -597,35 +642,38 @@
 
       <div class="row g-4">
         
+        <!-- Card 1: 70 Cameras at Maulakalika Hospital -->
         <div class="col-lg-4 col-md-6 reveal-on-scroll">
           <div class="portfolio-item">
-            <img src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=600&q=65" alt="Bank CCTV & DVR Setup" class="portfolio-img" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=600&q=65" alt="Maulakalika Hospital 70 IP CCTV Cameras" class="portfolio-img" loading="lazy">
             <div class="portfolio-overlay">
-              <h4>HD CCTV &amp; DVR Installation</h4>
-              <p>Category: CCTV Security &bull; Narayangarh</p>
-              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=600&q=65" data-title="HD CCTV &amp; DVR Installation" data-desc="Complete 16-Channel HD IP CCTV camera and DVR storage setup for commercial building."><i class="bi bi-zoom-in"></i></a>
+              <h4>Maulakalika Hospital: 70 IP CCTV Setup</h4>
+              <p>Ongoing Project &bull; Maulakalika Hospital, Bharatpur</p>
+              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=600&q=65" data-title="Maulakalika Hospital: 70 IP CCTV Setup" data-desc="Turnkey installation of 70 HD IP CCTV cameras, NVR storage arrays, and centralized surveillance monitoring for Maulakalika Hospital."><i class="bi bi-zoom-in"></i></a>
             </div>
           </div>
         </div>
 
+        <!-- Card 2: 70 Intercom Telephones at Maulakalika Hospital -->
         <div class="col-lg-4 col-md-6 reveal-on-scroll delay-100">
           <div class="portfolio-item">
-            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=65" alt="Access Control & Biometric Gate" class="portfolio-img" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=65" alt="Maulakalika Hospital 70 Intercom Telephones" class="portfolio-img" loading="lazy">
             <div class="portfolio-overlay">
-              <h4>Biometric &amp; Access Control Gate</h4>
-              <p>Category: Access Control &bull; Bharatpur</p>
-              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=65" data-title="Biometric &amp; Access Control Gate" data-desc="Smart fingerprint and RFID card access control magnetic door installation."><i class="bi bi-zoom-in"></i></a>
+              <h4>Maulakalika Hospital: 70 Intercom Telephones</h4>
+              <p>Ongoing Project &bull; Maulakalika Hospital, Bharatpur</p>
+              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=65" data-title="Maulakalika Hospital: 70 Intercom Telephones" data-desc="Complete wiring &amp; deployment of 70 intercom telephones and IP PBX extension communication network across all hospital departments."><i class="bi bi-zoom-in"></i></a>
             </div>
           </div>
         </div>
 
+        <!-- Card 3: Wi-Fi Access Points & PoE Switches at Maulakalika Hospital -->
         <div class="col-lg-4 col-md-6 reveal-on-scroll delay-200">
           <div class="portfolio-item">
-            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=65" alt="PoE Switch & Router Network" class="portfolio-img" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=600&q=65" alt="Maulakalika Hospital Enterprise Wi-Fi AP & PoE Switches" class="portfolio-img" loading="lazy">
             <div class="portfolio-overlay">
-              <h4>Gigabit Router &amp; PoE Switch Network</h4>
-              <p>Category: Networking &bull; Chitwan</p>
-              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=65" data-title="Gigabit Router &amp; PoE Switch Network" data-desc="Structured networking with 24-Port PoE switches, Routers, and high-speed LAN cabling."><i class="bi bi-zoom-in"></i></a>
+              <h4>Maulakalika Hospital: Wi-Fi AP &amp; PoE Network</h4>
+              <p>Ongoing Project &bull; Maulakalika Hospital, Bharatpur</p>
+              <a href="#" class="portfolio-zoom-btn" data-img="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=600&q=65" data-title="Maulakalika Hospital: Wi-Fi AP &amp; PoE Network" data-desc="High-density Wi-Fi Access Points (AP), 24-Port PoE switches, and structured LAN cabling infrastructure at Maulakalika Hospital."><i class="bi bi-zoom-in"></i></a>
             </div>
           </div>
         </div>
@@ -638,6 +686,192 @@
     </div>
   </section>
 
+  <!-- Continuous Smooth Right-to-Left Team Ticker Section -->
+  <section class="py-5 bg-light overflow-hidden">
+    <div class="container py-4">
+      <div class="text-center mb-4 reveal-on-scroll">
+        <span class="section-subtitle">OUR EXPERT TEAM</span>
+        <h2 class="section-title">Meet Our Professional Team</h2>
+        <p class="section-description mb-3">Dedicated specialists, engineers, and technicians providing 3+ years of IT &amp; security excellence across Chitwan.</p>
+        <span id="teamTickerStatus" class="badge bg-primary bg-opacity-10 text-primary border border-primary px-3 py-1.5 rounded-pill">
+          <i class="bi bi-arrow-repeat me-1"></i> Continuous Scrolling (Click any card to pause for 5s)
+        </span>
+      </div>
+
+      <!-- Smooth Right to Left Marquee Track -->
+      <div class="team-ticker-wrapper">
+        <div class="team-ticker-track" id="teamTickerTrack">
+          
+          <!-- SET 1 (8 Members) -->
+          <!-- 1. Subash Giri -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/subash-giri.jpeg" alt="Subash Giri" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-danger shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Subash Giri</h3>
+              <span class="badge bg-danger px-3 py-1 rounded-pill mb-2">Managing Director</span>
+              <p class="text-muted small mb-0">Executive leadership in IT sales, CCTV surveillance, hardware imports, and client relations since 2079 BS.</p>
+            </div>
+          </div>
+
+          <!-- 2. Bishal Panday -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/bishal panday.jpeg" alt="Bishal Panday" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-primary shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Bishal Panday</h3>
+              <span class="badge bg-primary px-3 py-1 rounded-pill mb-2">Senior CCTV &amp; Network Eng</span>
+              <p class="text-muted small mb-0">Specialized in HD IP CCTV, Wi-Fi Smart Cameras, DVR/NVR configuration, PoE Switches &amp; Access Control.</p>
+            </div>
+          </div>
+
+          <!-- 3. Ashish Khanal -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/ashish-khanal.jpeg" alt="Ashish Khanal" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-info shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Ashish Khanal</h3>
+              <span class="badge bg-info text-dark px-3 py-1 rounded-pill mb-2">Chip-Level Repair Spec</span>
+              <p class="text-muted small mb-0">Expert in laptop motherboard micro-soldering, PC assembly, printer refilling &amp; money counting machines.</p>
+            </div>
+          </div>
+
+          <!-- 4. Abhaya Chaudhary -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/abhaya-chaudhary.jpeg" alt="Abhaya Chaudhary" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-warning shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Abhaya Chaudhary</h3>
+              <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-2">Field Installation Lead</span>
+              <p class="text-muted small mb-0">Field execution specialist for hospital, bank &amp; commercial site CCTV cabling, mounting &amp; hardware alignment.</p>
+            </div>
+          </div>
+
+          <!-- 5. Roshan Chaudhary -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/roshan-chaudhary.jpeg" alt="Roshan Chaudhary" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-success shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Roshan Chaudhary</h3>
+              <span class="badge bg-success px-3 py-1 rounded-pill mb-2">Security &amp; Biometrics Eng</span>
+              <p class="text-muted small mb-0">Specialized in Biometric Attendance, Access Control Gate Systems, Intercom Telephones &amp; Fire Safety.</p>
+            </div>
+          </div>
+
+          <!-- 6. Pawan Basnet -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/pawan basnet.jpeg" alt="Pawan Basnet" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-secondary shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Pawan Basnet</h3>
+              <span class="badge bg-secondary px-3 py-1 rounded-pill mb-2">IT Hardware &amp; Network Tech</span>
+              <p class="text-muted small mb-0">Dedicated support specialist for Dual-Band routers, PoE switches, fiber splicing &amp; rapid AMC maintenance.</p>
+            </div>
+          </div>
+
+          <!-- 7. Arjune Simkha -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/arjune-simkhada.jpeg" alt="Arjune Simkha" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-dark shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Arjune Simkha</h3>
+              <span class="badge bg-dark px-3 py-1 rounded-pill mb-2">Senior IT Operations Spec</span>
+              <p class="text-muted small mb-0">Senior consultant for large-scale enterprise IT solutions, client technical advisory &amp; system architecture.</p>
+            </div>
+          </div>
+
+          <!-- 8. Sagar Chapagain -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/sagar-chapagain.jpg" alt="Sagar Chapagain" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-primary shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Sagar Chapagain</h3>
+              <span class="badge bg-primary px-3 py-1 rounded-pill mb-2">IT Engineer &amp; Developer</span>
+              <p class="text-muted small mb-0">Specialized in web development, software engineering, portal architecture, coding &amp; IT systems integration.</p>
+            </div>
+          </div>
+
+          <!-- SET 2 (DUPLICATED FOR SEAMLESS INFINITE LOOP) -->
+          <!-- 1. Subash Giri -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/subash-giri.jpeg" alt="Subash Giri" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-danger shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Subash Giri</h3>
+              <span class="badge bg-danger px-3 py-1 rounded-pill mb-2">Managing Director</span>
+              <p class="text-muted small mb-0">Executive leadership in IT sales, CCTV surveillance, hardware imports, and client relations since 2079 BS.</p>
+            </div>
+          </div>
+
+          <!-- 2. Bishal Panday -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/bishal panday.jpeg" alt="Bishal Panday" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-primary shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Bishal Panday</h3>
+              <span class="badge bg-primary px-3 py-1 rounded-pill mb-2">Senior CCTV &amp; Network Eng</span>
+              <p class="text-muted small mb-0">Specialized in HD IP CCTV, Wi-Fi Smart Cameras, DVR/NVR configuration, PoE Switches &amp; Access Control.</p>
+            </div>
+          </div>
+
+          <!-- 3. Ashish Khanal -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/ashish-khanal.jpeg" alt="Ashish Khanal" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-info shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Ashish Khanal</h3>
+              <span class="badge bg-info text-dark px-3 py-1 rounded-pill mb-2">Chip-Level Repair Spec</span>
+              <p class="text-muted small mb-0">Expert in laptop motherboard micro-soldering, PC assembly, printer refilling &amp; money counting machines.</p>
+            </div>
+          </div>
+
+          <!-- 4. Abhaya Chaudhary -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/abhaya-chaudhary.jpeg" alt="Abhaya Chaudhary" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-warning shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Abhaya Chaudhary</h3>
+              <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-2">Field Installation Lead</span>
+              <p class="text-muted small mb-0">Field execution specialist for hospital, bank &amp; commercial site CCTV cabling, mounting &amp; hardware alignment.</p>
+            </div>
+          </div>
+
+          <!-- 5. Roshan Chaudhary -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/roshan-chaudhary.jpeg" alt="Roshan Chaudhary" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-success shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Roshan Chaudhary</h3>
+              <span class="badge bg-success px-3 py-1 rounded-pill mb-2">Security &amp; Biometrics Eng</span>
+              <p class="text-muted small mb-0">Specialized in Biometric Attendance, Access Control Gate Systems, Intercom Telephones &amp; Fire Safety.</p>
+            </div>
+          </div>
+
+          <!-- 6. Pawan Basnet -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/pawan basnet.jpeg" alt="Pawan Basnet" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-secondary shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Pawan Basnet</h3>
+              <span class="badge bg-secondary px-3 py-1 rounded-pill mb-2">IT Hardware &amp; Network Tech</span>
+              <p class="text-muted small mb-0">Dedicated support specialist for Dual-Band routers, PoE switches, fiber splicing &amp; rapid AMC maintenance.</p>
+            </div>
+          </div>
+
+          <!-- 7. Arjune Simkha -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/arjune-simkhada.jpeg" alt="Arjune Simkha" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-dark shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Arjune Simkha</h3>
+              <span class="badge bg-dark px-3 py-1 rounded-pill mb-2">Senior IT Operations Spec</span>
+              <p class="text-muted small mb-0">Senior consultant for large-scale enterprise IT solutions, client technical advisory &amp; system architecture.</p>
+            </div>
+          </div>
+
+          <!-- 8. Sagar Chapagain -->
+          <div class="team-card-ticker">
+            <div class="glass-card text-center p-4 h-100 border-0 shadow-sm rounded-4 bg-white">
+              <img src="images/sagar-chapagain.jpg" alt="Sagar Chapagain" class="img-fluid rounded-circle mx-auto mb-3 border border-3 border-primary shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" loading="lazy">
+              <h3 class="h5 fw-bold text-dark mb-1 font-heading">Sagar Chapagain</h3>
+              <span class="badge bg-primary px-3 py-1 rounded-pill mb-2">IT Engineer &amp; Developer</span>
+              <p class="text-muted small mb-0">Specialized in web development, software engineering, portal architecture, coding &amp; IT systems integration.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+    </div>
+  </section>
 
   <!-- Call to Action Banner -->
   <section class="py-5 position-relative text-white" style="background: linear-gradient(135deg, #F5000D 0%, #2B2E83 100%);">
@@ -651,78 +885,64 @@
     </div>
   </section>
 
-  <!-- Footer Section -->
-  <footer class="footer-section">
-    <div class="container">
-      <div class="row g-4">
+  <!-- Compact Animated Footer Section -->
+  <footer class="footer-compact">
+    <div class="footer-top-border"></div>
+    <div class="container py-3">
+      <div class="row g-4 align-items-center">
         
-        <div class="col-lg-4 col-md-6">
-          <div class="d-flex align-items-center gap-2 mb-3">
-            <img src="logo.jpeg" alt="Germon IT Solution Logo" class="footer-logo">
-            <div class="brand-text">
-              <span class="brand-name text-white">GERMON IT</span>
-              <span class="brand-subname text-info">SOLUTION PVT. LTD.</span>
+        <!-- Brand & Short Note -->
+        <div class="col-lg-4 col-md-6 text-center text-lg-start">
+          <div class="d-inline-flex align-items-center gap-2 mb-2">
+            <img src="logo.jpeg" alt="Germon IT Logo" class="footer-logo-sm">
+          </div>
+          <p class="text-white-50 small mb-3">Premier IT &amp; Security Solutions in Narayangarh, Chitwan. Est. 2079 BS.</p>
+          <div class="footer-social-animated justify-content-center justify-content-lg-start">
+            <a href="https://www.facebook.com/share/1KWz8XonRF/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-btn fb"><i class="bi bi-facebook"></i></a>
+            <a href="https://wa.me/9779855084949" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="social-btn wa"><i class="bi bi-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- Compact Navigation Links -->
+        <div class="col-lg-4 col-md-6 text-center">
+          <h5 class="text-white fw-bold mb-2.5 fs-6 font-heading">Quick Navigation</h5>
+          <div class="d-flex flex-wrap justify-content-center gap-3 footer-nav-compact mb-2">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="services.html">Services</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="contact.html">Contact Us</a>
+          </div>
+          <div class="footer-tag-cloud mt-2 d-flex flex-wrap justify-content-center gap-1.5">
+            <span class="badge bg-secondary bg-opacity-20 text-white-50">CCTV &amp; Wi-Fi</span>
+            <span class="badge bg-secondary bg-opacity-20 text-white-50">Fire Safety</span>
+            <span class="badge bg-secondary bg-opacity-20 text-white-50">Biometrics</span>
+            <span class="badge bg-secondary bg-opacity-20 text-white-50">PC Repair</span>
+          </div>
+        </div>
+
+        <!-- Quick Contact Info -->
+        <div class="col-lg-4 col-md-12 text-center text-lg-end">
+          <h5 class="text-white fw-bold mb-2.5 fs-6 font-heading">Direct Contact</h5>
+          <div class="footer-contact-compact d-flex flex-column align-items-center align-items-lg-end gap-1 small text-white-50">
+            <div><i class="bi bi-geo-alt-fill text-danger me-1.5"></i> Ganesh Market, Narayangarh, Chitwan</div>
+            <div>
+              <a href="tel:+9779855084949" class="text-white text-decoration-none fw-semibold">
+                <i class="bi bi-telephone-fill text-primary me-1.5 animated-pulse-icon"></i> +977-9855084949 / 9866284949
+              </a>
             </div>
-          </div>
-          <p class="text-muted mb-4">Premier IT &amp; Security company in Ganesh Market, Narayangarh, Chitwan, Nepal. Specialized in CCTV, Fire Extinguishers, Biometric Attendance, Wi-Fi Cameras, Printers, Money Counting Machines, Access Control Gates, Laptop/Computer Sales &amp; Repair, Routers, Switches, PoE Switches, and DVR/NVR Installation &amp; Maintenance.</p>
-          <div class="top-bar bg-transparent p-0">
-            <div class="social-icons">
-              <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-              <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
-              <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-              <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-md-6">
-          <h4 class="footer-title">Quick Links</h4>
-          <ul class="footer-links">
-            <li><a href="index.html"><i class="bi bi-chevron-right"></i> Home</a></li>
-            <li><a href="about.html"><i class="bi bi-chevron-right"></i> About Us</a></li>
-            <li><a href="services.html"><i class="bi bi-chevron-right"></i> Our Services</a></li>
-            <li><a href="portfolio.html"><i class="bi bi-chevron-right"></i> Portfolio</a></li>
-            <li><a href="contact.html"><i class="bi bi-chevron-right"></i> Contact Us</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-          <h4 class="footer-title">Our Key Services</h4>
-          <ul class="footer-links">
-            <li><a href="services.html"><i class="bi bi-camera-video"></i> CCTV &amp; Wi-Fi Cameras</a></li>
-            <li><a href="services.html"><i class="bi bi-fire"></i> Fire Extinguishers &amp; Safety</a></li>
-            <li><a href="services.html"><i class="bi bi-fingerprint"></i> Biometric &amp; Access Control</a></li>
-            <li><a href="services.html"><i class="bi bi-laptop"></i> Laptop/Computer Sales &amp; Repair</a></li>
-            <li><a href="services.html"><i class="bi bi-router"></i> Routers, Switches &amp; PoE</a></li>
-            <li><a href="services.html"><i class="bi bi-hdd"></i> DVR/NVR Installation &amp; AMC</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-          <h4 class="footer-title">Contact Info</h4>
-          <div class="footer-contact-item">
-            <i class="bi bi-geo-alt-fill footer-contact-icon"></i>
-            <span>Ganesh Market, Narayangarh, Chitwan, Nepal</span>
-          </div>
-          <div class="footer-contact-item">
-            <i class="bi bi-telephone-fill footer-contact-icon"></i>
-            <span>+977-9855084949<br>+977-9866284949</span>
-          </div>
-          <div class="footer-contact-item">
-            <i class="bi bi-envelope-fill footer-contact-icon"></i>
-            <span>germonitchitwan@gmail.com</span>
-          </div>
-          <div class="footer-contact-item">
-            <i class="bi bi-clock-fill footer-contact-icon"></i>
-            <span>Sun - Fri: 9:00 AM - 6:00 PM</span>
+            <div><i class="bi bi-clock-fill text-warning me-1.5"></i> Sun - Fri: 9:00 AM - 7:00 PM</div>
           </div>
         </div>
 
       </div>
 
-      <div class="footer-bottom text-center">
-        <p class="mb-0">&copy; <script>document.write(new Date().getFullYear())</script> Germon IT Solution Pvt. Ltd. All Rights Reserved. Designed for Excellence in Chitwan, Nepal.</p>
+      <!-- Copyright Bar -->
+      <div class="footer-bottom-compact mt-3 pt-3 text-center text-white-50 small border-top border-white border-opacity-10 d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>&copy; <script>document.write(new Date().getFullYear())</script> Germon IT Solution Pvt. Ltd. All rights reserved.</div>
+        <div class="text-white-50">Ganesh Market, Narayangarh, Chitwan, Nepal</div>
       </div>
+
     </div>
   </footer>
 

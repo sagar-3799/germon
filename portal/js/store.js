@@ -250,8 +250,8 @@ const GermonStore = (function () {
     const db = getDB();
     const activeCount = (db.users || []).filter(u => u.status === 'active').length;
 
-    if (activeCount >= 10 && userData.status === 'active') {
-      throw new Error('Maximum 10 active users allowed in the system! Please deactivate an unused staff/technician account first.');
+    if (activeCount >= 15 && userData.status === 'active') {
+      throw new Error('Maximum 15 active users allowed in the system! (5 Admins + 10 Staff/Technicians). Please deactivate an unused account first.');
     }
 
     const newId = 'usr-' + Date.now().toString(36).slice(-6);
@@ -261,6 +261,7 @@ const GermonStore = (function () {
       role: userData.role || 'technician',
       email: userData.email,
       phone: userData.phone,
+      photoUrl: userData.photoUrl || '',
       status: userData.status || 'active',
       pass: userData.pass || 'germon123',
       specialities: userData.specialities || []
@@ -283,8 +284,8 @@ const GermonStore = (function () {
       u.status = 'inactive';
     } else {
       const activeCount = db.users.filter(user => user.status === 'active').length;
-      if (activeCount >= 10) {
-        throw new Error('Cannot activate user! Maximum 10 active users limit reached.');
+      if (activeCount >= 15) {
+        throw new Error('Cannot activate user! Maximum 15 active users limit reached.');
       }
       u.status = 'active';
     }
@@ -304,6 +305,7 @@ const GermonStore = (function () {
     if (updatedData.phone) u.phone = updatedData.phone.trim();
     if (updatedData.pass) u.pass = updatedData.pass.trim();
     if (updatedData.specialities) u.specialities = updatedData.specialities;
+    if (updatedData.photoUrl !== undefined) u.photoUrl = updatedData.photoUrl;
 
     saveDB(db);
     syncToFirestore('users', u.id, u);
@@ -324,18 +326,20 @@ const GermonStore = (function () {
 
     const currentUser = getCurrentUser();
 
-    if (currentUser && currentUser.role !== 'admin') {
-      const cId = currentUser.id;
-      const cName = (currentUser.name || '').toLowerCase();
-
-      jobs = jobs.filter(j => {
-        const isUnassigned = !j.assignedTechId || j.assignedTechId === '' || j.assignedTechName === 'Unassigned';
-        const isAssignedToMe = j.assignedTechId === cId || (j.assignedTechName && j.assignedTechName.toLowerCase() === cName);
-        return isUnassigned || isAssignedToMe;
-      });
-    }
-
     if (filter) {
+      if (filter.myJobsOnly && currentUser) {
+        const cId = currentUser.id;
+        const cName = (currentUser.name || '').toLowerCase();
+        jobs = jobs.filter(j => 
+          j.assignedTechId === cId || (j.assignedTechName && j.assignedTechName.toLowerCase() === cName)
+        );
+      }
+      if (filter.hideCompleted) {
+        jobs = jobs.filter(j => j.status !== 'completed' && j.status !== 'cancelled');
+      }
+      if (filter.completedOnly) {
+        jobs = jobs.filter(j => j.status === 'completed');
+      }
       if (filter.status && filter.status !== 'all') {
         jobs = jobs.filter(j => j.status === filter.status);
       }
@@ -343,10 +347,9 @@ const GermonStore = (function () {
         if (filter.techId === 'unassigned') {
           jobs = jobs.filter(j => !j.assignedTechId || j.assignedTechId === '' || j.assignedTechName === 'Unassigned');
         } else {
-          const matchName = currentUser && currentUser.id === filter.techId ? currentUser.name.toLowerCase() : null;
           jobs = jobs.filter(j => 
             j.assignedTechId === filter.techId ||
-            (matchName && j.assignedTechName && j.assignedTechName.toLowerCase() === matchName)
+            (j.assignedTechName && j.assignedTechName.toLowerCase().includes(filter.techId.toLowerCase()))
           );
         }
       }
@@ -364,6 +367,30 @@ const GermonStore = (function () {
     return jobs;
   }
 
+  function selfClaimAndEnRoute(jobId) {
+    const currentUser = getCurrentUser();
+    if (!currentUser) throw new Error('Not logged in');
+
+    const db = getDB();
+    const job = (db.jobs || []).find(j => j.id === jobId);
+    if (!job) throw new Error('Work order not found');
+
+    job.assignedTechId = currentUser.id;
+    job.assignedTechName = currentUser.name;
+    job.status = 'en_route';
+
+    job.logs.push({
+      time: formatDateTime(new Date()),
+      user: currentUser.name,
+      note: `Technician ${currentUser.name} is En Route (Ma Jadai Chhu) to client location.`
+    });
+
+    saveDB(db);
+    syncToFirestore('jobs', job.id, job);
+    logAudit('JOB_EN_ROUTE', `${currentUser.name} is en-route for ${jobId} (${job.clientName})`);
+    return job;
+  }
+
   function getJobById(jobId) {
     const db = getDB();
     return (db.jobs || []).find(j => j.id === jobId) || null;
@@ -372,6 +399,44 @@ const GermonStore = (function () {
   function createJob(jobData) {
     const db = getDB();
     if (!db.jobs) db.jobs = [];
+    if (!db.clients) db.clients = [];
+
+    // Auto register or resolve client ID
+    let resolvedClientId = jobData.clientId || '';
+    if (jobData.clientName && jobData.clientName.trim()) {
+      const cleanName = jobData.clientName.trim().toLowerCase();
+      const cleanPhone = (jobData.phone || '').replace(/[^0-9]/g, '');
+      let clientObj = db.clients.find(c => {
+        const cName = (c.name || '').trim().toLowerCase();
+        const cPhone = (c.phone || '').replace(/[^0-9]/g, '');
+        return cName === cleanName || (cleanPhone && cPhone && cleanPhone === cPhone);
+      });
+
+      if (!clientObj) {
+        clientObj = {
+          id: 'cl-' + String(db.clients.length + 1).padStart(2, '0'),
+          name: jobData.clientName.trim(),
+          contactPerson: jobData.contactPerson || jobData.clientName.trim(),
+          phone: jobData.phone || '',
+          email: '',
+          address: jobData.location || '',
+          landmark: '',
+          mapUrl: jobData.mapUrl || '',
+          panVat: '',
+          type: 'Standard'
+        };
+        db.clients.push(clientObj);
+        syncToFirestore('clients', clientObj.id, clientObj);
+      } else {
+        if (jobData.mapUrl && jobData.mapUrl.trim()) {
+          clientObj.mapUrl = jobData.mapUrl.trim();
+          syncToFirestore('clients', clientObj.id, clientObj);
+        } else if (clientObj.mapUrl) {
+          jobData.mapUrl = clientObj.mapUrl;
+        }
+      }
+      resolvedClientId = clientObj.id;
+    }
 
     const currentYear = new Date().getFullYear();
     const jobNum = String(db.jobs.length + 1).padStart(4, '0');
@@ -379,7 +444,7 @@ const GermonStore = (function () {
 
     const newJob = {
       id: newJobId,
-      clientId: jobData.clientId || 'cl-custom',
+      clientId: resolvedClientId || 'cl-custom',
       clientName: jobData.clientName || 'Walk-in Client',
       contactPerson: jobData.contactPerson || jobData.clientName,
       phone: jobData.phone || '',
@@ -431,18 +496,90 @@ const GermonStore = (function () {
     }
 
     const prevStatus = job.status;
-    job.status = newStatus;
+    if (newStatus !== undefined && newStatus !== null) {
+      job.status = newStatus;
+    }
 
     if (newStatus === 'on_hold') {
       job.holdReason = extraData.holdReason || 'Awaiting materials / client request';
-    } else {
+    } else if (newStatus) {
       job.holdReason = '';
     }
 
+    if (extraData.mapUrl !== undefined && extraData.mapUrl !== null) {
+      job.mapUrl = extraData.mapUrl.trim();
+      if (job.mapUrl) {
+        let clientObj = (db.clients || []).find(c => c.id === job.clientId || (c.name && c.name.trim().toLowerCase() === job.clientName.trim().toLowerCase()));
+        if (clientObj) {
+          clientObj.mapUrl = job.mapUrl;
+          syncToFirestore('clients', clientObj.id, clientObj);
+        }
+      }
+    }
+
+    if (extraData.estimatedAmount !== undefined && extraData.estimatedAmount !== null) {
+      job.estimatedAmount = Number(extraData.estimatedAmount);
+      job.finalAmount = Number(extraData.estimatedAmount);
+    }
+    if (extraData.finalAmount !== undefined && extraData.finalAmount !== null) {
+      job.finalAmount = Number(extraData.finalAmount);
+    }
+    if (extraData.paidAmount !== undefined && extraData.paidAmount !== null) {
+      job.paidAmount = Number(extraData.paidAmount);
+    }
+    if (extraData.paymentMode) {
+      job.paymentMode = extraData.paymentMode;
+    }
+
+    const total = Number(job.finalAmount || job.estimatedAmount || 0);
+    const paid = Number(job.paidAmount || 0);
+    job.paymentStatus = (paid >= total && total > 0) ? 'paid' : ((paid > 0) ? 'partial' : 'pending');
+
     if (newStatus === 'completed') {
       job.completedAt = new Date().toISOString();
-      if (extraData.finalAmount) job.finalAmount = Number(extraData.finalAmount);
       if (extraData.signature) job.signature = extraData.signature;
+
+      // Auto Save Device & App Credentials into Vault & Client DB
+      if (extraData.credential && (extraData.credential.username || extraData.credential.password)) {
+        // Ensure Client exists in db.clients
+        let clientObj = (db.clients || []).find(c => c.id === job.clientId || (c.name && c.name.trim().toLowerCase() === job.clientName.trim().toLowerCase()));
+        if (!clientObj) {
+          if (!db.clients) db.clients = [];
+          clientObj = {
+            id: 'cl-' + String(db.clients.length + 1).padStart(2, '0'),
+            name: job.clientName,
+            contactPerson: job.contactPerson || job.clientName,
+            phone: job.phone || '',
+            email: '',
+            address: job.location || '',
+            landmark: '',
+            mapUrl: job.mapUrl || '',
+            panVat: '',
+            type: 'Standard'
+          };
+          db.clients.push(clientObj);
+          syncToFirestore('clients', clientObj.id, clientObj);
+        }
+        job.clientId = clientObj.id;
+
+        // Auto Add Credential into Vault
+        if (!db.credentials) db.credentials = [];
+        const credId = 'crd-' + String(db.credentials.length + 1).padStart(2, '0');
+        const newCred = {
+          id: credId,
+          clientId: clientObj.id,
+          systemType: extraData.credential.systemType || job.workType || 'CCTV NVR/DVR System',
+          ipAddress: extraData.credential.ipAddress || job.location || '',
+          username: extraData.credential.username || '',
+          encryptedPass: encryptPassword(extraData.credential.password || ''),
+          notes: (extraData.credential.notes || '') + ` (Auto-logged from completed job ${job.id})`,
+          updatedBy: currentUser?.name || 'Technician',
+          updatedAt: new Date().toISOString().split('T')[0]
+        };
+        db.credentials.push(newCred);
+        syncToFirestore('credentials', newCred.id, newCred);
+        logAudit('CREDENTIAL_AUTO_ADD', `Auto-saved credentials for ${newCred.systemType} (${job.clientName})`);
+      }
     }
 
     if (extraData.materialsUsed && Array.isArray(extraData.materialsUsed)) {
@@ -454,17 +591,90 @@ const GermonStore = (function () {
       if (extraData.photos.after) job.photos.after = extraData.photos.after;
     }
 
-    const noteText = extraData.note || `Status changed from ${prevStatus} to ${newStatus}.`;
+    const noteText = extraData.note || `Status updated to ${job.status}.`;
+    if (!job.logs) job.logs = [];
     job.logs.push({
       time: formatDateTime(new Date()),
-      user: getCurrentUser()?.name || 'Technician',
+      user: getCurrentUser()?.name || 'Staff',
       note: noteText
     });
 
     saveDB(db);
     syncToFirestore('jobs', job.id, job);
-    logAudit('JOB_UPDATE', `${jobId} marked as ${newStatus}`);
+    logAudit('JOB_UPDATE', `${jobId} updated`);
     return job;
+  }
+
+  function updateJobDetails(jobId, updatedData) {
+    const currentUser = getCurrentUser();
+    if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'staff')) {
+      throw new Error('Access denied! Only Admin and Office Staff can edit work orders.');
+    }
+
+    const db = getDB();
+    const job = (db.jobs || []).find(j => j.id === jobId);
+    if (!job) throw new Error('Work order not found');
+
+    if (updatedData.clientName) job.clientName = updatedData.clientName.trim();
+    if (updatedData.contactPerson) job.contactPerson = updatedData.contactPerson.trim();
+    if (updatedData.phone) job.phone = updatedData.phone.trim();
+    if (updatedData.workType) job.workType = updatedData.workType;
+    if (updatedData.priority) job.priority = updatedData.priority;
+    if (updatedData.location) job.location = updatedData.location.trim();
+    if (updatedData.mapUrl !== undefined) job.mapUrl = updatedData.mapUrl.trim();
+    if (updatedData.assignedTechId !== undefined) job.assignedTechId = updatedData.assignedTechId;
+    if (updatedData.assignedTechName !== undefined) job.assignedTechName = updatedData.assignedTechName;
+    if (updatedData.scheduledDate) job.scheduledDate = updatedData.scheduledDate;
+    if (updatedData.description) job.description = updatedData.description.trim();
+    
+    if (updatedData.estimatedAmount !== undefined) {
+      job.estimatedAmount = Number(updatedData.estimatedAmount);
+      job.finalAmount = Number(updatedData.estimatedAmount);
+    }
+    if (updatedData.advanceAmount !== undefined) {
+      job.advanceAmount = Number(updatedData.advanceAmount);
+    }
+    if (updatedData.paidAmount !== undefined) {
+      job.paidAmount = Number(updatedData.paidAmount);
+    } else if (updatedData.advanceAmount !== undefined && (job.paidAmount === undefined || job.paidAmount < Number(updatedData.advanceAmount))) {
+      job.paidAmount = Number(updatedData.advanceAmount);
+    }
+    if (updatedData.paymentMode) job.paymentMode = updatedData.paymentMode;
+
+    const tot = Number(job.finalAmount || job.estimatedAmount || 0);
+    const pd = Number(job.paidAmount || 0);
+    job.paymentStatus = (pd >= tot && tot > 0) ? 'paid' : ((pd > 0) ? 'partial' : 'pending');
+
+    if (!job.logs) job.logs = [];
+    job.logs.push({
+      time: formatDateTime(new Date()),
+      user: currentUser.name,
+      note: `Work order details updated.`
+    });
+
+    saveDB(db);
+    syncToFirestore('jobs', job.id, job);
+    logAudit('JOB_EDIT', `Edited work order ${jobId}`);
+    return job;
+  }
+
+  function deleteJob(jobId) {
+    const currentUser = getCurrentUser();
+    if (!currentUser || currentUser.role !== 'admin') {
+      throw new Error('Access denied! Only Admin can delete work orders.');
+    }
+
+    const db = getDB();
+    if (!db.jobs) return false;
+    const index = db.jobs.findIndex(j => j.id === jobId);
+    if (index === -1) return false;
+
+    const removedJob = db.jobs.splice(index, 1)[0];
+    saveDB(db);
+
+    // Note: Client record (db.clients) and Passwords Vault (db.credentials) are intentionally PRESERVED.
+    logAudit('JOB_DELETE', `Deleted work order ${jobId} (${removedJob.clientName}). Client details & Passwords Vault retained.`);
+    return true;
   }
 
   // Clients
@@ -578,8 +788,40 @@ const GermonStore = (function () {
     return newCred;
   }
 
+  const MASTER_PIN_KEY = 'germon_master_pin_v3';
+
+  function getMasterPIN() {
+    try {
+      const db = getDB();
+      if (db.masterPIN) return db.masterPIN;
+      const stored = localStorage.getItem(MASTER_PIN_KEY);
+      return stored || '1234';
+    } catch (e) {
+      return '1234';
+    }
+  }
+
   function verifyMasterPIN(pin) {
-    return pin === MASTER_PIN;
+    return pin === getMasterPIN();
+  }
+
+  function updateMasterPIN(currentPin, newPin) {
+    if (!verifyMasterPIN(currentPin)) {
+      throw new Error('Current Master PIN / Key is incorrect!');
+    }
+    if (!newPin || newPin.trim().length < 4) {
+      throw new Error('New Master Key must be at least 4 characters long!');
+    }
+    const cleanNewPin = newPin.trim();
+    const db = getDB();
+    db.masterPIN = cleanNewPin;
+    saveDB(db);
+    try {
+      localStorage.setItem(MASTER_PIN_KEY, cleanNewPin);
+    } catch (e) {}
+    syncToFirestore('settings', 'masterPIN', { masterPIN: cleanNewPin });
+    logAudit('MASTER_PIN_CHANGE', 'Master Key / PIN for Vault updated successfully.');
+    return true;
   }
 
   // Client-Side Image Compressor
@@ -651,6 +893,23 @@ const GermonStore = (function () {
     }
   }
 
+  function addWebInquiry(inquiryData) {
+    try {
+      const list = getWebInquiries();
+      // Avoid duplicate ID insertion
+      const exists = list.some(i => i.id === inquiryData.id);
+      if (!exists) {
+        list.unshift(inquiryData);
+        localStorage.setItem('germon_inquiries', JSON.stringify(list));
+        syncToFirestore('webInquiries', inquiryData.id, inquiryData);
+      }
+      return inquiryData;
+    } catch (e) {
+      console.error('Failed to add web inquiry:', e);
+      return null;
+    }
+  }
+
   function markInquiryConverted(inquiryId) {
     try {
       const list = getWebInquiries();
@@ -658,6 +917,7 @@ const GermonStore = (function () {
       if (inq) {
         inq.status = 'Converted';
         localStorage.setItem('germon_inquiries', JSON.stringify(list));
+        syncToFirestore('webInquiries', inq.id, inq);
       }
     } catch (e) {}
   }
@@ -798,6 +1058,9 @@ const GermonStore = (function () {
     getJobById,
     createJob,
     updateJobStatus,
+    updateJobDetails,
+    deleteJob,
+    selfClaimAndEnRoute,
     getClients,
     addClient,
     getEquipment,
@@ -806,11 +1069,14 @@ const GermonStore = (function () {
     addCredential,
     encryptPassword,
     decryptPassword,
+    getMasterPIN,
     verifyMasterPIN,
+    updateMasterPIN,
     compressImage,
     logAudit,
     getAuditLogs,
     getWebInquiries,
+    addWebInquiry,
     markInquiryConverted,
     exportJSON,
     exportSQL,

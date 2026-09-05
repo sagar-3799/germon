@@ -29,11 +29,26 @@
 
     <!-- Payments Table Card -->
     <div class="data-table-card">
-      <div class="data-table-header d-flex justify-content-between align-items-center">
-        <h5 class="fw-bold mb-0 text-dark">Job Payment Records</h5>
-        <div class="input-group input-group-sm" style="width: 250px;">
-          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-          <input type="text" id="paymentSearch" class="form-control" placeholder="Search client or Job ID..." onkeyup="renderPayments()">
+      <div class="data-table-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+        <div class="d-flex align-items-center gap-2">
+          <button type="button" class="btn btn-sm btn-primary fw-bold" id="payTabPending" onclick="switchPayTab('pending')">
+            ⚡ Pending Receivables (Active Dues)
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-success fw-semibold" id="payTabCleared" onclick="switchPayTab('cleared')">
+            ✅ Paid &amp; Cleared History
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-secondary fw-semibold" id="payTabAll" onclick="switchPayTab('all')">
+            🌐 All Records
+          </button>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <div class="input-group input-group-sm" style="width: 220px;">
+            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+            <input type="text" id="paymentSearch" class="form-control" placeholder="Search client or Job ID..." onkeyup="renderPayments()">
+          </div>
+          <button type="button" class="btn btn-sm btn-danger fw-bold d-none" id="btnClearAllCleared" onclick="clearAllPaidHistory()">
+            <i class="bi bi-trash3-fill me-1"></i> Clear All History
+          </button>
         </div>
       </div>
 
@@ -79,12 +94,20 @@
             
             <div class="row g-3">
               <div class="col-6">
-                <label class="form-label fw-semibold small">Total Bill (NPR)</label>
-                <input type="number" class="form-control fw-bold" id="payTotalAmount" required>
+                <label class="form-label fw-semibold small">Fixed Total Bill (Rs.)</label>
+                <input type="number" class="form-control fw-bold font-monospace" id="payTotalAmount" required oninput="calculatePayModalDue()">
               </div>
               <div class="col-6">
-                <label class="form-label fw-semibold small">Total Received (NPR)</label>
-                <input type="number" class="form-control fw-bold text-success" id="payPaidAmount" required>
+                <label class="form-label fw-semibold small">Previously Paid (Rs.)</label>
+                <input type="number" class="form-control fw-bold font-monospace bg-light" id="payPrevPaidAmount" readonly value="0">
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold small text-success">New Payment Received Now (Rs.)</label>
+                <input type="number" class="form-control fw-bold font-monospace border-success text-success" id="payNewAmount" placeholder="e.g. 1000" min="0" oninput="calculatePayModalDue()">
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold small text-danger">New Remaining Due</label>
+                <input type="text" class="form-control fw-bold font-monospace bg-light text-danger" id="payDueDisplay" readonly value="Rs. 0">
               </div>
               <div class="col-12">
                 <label class="form-label fw-semibold small">Payment Mode</label>
@@ -121,28 +144,40 @@
   <script src="js/store.js"></script>
   <script src="js/nav.js"></script>
   <script>
+    let currentPayTab = 'pending'; // 'pending', 'cleared', 'all'
+
     document.addEventListener('DOMContentLoaded', function () {
       renderPayments();
     });
 
-    function renderPayments() {
-      const q = (document.getElementById('paymentSearch').value || '').toLowerCase();
-      let jobs = GermonStore.getJobs();
-
-      if (q) {
-        jobs = jobs.filter(j => 
-          j.id.toLowerCase().includes(q) || 
-          j.clientName.toLowerCase().includes(q) || 
-          j.workType.toLowerCase().includes(q)
-        );
+    function switchPayTab(tab) {
+      currentPayTab = tab;
+      document.getElementById('payTabPending').className = tab === 'pending' ? 'btn btn-sm btn-primary fw-bold' : 'btn btn-sm btn-outline-primary fw-semibold';
+      document.getElementById('payTabCleared').className = tab === 'cleared' ? 'btn btn-sm btn-success fw-bold' : 'btn btn-sm btn-outline-success fw-semibold';
+      document.getElementById('payTabAll').className = tab === 'all' ? 'btn btn-sm btn-secondary fw-bold' : 'btn btn-sm btn-outline-secondary fw-semibold';
+      
+      const btnClearAll = document.getElementById('btnClearAllCleared');
+      if (btnClearAll) {
+        if (tab === 'cleared' && GermonStore.getCurrentUser()?.role === 'admin') {
+          btnClearAll.classList.remove('d-none');
+        } else {
+          btnClearAll.classList.add('d-none');
+        }
       }
 
-      // Calculate Stats
+      renderPayments();
+    }
+
+    function renderPayments() {
+      const q = (document.getElementById('paymentSearch').value || '').toLowerCase();
+      const allJobs = GermonStore.getJobs();
+
+      // Calculate Global Financial Stats across all jobs
       let totalEst = 0;
       let totalPaid = 0;
       let totalDue = 0;
 
-      jobs.forEach(j => {
+      allJobs.forEach(j => {
         const est = Number(j.finalAmount || j.estimatedAmount || 0);
         const paid = Number(j.paidAmount || 0);
         totalEst += est;
@@ -174,11 +209,39 @@
         </div>
       `;
 
+      // Filter display jobs based on current tab filter & search
+      let jobs = allJobs;
+      if (currentPayTab === 'pending') {
+        // Pending Receivables: ONLY jobs with active due > 0 or unquoted jobs (must NOT be paid)
+        jobs = jobs.filter(j => {
+          const est = Number(j.finalAmount || j.estimatedAmount || 0);
+          const paid = Number(j.paidAmount || 0);
+          const due = est - paid;
+          const isPaid = (est > 0 && paid >= est) || j.paymentStatus === 'paid';
+          return !isPaid && (due > 0 || (est === 0 && paid === 0));
+        });
+      } else if (currentPayTab === 'cleared') {
+        // Paid & Cleared History: Completed payments where due <= 0 and total > 0
+        jobs = jobs.filter(j => {
+          const est = Number(j.finalAmount || j.estimatedAmount || 0);
+          const paid = Number(j.paidAmount || 0);
+          return est > 0 && paid >= est;
+        });
+      }
+
+      if (q) {
+        jobs = jobs.filter(j => 
+          j.id.toLowerCase().includes(q) || 
+          j.clientName.toLowerCase().includes(q) || 
+          j.workType.toLowerCase().includes(q)
+        );
+      }
+
       const tbody = document.getElementById('paymentsTableBody');
       tbody.innerHTML = '';
 
       if (jobs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-5 text-muted">No records found.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-muted">No ${currentPayTab === 'pending' ? 'pending dues' : (currentPayTab === 'cleared' ? 'cleared payment history' : 'records')} found.</td></tr>`;
         return;
       }
 
@@ -186,7 +249,7 @@
         const est = Number(j.finalAmount || j.estimatedAmount || 0);
         const adv = Number(j.advanceAmount || 0);
         const paid = Number(j.paidAmount || 0);
-        const due = est - paid;
+        const due = Math.max(0, est - paid);
 
         let statusBadge = '<span class="badge bg-success">Paid</span>';
         if (due > 0 && paid > 0) statusBadge = '<span class="badge bg-warning text-dark">Partial</span>';
@@ -206,9 +269,16 @@
             <td><span class="badge bg-light text-dark border">${j.paymentMode || 'Cash'}</span></td>
             <td>${statusBadge}</td>
             <td class="text-end pe-3">
-              <button class="btn btn-sm btn-outline-success" onclick="openCollectModal('${j.id}')">
-                <i class="bi bi-wallet2 me-1"></i> Collect
-              </button>
+              <div class="d-flex justify-content-end gap-1">
+                <button class="btn btn-sm btn-outline-success" onclick="openCollectModal('${j.id}')" title="Collect / Update Payment">
+                  <i class="bi bi-wallet2 me-1"></i> Collect
+                </button>
+                ${(GermonStore.getCurrentUser()?.role === 'admin' && currentPayTab !== 'pending') ? `
+                  <button class="btn btn-sm btn-outline-danger" onclick="deletePaymentRecord('${j.id}', '${escapeHtml(j.clientName)}')" title="Delete Record">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                ` : ''}
+              </div>
             </td>
           </tr>
         `;
@@ -222,45 +292,99 @@
       document.getElementById('payJobId').value = job.id;
       document.getElementById('payClientSummary').textContent = `${job.clientName} (${job.id})`;
       document.getElementById('payTotalAmount').value = Number(job.finalAmount || job.estimatedAmount || 0);
-      document.getElementById('payPaidAmount').value = Number(job.paidAmount || 0);
+      document.getElementById('payPrevPaidAmount').value = Number(job.paidAmount || 0);
+      document.getElementById('payNewAmount').value = '';
       document.getElementById('payModeSelect').value = job.paymentMode || 'Fonepay';
       document.getElementById('payTxnNote').value = '';
+
+      calculatePayModalDue();
 
       const modal = new bootstrap.Modal(document.getElementById('collectPayModal'));
       modal.show();
     }
 
+    function calculatePayModalDue() {
+      const total = Number(document.getElementById('payTotalAmount').value) || 0;
+      const prev = Number(document.getElementById('payPrevPaidAmount').value) || 0;
+      const newAmt = Number(document.getElementById('payNewAmount').value) || 0;
+      const accum = prev + newAmt;
+      const due = Math.max(0, total - accum);
+      document.getElementById('payDueDisplay').value = `Rs. ${due.toLocaleString('en-IN')}`;
+    }
+
     document.getElementById('collectPayForm').addEventListener('submit', function (e) {
       e.preventDefault();
       const jobId = document.getElementById('payJobId').value;
-      const total = Number(document.getElementById('payTotalAmount').value);
-      const paid = Number(document.getElementById('payPaidAmount').value);
+      const total = Number(document.getElementById('payTotalAmount').value) || 0;
+      const prev = Number(document.getElementById('payPrevPaidAmount').value) || 0;
+      const newAmt = Number(document.getElementById('payNewAmount').value) || 0;
+      const finalPaid = prev + newAmt;
       const mode = document.getElementById('payModeSelect').value;
       const note = document.getElementById('payTxnNote').value.trim();
 
       const job = GermonStore.getJobById(jobId);
       if (job) {
-        job.finalAmount = total;
-        job.paidAmount = paid;
-        job.paymentMode = mode;
-        job.paymentStatus = (paid >= total) ? 'paid' : ((paid > 0) ? 'partial' : 'pending');
+        GermonStore.updateJobStatus(jobId, job.status, {
+          finalAmount: total,
+          estimatedAmount: total,
+          paidAmount: finalPaid,
+          paymentMode: mode,
+          note: newAmt > 0 ? `Payment collected: +Rs. ${newAmt} via ${mode}${note ? ' (' + note + ')' : ''} (Accumulated Paid: Rs. ${finalPaid} / Rs. ${total})` : `Payment details updated`
+        });
 
-        if (note) {
-          job.logs.push({
-            time: new Date().toISOString().split('T')[0],
-            user: GermonStore.getCurrentUser()?.name || 'Staff',
-            note: `Payment updated: Rs. ${paid} via ${mode} (${note})`
-          });
-        }
-
-        GermonStore.logAudit('PAYMENT_UPDATE', `Updated payment for ${jobId}: Rs. ${paid}`);
-        GermonStore.saveDB(GermonStore.getDB());
+        GermonStore.logAudit('PAYMENT_UPDATE', `Updated payment for ${jobId}: Total Rs. ${total}, Paid Rs. ${finalPaid}`);
       }
 
       bootstrap.Modal.getInstance(document.getElementById('collectPayModal')).hide();
-      alert(`Payment for ${jobId} updated successfully!`);
+      alert(`Payment for ${jobId} updated successfully! (Total Paid: Rs. ${finalPaid})`);
       renderPayments();
     });
+
+    function deletePaymentRecord(jobId, clientName) {
+      const currentUser = GermonStore.getCurrentUser();
+      if (!currentUser || currentUser.role !== 'admin') {
+        alert('Access denied! Only Admin can delete payment history records.');
+        return;
+      }
+
+      if (confirm(`Are you sure you want to delete payment record for ${jobId} (${clientName})?\n\nThis will permanently remove this record from the payment ledger.`)) {
+        try {
+          GermonStore.deleteJob(jobId);
+          alert(`Payment record for ${jobId} deleted successfully.`);
+          renderPayments();
+        } catch (err) {
+          alert(err.message);
+        }
+      }
+    }
+
+    function clearAllPaidHistory() {
+      const currentUser = GermonStore.getCurrentUser();
+      if (!currentUser || currentUser.role !== 'admin') {
+        alert('Access denied! Only Admin can clear payment history.');
+        return;
+      }
+
+      const allJobs = GermonStore.getJobs();
+      const clearedJobs = allJobs.filter(j => {
+        const est = Number(j.finalAmount || j.estimatedAmount || 0);
+        const paid = Number(j.paidAmount || 0);
+        return est > 0 && paid >= est;
+      });
+
+      if (clearedJobs.length === 0) {
+        alert('No paid & cleared history records to delete.');
+        return;
+      }
+
+      if (confirm(`Are you sure you want to PERMANENTLY DELETE all ${clearedJobs.length} cleared payment history records?\n\nThis action cannot be undone.`)) {
+        clearedJobs.forEach(j => {
+          GermonStore.deleteJob(j.id);
+        });
+        alert(`${clearedJobs.length} paid history records deleted successfully!`);
+        renderPayments();
+      }
+    }
 
     function escapeHtml(text) {
       if (!text) return '';

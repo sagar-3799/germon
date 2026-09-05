@@ -28,87 +28,101 @@
     const isAdminOrStaff = currentUser.role === 'admin' || currentUser.role === 'staff';
     const activeCount = GermonStore.getActiveUserCount();
 
+    function escapeNavHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
     navContainer.innerHTML = `
-      <nav class="portal-navbar navbar navbar-expand-lg navbar-dark py-2 sticky-top">
-        <div class="container-fluid px-3 px-lg-4">
-          <a class="portal-brand" href="${isAdminOrStaff ? 'dashboard.html' : 'technician.html'}">
-            <img src="../logo.jpeg" alt="Germon IT Logo" class="portal-logo-img">
-            <div class="portal-brand-text">
-              <span class="portal-brand-title">GERMON IT</span>
-              <span class="portal-brand-subtitle">Work Management System</span>
-            </div>
-          </a>
-
-          <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#portalNavbarContent">
-            <span class="bi bi-list fs-2 text-white"></span>
-          </button>
-
-          <div class="collapse navbar-collapse" id="portalNavbarContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
-              ${isAdminOrStaff ? `
-                <li class="nav-item">
-                  <a class="portal-nav-link ${page === 'dashboard.html' ? 'active' : ''}" href="dashboard.html">
-                    <i class="bi bi-speedometer2"></i> Dashboard
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="portal-nav-link ${page === 'works.html' ? 'active' : ''}" href="works.html">
-                    <i class="bi bi-tools"></i> Work Orders
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="portal-nav-link ${page === 'clients.html' ? 'active' : ''}" href="clients.html">
-                    <i class="bi bi-building"></i> Clients &amp; Warranty
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="portal-nav-link ${page === 'credentials.html' ? 'active' : ''}" href="credentials.html">
-                    <i class="bi bi-shield-lock"></i> Passwords Vault
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="portal-nav-link ${page === 'payments.html' ? 'active' : ''}" href="payments.html">
-                    <i class="bi bi-cash-stack"></i> Billing
-                  </a>
-                </li>
-                ${currentUser.role === 'admin' ? `
-                  <li class="nav-item">
-                    <a class="portal-nav-link ${page === 'users.html' ? 'active' : ''}" href="users.html">
-                      <i class="bi bi-people"></i> Users <span class="badge bg-danger ms-1">${activeCount}/10</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="portal-nav-link ${page === 'backup.html' ? 'active' : ''}" href="backup.html">
-                      <i class="bi bi-cloud-arrow-down"></i> Backup
-                    </a>
-                  </li>
-                ` : ''}
+      <nav class="portal-navbar navbar navbar-expand-lg navbar-dark py-2 sticky-top shadow-sm">
+        <div class="container-fluid px-2 px-md-3 px-lg-4">
+          
+          <!-- Left Section: Logged-In User Profile Info (No Logo) -->
+          <div class="d-flex align-items-center gap-2 gap-md-3">
+            <div class="user-profile-left d-flex align-items-center gap-2">
+              ${currentUser.photoUrl ? `
+                <img src="${currentUser.photoUrl}" alt="${escapeNavHtml(currentUser.name)}" class="user-pp-photo shadow-sm">
               ` : `
-                <li class="nav-item">
-                  <a class="portal-nav-link ${page === 'technician.html' ? 'active' : ''}" href="technician.html">
-                    <i class="bi bi-wrench-adjustable-circle"></i> My Assigned Works
-                  </a>
-                </li>
+                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}&background=2563eb&color=fff&bold=true&size=128" alt="${escapeNavHtml(currentUser.name)}" class="user-pp-photo shadow-sm">
               `}
-            </ul>
-
-            <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0 pt-2 pt-lg-0 border-top border-secondary border-opacity-25 border-lg-0">
-              <a href="../index.html" class="btn btn-sm btn-outline-light d-none d-xl-inline-flex align-items-center gap-1">
-                <i class="bi bi-globe"></i> Website
-              </a>
-              <div class="text-white text-end lh-1">
-                <a href="${isAdminOrStaff ? 'users.html' : '#'}" class="text-white text-decoration-none fw-bold fs-6" title="Manage Profile & Password">
-                  ${currentUser.name} <i class="bi bi-pencil-square small text-info ms-1"></i>
-                </a>
-                <div class="d-flex align-items-center justify-content-end gap-1 mt-1">
-                  <span class="user-role-badge role-${currentUser.role}">${currentUser.role}</span>
+              <div class="lh-sm">
+                <div class="fw-bold text-white fs-6 font-heading">
+                  <span class="text-truncate d-block" style="max-width: 140px;">${escapeNavHtml(currentUser.name)}</span>
+                </div>
+                <div class="mt-0.5">
+                  <span class="user-role-badge role-${currentUser.role}">${currentUser.role.toUpperCase()}</span>
                 </div>
               </div>
-              <button onclick="GermonStore.logout()" class="btn btn-sm btn-danger d-inline-flex align-items-center gap-1 shadow-sm">
-                <i class="bi bi-box-arrow-right"></i> <span class="d-none d-md-inline">Logout</span>
+            </div>
+          </div>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button class="navbar-toggler border-0 p-1 ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#portalNavbarContent" aria-controls="portalNavbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="bi bi-list fs-1 text-white"></span>
+          </button>
+
+          <!-- Collapsible Equal-Size Navigation Items (Mathi Icon, Tala Text) -->
+          <div class="collapse navbar-collapse mt-3 mt-lg-0" id="portalNavbarContent">
+            <div class="portal-nav-items-wrapper mx-lg-auto my-2 my-lg-0">
+              ${isAdminOrStaff ? `
+                <a class="portal-nav-btn ${page === 'dashboard.html' ? 'active' : ''}" href="dashboard.html">
+                  <i class="bi bi-grid-fill nav-icon"></i>
+                  <span class="nav-label">Dashboard</span>
+                </a>
+
+                <a class="portal-nav-btn ${page === 'works.html' ? 'active' : ''}" href="works.html">
+                  <i class="bi bi-tools nav-icon"></i>
+                  <span class="nav-label">Work Orders</span>
+                </a>
+
+                <a class="portal-nav-btn ${page === 'clients.html' ? 'active' : ''}" href="clients.html">
+                  <i class="bi bi-building nav-icon"></i>
+                  <span class="nav-label">Clients</span>
+                </a>
+
+                <a class="portal-nav-btn ${page === 'credentials.html' ? 'active' : ''}" href="credentials.html">
+                  <i class="bi bi-shield-lock-fill nav-icon"></i>
+                  <span class="nav-label">Passwords</span>
+                </a>
+
+                <a class="portal-nav-btn ${page === 'payments.html' ? 'active' : ''}" href="payments.html">
+                  <i class="bi bi-cash-stack nav-icon"></i>
+                  <span class="nav-label">Billing</span>
+                </a>
+
+                ${currentUser.role === 'admin' ? `
+                  <a class="portal-nav-btn ${page === 'users.html' ? 'active' : ''}" href="users.html">
+                    <i class="bi bi-people-fill nav-icon"></i>
+                    <span class="nav-label">Users (${activeCount}/15)</span>
+                  </a>
+
+                  <a class="portal-nav-btn ${page === 'backup.html' ? 'active' : ''}" href="backup.html">
+                    <i class="bi bi-cloud-arrow-down-fill nav-icon"></i>
+                    <span class="nav-label">Backup</span>
+                  </a>
+                ` : ''}
+              ` : `
+                <a class="portal-nav-btn ${page === 'technician.html' ? 'active' : ''}" href="technician.html">
+                  <i class="bi bi-wrench-adjustable-circle-fill nav-icon"></i>
+                  <span class="nav-label">My Works</span>
+                </a>
+              `}
+            </div>
+
+            <!-- Website Link & Logout Action Buttons -->
+            <div class="d-flex align-items-center gap-2 ms-lg-auto mt-2 mt-lg-0">
+              <a href="../index.html" class="portal-nav-btn text-white text-decoration-none px-3" style="flex: 0 0 auto; min-width: auto; height: 58px;" title="Visit Public Website">
+                <i class="bi bi-globe nav-icon"></i>
+                <span class="nav-label">Website</span>
+              </a>
+
+              <button onclick="GermonStore.logout()" class="portal-nav-btn btn-logout border-0 text-white px-3" style="flex: 0 0 auto; min-width: auto; height: 58px;" title="Logout Portal">
+                <i class="bi bi-box-arrow-right nav-icon"></i>
+                <span class="nav-label">Logout</span>
               </button>
             </div>
           </div>
+
         </div>
       </nav>
     `;

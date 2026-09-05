@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -27,10 +27,8 @@
         <span><i class="bi bi-telephone-fill text-success me-1"></i> +977-9855084949 / 9866284949</span>
       </div>
       <div class="social-icons">
-        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
-        <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        <a href="https://www.facebook.com/share/1KWz8XonRF/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+        <a href="https://wa.me/9779855084949" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
       </div>
     </div>
   </div>
@@ -40,12 +38,15 @@
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
       <div class="container">
         <a class="navbar-brand navbar-brand-wrapper" href="index.html">
-          <img src="logo.jpeg" alt="Germon IT Solution Logo" class="navbar-brand-logo">
-          <div class="brand-text">
-            <span class="brand-name">GERMON IT</span>
-            <span class="brand-subname">SOLUTION PVT. LTD.</span>
-          </div>
+          <img src="images/logo.jpeg" alt="Germon IT Solution Logo" class="navbar-brand-logo">
         </a>
+
+        <!-- Mobile Staff Portal Icon (Left side of hamburger toggler) -->
+        <div class="d-flex align-items-center ms-auto me-2 d-lg-none">
+          <a href="portal/index.html" class="btn btn-sm btn-staff-portal rounded-circle p-0 d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px;" title="Staff Portal" aria-label="Staff Portal">
+            <i class="bi bi-person-badge-fill fs-6"></i>
+          </a>
+        </div>
 
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
           <span class="bi bi-list fs-1 text-primary"></span>
@@ -68,8 +69,10 @@
             <li class="nav-item">
               <a class="nav-link" href="contact.html">Contact</a>
             </li>
-            <li class="nav-item ms-lg-2">
-              <a href="portal/index.html" class="nav-link text-warning fw-semibold"><i class="bi bi-shield-lock-fill me-1"></i>Staff Portal</a>
+            <li class="nav-item ms-lg-2 d-none d-lg-block">
+              <a href="portal/index.html" class="btn btn-sm btn-staff-portal rounded-circle p-0 d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px;" title="Staff Portal" aria-label="Staff Portal">
+                <i class="bi bi-person-badge-fill fs-6"></i>
+              </a>
             </li>
             <li class="nav-item ms-lg-2">
               <a href="contact.html" class="btn btn-custom-primary">Get a Quote <i class="bi bi-arrow-right-short fs-5"></i></a>
@@ -81,11 +84,11 @@
   </header>
 
   <!-- Inner Page Banner -->
-  <section class="py-5 bg-dark text-white position-relative" style="background: linear-gradient(135deg, #0B0F19 0%, #2B2E83 100%);">
-    <div class="container py-4 text-center">
-      <h1 class="display-4 fw-bold text-white mb-2">About Germon IT Solution</h1>
+  <section class="py-4 bg-dark text-white position-relative" style="background: linear-gradient(135deg, #0B0F19 0%, #2B2E83 100%);">
+    <div class="container py-3 text-center">
+      <h1 class="h2 fw-bold text-white mb-2 font-heading">About Germon IT Solution</h1>
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb justify-content-center mb-0">
+        <ol class="breadcrumb justify-content-center mb-0 small">
           <li class="breadcrumb-item"><a href="index.html" class="text-info text-decoration-none">Home</a></li>
           <li class="breadcrumb-item active text-white-50" aria-current="page">About Us</li>
         </ol>
@@ -93,143 +96,366 @@
     </div>
   </section>
 
-  <!-- Company Story Section -->
-  <section class="py-5">
-    <div class="container py-4">
-      <div class="row align-items-center g-5">
+  <!-- Company Story Section (Choto Mitho) -->
+  <section class="py-4">
+    <div class="container py-2">
+      <div class="row align-items-center g-4">
+        
         <div class="col-lg-6 reveal-on-scroll">
-          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=65" alt="Germon IT Corporate Team" class="img-fluid rounded-4 shadow-lg" loading="lazy">
+          <div class="position-relative">
+            <img src="images/about.jpeg" alt="Germon IT Solution Headquarters" class="img-fluid rounded-4 shadow" loading="lazy" style="max-height: 380px; width: 100%; object-fit: cover;">
+            <div class="glass-card position-absolute bottom-0 end-0 p-3 m-3 d-none d-sm-block border-danger rounded-3" style="max-width: 240px;">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-patch-check-fill text-danger fs-3"></i>
+                <div>
+                  <h4 class="h6 mb-0 text-dark fw-bold">Est. 2079-02-29 BS</h4>
+                  <small class="text-muted">3+ Years of Excellence</small>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
         <div class="col-lg-6 reveal-on-scroll delay-100">
           <span class="section-subtitle">OUR JOURNEY</span>
-          <h2 class="section-title">Pioneering Security, Hardware &amp; IT Solutions in Nepal</h2>
-          <p class="lead text-dark">Established in Ganesh Market, Narayangarh, Chitwan, <strong>Germon IT Solution Pvt. Ltd.</strong> is a dedicated technology hub built to satisfy every corporate, bank, retail, and residential tech need in Nepal.</p>
-          <p class="text-muted">Our core specialization spans <strong>CCTV Camera Installation &amp; Maintenance</strong>, <strong>Smart 360Â° Wi-Fi Cameras</strong>, <strong>Digital Video Recorders (DVR &amp; NVR)</strong>, <strong>ABC/CO2 Fire Extinguishers &amp; Safety</strong>, <strong>Biometric Attendance Machines</strong>, <strong>Access Control Door &amp; Gate Systems</strong>, <strong>Money / Currency Counting Machines</strong>, <strong>Laptop &amp; Desktop Computer Sales &amp; Chip-Level Repair</strong>, <strong>Printer Sales, Servicing &amp; Cartridge Refilling</strong>, and <strong>Routers, Network Switches &amp; PoE Switches</strong> setup.</p>
+          <h2 class="section-title h3 mb-3">Your Premier IT &amp; Security Hub in Chitwan</h2>
+          <p class="lead text-dark fs-6 mb-3">Located at Ganesh Market, Narayangarh, <strong>Germon IT Solution Pvt. Ltd.</strong> provides reliable sales, professional installation, and AMC maintenance across Nepal.</p>
+          <p class="text-muted small mb-4">We specialize in CCTV surveillance, fire extinguishers, biometric attendance, smart access door gates, currency counting machines, printer refilling, laptop chip-level repair, and enterprise PoE networking.</p>
+
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2 small">
+                <i class="bi bi-check-circle-fill text-danger"></i>
+                <span class="fw-semibold">CCTV &amp; Wi-Fi Cameras</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2 small">
+                <i class="bi bi-check-circle-fill text-danger"></i>
+                <span class="fw-semibold">Fire Safety &amp; Extinguishers</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2 small">
+                <i class="bi bi-check-circle-fill text-danger"></i>
+                <span class="fw-semibold">Biometrics &amp; Access Gates</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2 small">
+                <i class="bi bi-check-circle-fill text-danger"></i>
+                <span class="fw-semibold">Laptop/PC Chip Repair</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2 small">
+                <i class="bi bi-check-circle-fill text-danger"></i>
+                <span class="fw-semibold">Money Counting Machines</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center gap-2 small">
+                <i class="bi bi-check-circle-fill text-danger"></i>
+                <span class="fw-semibold">Routers &amp; PoE Switches</span>
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Mission, Vision & Objectives -->
-  <section class="py-5 bg-light">
-    <div class="container py-4">
-      <div class="text-center mb-5 reveal-on-scroll">
+  <!-- Mission, Vision & Objectives (Compact Cards) -->
+  <section class="py-4 bg-light">
+    <div class="container py-2">
+      <div class="text-center mb-4 reveal-on-scroll">
         <span class="section-subtitle">OUR FOUNDATION</span>
-        <h2 class="section-title">Mission, Vision &amp; Core Values</h2>
-        <p class="section-description">Guided by technical transparency, genuine product sales, and rapid technician support.</p>
+        <h2 class="section-title h3">Mission, Vision &amp; Core Values</h2>
       </div>
 
-      <div class="row g-4">
+      <div class="row g-3">
         <!-- Mission -->
-        <div class="col-lg-4 col-md-6 reveal-on-scroll">
-          <div class="feature-card text-center">
-            <div class="feature-icon-box mx-auto">
+        <div class="col-md-4 reveal-on-scroll">
+          <div class="feature-card text-center p-3 h-100">
+            <div class="feature-icon-box mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.3rem;">
               <i class="bi bi-bullseye"></i>
             </div>
-            <h3 class="h4 mb-3">Our Mission</h3>
-            <p class="text-muted">To empower Nepalese businesses, shops, and institutions with genuine hardware, CCTV security, fire safety equipment, and priority maintenance services.</p>
+            <h3 class="h5 fw-bold mb-2">Our Mission</h3>
+            <p class="text-muted small mb-0">Empower Nepalese businesses &amp; homes with authentic hardware, CCTV security, fire safety equipment, and rapid maintenance support.</p>
           </div>
         </div>
 
         <!-- Vision -->
-        <div class="col-lg-4 col-md-6 reveal-on-scroll delay-100">
-          <div class="feature-card feature-card-red text-center">
-            <div class="feature-icon-box mx-auto">
+        <div class="col-md-4 reveal-on-scroll delay-100">
+          <div class="feature-card feature-card-red text-center p-3 h-100">
+            <div class="feature-icon-box mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.3rem;">
               <i class="bi bi-eye-fill"></i>
             </div>
-            <h3 class="h4 mb-3">Our Vision</h3>
-            <p class="text-muted">To be the most reliable and trusted security &amp; IT hardware company in Chitwan and central Nepal, recognized for 24/7 AMC response and technical excellence.</p>
+            <h3 class="h5 fw-bold mb-2">Our Vision</h3>
+            <p class="text-muted small mb-0">To be central Nepal's most trusted security &amp; IT hardware partner, recognized for technical excellence and rapid AMC response.</p>
           </div>
         </div>
 
-        <!-- Objectives -->
-        <div class="col-lg-4 col-md-6 reveal-on-scroll delay-200">
-          <div class="feature-card text-center">
-            <div class="feature-icon-box mx-auto">
+        <!-- Core Values -->
+        <div class="col-md-4 reveal-on-scroll delay-200">
+          <div class="feature-card text-center p-3 h-100">
+            <div class="feature-icon-box mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.3rem;">
               <i class="bi bi-diagram-3-fill"></i>
             </div>
-            <h3 class="h4 mb-3">Our Core Objectives</h3>
-            <p class="text-muted">Deliver authentic brand components, zero-delay emergency AMC response, certified chip-level repairs, and long-term client trust across Chitwan.</p>
+            <h3 class="h5 fw-bold mb-2">Core Values</h3>
+            <p class="text-muted small mb-0">Original brand components, transparent pricing, certified chip repairs, and long-term customer satisfaction in Narayangarh.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-
-
-  <!-- Footer Section -->
-  <footer class="footer-section">
-    <div class="container">
-      <div class="row g-4">
+  <!-- Technical Capabilities & Timeline -->
+  <section class="py-4">
+    <div class="container py-2">
+      <div class="row align-items-center g-4">
         
-        <div class="col-lg-4 col-md-6">
-          <div class="d-flex align-items-center gap-2 mb-3">
-            <img src="logo.jpeg" alt="Germon IT Solution Logo" class="footer-logo">
-            <div class="brand-text">
-              <span class="brand-name text-white">GERMON IT</span>
-              <span class="brand-subname text-info">SOLUTION PVT. LTD.</span>
+        <!-- Technical Progress Bars -->
+        <div class="col-lg-6 reveal-on-scroll">
+          <span class="section-subtitle">OUR CAPABILITIES</span>
+          <h2 class="section-title h3 mb-3">Technical Mastery</h2>
+
+          <div class="progress-bar-wrapper mb-3">
+            <div class="progress-label small">
+              <span>CCTV, Wi-Fi Camera &amp; DVR/NVR Setup</span>
+              <span>98%</span>
+            </div>
+            <div class="progress-custom">
+              <div class="progress-fill" data-percentage="98%"></div>
             </div>
           </div>
-          <p class="text-muted mb-4">Premier IT company based in Ganesh Market, Narayangarh, Chitwan, Nepal. Specialized in CCTV, Fire Extinguishers, Biometric Attendance, Wi-Fi Cameras, Printers, Money Counting Machines, Access Control Gates, Laptop/Computer Sales &amp; Repair, Routers, Switches, PoE Switches, and DVR/NVR Installation &amp; Maintenance.</p>
-          <div class="top-bar bg-transparent p-0">
-            <div class="social-icons">
-              <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-              <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
-              <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-              <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+
+          <div class="progress-bar-wrapper mb-3">
+            <div class="progress-label small">
+              <span>Fire Extinguishers &amp; Safety Systems</span>
+              <span>96%</span>
+            </div>
+            <div class="progress-custom">
+              <div class="progress-fill progress-fill-red" data-percentage="96%"></div>
+            </div>
+          </div>
+
+          <div class="progress-bar-wrapper mb-3">
+            <div class="progress-label small">
+              <span>Biometrics, Access Gates &amp; Currency Counters</span>
+              <span>97%</span>
+            </div>
+            <div class="progress-custom">
+              <div class="progress-fill" data-percentage="97%"></div>
+            </div>
+          </div>
+
+          <div class="progress-bar-wrapper mb-3">
+            <div class="progress-label small">
+              <span>Laptop &amp; Desktop Chip-Level Repairs</span>
+              <span>95%</span>
+            </div>
+            <div class="progress-custom">
+              <div class="progress-fill progress-fill-red" data-percentage="95%"></div>
+            </div>
+          </div>
+
+          <div class="progress-bar-wrapper mb-2">
+            <div class="progress-label small">
+              <span>Routers, Network Switches &amp; PoE Switches</span>
+              <span>94%</span>
+            </div>
+            <div class="progress-custom">
+              <div class="progress-fill" data-percentage="94%"></div>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-2 col-md-6">
-          <h4 class="footer-title">Quick Links</h4>
-          <ul class="footer-links">
-            <li><a href="index.html"><i class="bi bi-chevron-right"></i> Home</a></li>
-            <li><a href="about.html"><i class="bi bi-chevron-right"></i> About Us</a></li>
-            <li><a href="services.html"><i class="bi bi-chevron-right"></i> Our Services</a></li>
-            <li><a href="portfolio.html"><i class="bi bi-chevron-right"></i> Portfolio</a></li>
-            <li><a href="contact.html"><i class="bi bi-chevron-right"></i> Contact Us</a></li>
-          </ul>
+        <!-- Milestones Timeline -->
+        <div class="col-lg-6 reveal-on-scroll delay-100">
+          <span class="section-subtitle">MILESTONES</span>
+          <h2 class="section-title h3 mb-3">Company Evolution</h2>
+          
+          <div class="timeline">
+            <div class="timeline-item mb-3">
+              <div class="timeline-date">2079-02-29 BS</div>
+              <h4 class="h6 fw-bold mb-1">Inauguration &amp; Establishment</h4>
+              <p class="text-muted small mb-0">Official grand opening of Germon IT Solution Pvt. Ltd. in Narayangarh, Chitwan.</p>
+            </div>
+
+            <div class="timeline-item mb-3">
+              <div class="timeline-date">2080 BS</div>
+              <h4 class="h6 fw-bold mb-1">CCTV &amp; Automation Expansion</h4>
+              <p class="text-muted small mb-0">Expanded into IP CCTV networks, Biometrics, Intercom Telephones, and Fire Safety AMC.</p>
+            </div>
+
+            <div class="timeline-item mb-0">
+              <div class="timeline-date">2081 BS - Present</div>
+              <h4 class="h6 fw-bold mb-1">Leading IT &amp; Security Partner</h4>
+              <p class="text-muted small mb-0">Serving 500+ happy clients and 1,200+ completed installations across Chitwan.</p>
+            </div>
+          </div>
         </div>
 
-        <div class="col-lg-3 col-md-6">
-          <h4 class="footer-title">Our Key Services</h4>
-          <ul class="footer-links">
-            <li><a href="services.html"><i class="bi bi-camera-video"></i> CCTV &amp; Wi-Fi Cameras</a></li>
-            <li><a href="services.html"><i class="bi bi-fire"></i> Fire Extinguishers &amp; Safety</a></li>
-            <li><a href="services.html"><i class="bi bi-fingerprint"></i> Biometric &amp; Access Control</a></li>
-            <li><a href="services.html"><i class="bi bi-laptop"></i> Laptop/Computer Sales &amp; Repair</a></li>
-            <li><a href="services.html"><i class="bi bi-router"></i> Routers, Switches &amp; PoE</a></li>
-            <li><a href="services.html"><i class="bi bi-hdd"></i> DVR/NVR Installation &amp; AMC</a></li>
-          </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Responsive Team Member Grid Section -->
+  <section class="py-4 bg-light">
+    <div class="container py-2">
+      <div class="text-center mb-4 reveal-on-scroll">
+        <span class="section-subtitle">EXPERTS BEHIND OUR SUCCESS</span>
+        <h2 class="section-title h3 mb-2">Meet Our Professional Team</h2>
+        <p class="text-muted small mb-0">Dedicated specialists and engineers delivering 3+ years of technical excellence in Chitwan.</p>
+      </div>
+
+      <!-- Responsive Grid: 4 per row on desktop, 2 on tablet/mobile -->
+      <div class="row g-3">
+        
+        <!-- 1. Subash Giri -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 reveal-on-scroll">
+          <div class="glass-card text-center p-3 h-100 bg-white shadow-sm rounded-4">
+            <img src="images/subash-giri.jpeg" alt="Subash Giri" class="img-fluid rounded-circle mx-auto mb-2 border border-3 border-danger" style="width: 110px; height: 110px; object-fit: cover;" loading="lazy">
+            <h3 class="h6 fw-bold text-dark mb-1 font-heading">Subash Giri</h3>
+            <span class="badge bg-danger mb-2 px-2.5 py-1 rounded-pill">Managing Director</span>
+            <p class="text-muted small mb-0">Executive leadership in IT sales, hardware imports &amp; client relations since 2079 BS.</p>
+          </div>
         </div>
 
-        <div class="col-lg-3 col-md-6">
-          <h4 class="footer-title">Contact Info</h4>
-          <div class="footer-contact-item">
-            <i class="bi bi-geo-alt-fill footer-contact-icon"></i>
-            <span>Ganesh Market, Narayangarh, Chitwan, Nepal</span>
+        <!-- 2. Bishal Panday -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 reveal-on-scroll delay-100">
+          <div class="glass-card text-center p-3 h-100 bg-white shadow-sm rounded-4">
+            <img src="images/bishal panday.jpeg" alt="Bishal Panday" class="img-fluid rounded-circle mx-auto mb-2 border border-3 border-primary" style="width: 110px; height: 110px; object-fit: cover;" loading="lazy">
+            <h3 class="h6 fw-bold text-dark mb-1 font-heading">Bishal Panday</h3>
+            <span class="badge bg-primary mb-2 px-2.5 py-1 rounded-pill">Sr. CCTV &amp; Network Eng</span>
+            <p class="text-muted small mb-0">Specialized in HD IP CCTV, NVR setup, PoE switches &amp; enterprise Wi-Fi networks.</p>
           </div>
-          <div class="footer-contact-item">
-            <i class="bi bi-telephone-fill footer-contact-icon"></i>
-            <span>+977-9855084949<br>+977-9866284949</span>
+        </div>
+
+        <!-- 3. Ashish Khanal -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 reveal-on-scroll delay-200">
+          <div class="glass-card text-center p-3 h-100 bg-white shadow-sm rounded-4">
+            <img src="images/ashish-khanal.jpeg" alt="Ashish Khanal" class="img-fluid rounded-circle mx-auto mb-2 border border-3 border-info" style="width: 110px; height: 110px; object-fit: cover;" loading="lazy">
+            <h3 class="h6 fw-bold text-dark mb-1 font-heading">Ashish Khanal</h3>
+            <span class="badge bg-info text-dark mb-2 px-2.5 py-1 rounded-pill">Chip Repair Specialist</span>
+            <p class="text-muted small mb-0">Expert in laptop motherboard micro-soldering, printer refilling &amp; currency counters.</p>
           </div>
-          <div class="footer-contact-item">
-            <i class="bi bi-envelope-fill footer-contact-icon"></i>
-            <span>germonitchitwan@gmail.com</span>
+        </div>
+
+        <!-- 4. Abhaya Chaudhary -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 reveal-on-scroll">
+          <div class="glass-card text-center p-3 h-100 bg-white shadow-sm rounded-4">
+            <img src="images/abhaya-chaudhary.jpeg" alt="Abhaya Chaudhary" class="img-fluid rounded-circle mx-auto mb-2 border border-3 border-warning" style="width: 110px; height: 110px; object-fit: cover;" loading="lazy">
+            <h3 class="h6 fw-bold text-dark mb-1 font-heading">Abhaya Chaudhary</h3>
+            <span class="badge bg-warning text-dark mb-2 px-2.5 py-1 rounded-pill">Field Installation Lead</span>
+            <p class="text-muted small mb-0">Field execution lead for commercial site CCTV cabling &amp; structural alignment.</p>
           </div>
-          <div class="footer-contact-item">
-            <i class="bi bi-clock-fill footer-contact-icon"></i>
-            <span>Sun - Fri: 9:00 AM - 6:00 PM</span>
+        </div>
+
+        <!-- 5. Roshan Chaudhary -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 reveal-on-scroll delay-100">
+          <div class="glass-card text-center p-3 h-100 bg-white shadow-sm rounded-4">
+            <img src="images/roshan-chaudhary.jpeg" alt="Roshan Chaudhary" class="img-fluid rounded-circle mx-auto mb-2 border border-3 border-success" style="width: 110px; height: 110px; object-fit: cover;" loading="lazy">
+            <h3 class="h6 fw-bold text-dark mb-1 font-heading">Roshan Chaudhary</h3>
+            <span class="badge bg-success mb-2 px-2.5 py-1 rounded-pill">Security &amp; Biometrics Eng</span>
+            <p class="text-muted small mb-0">Specialized in Biometric Attendance, Access Gates, Intercom &amp; Fire Extinguishers.</p>
+          </div>
+        </div>
+
+        <!-- 6. Pawan Basnet -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 reveal-on-scroll delay-200">
+          <div class="glass-card text-center p-3 h-100 bg-white shadow-sm rounded-4">
+            <img src="images/pawan basnet.jpeg" alt="Pawan Basnet" class="img-fluid rounded-circle mx-auto mb-2 border border-3 border-secondary" style="width: 110px; height: 110px; object-fit: cover;" loading="lazy">
+            <h3 class="h6 fw-bold text-dark mb-1 font-heading">Pawan Basnet</h3>
+            <span class="badge bg-secondary mb-2 px-2.5 py-1 rounded-pill">Hardware &amp; Network Tech</span>
+            <p class="text-muted small mb-0">Dedicated support specialist for routers, PoE switches, fiber splicing &amp; rapid AMC.</p>
+          </div>
+        </div>
+
+        <!-- 7. Arjune Simkha -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 reveal-on-scroll">
+          <div class="glass-card text-center p-3 h-100 bg-white shadow-sm rounded-4">
+            <img src="images/arjune-simkhada.jpeg" alt="Arjune Simkha" class="img-fluid rounded-circle mx-auto mb-2 border border-3 border-dark" style="width: 110px; height: 110px; object-fit: cover;" loading="lazy">
+            <h3 class="h6 fw-bold text-dark mb-1 font-heading">Arjune Simkha</h3>
+            <span class="badge bg-dark mb-2 px-2.5 py-1 rounded-pill">Senior IT Operations Spec</span>
+            <p class="text-muted small mb-0">Senior consultant for enterprise IT solutions, client advisory &amp; system architecture.</p>
+          </div>
+        </div>
+
+        <!-- 8. Sagar Chapagain -->
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 reveal-on-scroll delay-100">
+          <div class="glass-card text-center p-3 h-100 bg-white shadow-sm rounded-4">
+            <img src="images/sagar-chapagain.jpg" alt="Sagar Chapagain" class="img-fluid rounded-circle mx-auto mb-2 border border-3 border-primary" style="width: 110px; height: 110px; object-fit: cover;" loading="lazy">
+            <h3 class="h6 fw-bold text-dark mb-1 font-heading">Sagar Chapagain</h3>
+            <span class="badge bg-primary mb-2 px-2.5 py-1 rounded-pill">IT Engineer &amp; Developer</span>
+            <p class="text-muted small mb-0">Specialized in web application development, software engineering &amp; portal architecture.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Compact Animated Footer Section -->
+  <footer class="footer-compact">
+    <div class="footer-top-border"></div>
+    <div class="container py-3">
+      <div class="row g-4 align-items-center">
+        
+        <!-- Brand & Short Note -->
+        <div class="col-lg-4 col-md-6 text-center text-lg-start">
+          <div class="d-inline-flex align-items-center gap-2 mb-2">
+            <img src="logo.jpeg" alt="Germon IT Logo" class="footer-logo-sm">
+          </div>
+          <p class="text-white-50 small mb-3">Premier IT &amp; Security Solutions in Narayangarh, Chitwan. Est. 2079 BS.</p>
+          <div class="footer-social-animated justify-content-center justify-content-lg-start">
+            <a href="https://www.facebook.com/share/1KWz8XonRF/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-btn fb"><i class="bi bi-facebook"></i></a>
+            <a href="https://wa.me/9779855084949" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="social-btn wa"><i class="bi bi-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- Compact Navigation Links -->
+        <div class="col-lg-4 col-md-6 text-center">
+          <h5 class="text-white fw-bold mb-2.5 fs-6 font-heading">Quick Navigation</h5>
+          <div class="d-flex flex-wrap justify-content-center gap-3 footer-nav-compact mb-2">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="services.html">Services</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="contact.html">Contact Us</a>
+          </div>
+          <div class="footer-tag-cloud mt-2 d-flex flex-wrap justify-content-center gap-1.5">
+            <span class="badge bg-secondary bg-opacity-20 text-white-50">CCTV &amp; Wi-Fi</span>
+            <span class="badge bg-secondary bg-opacity-20 text-white-50">Fire Safety</span>
+            <span class="badge bg-secondary bg-opacity-20 text-white-50">Biometrics</span>
+            <span class="badge bg-secondary bg-opacity-20 text-white-50">PC Repair</span>
+          </div>
+        </div>
+
+        <!-- Quick Contact Info -->
+        <div class="col-lg-4 col-md-12 text-center text-lg-end">
+          <h5 class="text-white fw-bold mb-2.5 fs-6 font-heading">Direct Contact</h5>
+          <div class="footer-contact-compact d-flex flex-column align-items-center align-items-lg-end gap-1 small text-white-50">
+            <div><i class="bi bi-geo-alt-fill text-danger me-1.5"></i> Ganesh Market, Narayangarh, Chitwan</div>
+            <div>
+              <a href="tel:+9779855084949" class="text-white text-decoration-none fw-semibold">
+                <i class="bi bi-telephone-fill text-primary me-1.5 animated-pulse-icon"></i> +977-9855084949 / 9866284949
+              </a>
+            </div>
+            <div><i class="bi bi-clock-fill text-warning me-1.5"></i> Sun - Fri: 9:00 AM - 7:00 PM</div>
           </div>
         </div>
 
       </div>
 
-      <div class="footer-bottom text-center">
-        <p class="mb-0">&copy; <script>document.write(new Date().getFullYear())</script> Germon IT Solution Pvt. Ltd. All Rights Reserved. Designed for Excellence in Chitwan, Nepal.</p>
+      <!-- Copyright Bar -->
+      <div class="footer-bottom-compact mt-3 pt-3 text-center text-white-50 small border-top border-white border-opacity-10 d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>&copy; <script>document.write(new Date().getFullYear())</script> Germon IT Solution Pvt. Ltd. All rights reserved.</div>
+        <div class="text-white-50">Ganesh Market, Narayangarh, Chitwan, Nepal</div>
       </div>
+
     </div>
   </footer>
 

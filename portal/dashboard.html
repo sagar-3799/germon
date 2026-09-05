@@ -6,6 +6,7 @@
   <title>Office Dashboard | Germon IT Work Management</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/portal.css">
 </head>
 <body>
@@ -19,20 +20,25 @@
     <!-- Top Greeting & Quick Action Header -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
       <div>
-        <h2 class="fw-bold mb-1 text-dark">
-          <i class="bi bi-grid-fill text-primary me-2"></i>Office Work Dashboard
-        </h2>
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <h2 class="fw-extrabold mb-0 text-dark font-heading">
+            <i class="bi bi-grid-fill text-primary me-2"></i>Office Operations Center
+          </h2>
+          <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-3 py-1 font-monospace small">
+            <i class="bi bi-record-circle-fill text-danger me-1"></i>Live Realtime
+          </span>
+        </div>
         <p class="text-muted small mb-0">
-          Germon IT Solution Pvt. Ltd. &bull; Narayangarh, Chitwan &bull; Realtime Operation Center
+          Germon IT Solution Pvt. Ltd. &bull; Narayangarh, Chitwan &bull; Central Work Management Portal
         </p>
       </div>
 
       <div class="d-flex flex-wrap gap-2">
-        <button type="button" class="btn btn-primary fw-semibold d-inline-flex align-items-center gap-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#newJobModal">
+        <button type="button" class="btn btn-primary fw-bold d-inline-flex align-items-center gap-2 shadow-sm rounded-3" data-bs-toggle="modal" data-bs-target="#newJobModal">
           <i class="bi bi-plus-circle-fill fs-5"></i> New Work Entry
         </button>
-        <button type="button" class="btn btn-outline-secondary fw-semibold d-inline-flex align-items-center gap-2" onclick="refreshDashboard()">
-          <i class="bi bi-arrow-clockwise"></i> Refresh
+        <button type="button" class="btn btn-outline-secondary fw-semibold d-inline-flex align-items-center gap-2 rounded-3" onclick="refreshDashboard()">
+          <i class="bi bi-arrow-clockwise fs-6"></i> Refresh
         </button>
       </div>
     </div>
@@ -47,8 +53,8 @@
       <div class="card border-0 shadow-sm rounded-4 overflow-hidden border-start border-4 border-warning">
         <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
           <div class="d-flex align-items-center gap-2">
-            <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-bell-fill me-1"></i>New</span>
-            <h5 class="fw-bold mb-0 text-dark">Website Inquiries &amp; Service Requests (<span id="inquiryCount">0</span>)</h5>
+            <span class="badge bg-warning text-dark px-2 py-1 rounded-pill"><i class="bi bi-bell-fill me-1"></i>New Inquiry</span>
+            <h5 class="fw-bold mb-0 text-dark font-heading">Website Inquiries &amp; Service Requests (<span id="inquiryCount">0</span>)</h5>
           </div>
           <small class="text-muted">Submissions received via public Contact form</small>
         </div>
@@ -78,31 +84,32 @@
     <div class="data-table-card">
       <div class="data-table-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
         <div>
-          <h5 class="fw-bold mb-1 text-dark"><i class="bi bi-card-checklist me-2 text-primary"></i>Active Work Orders &amp; Technician Tracking</h5>
+          <h5 class="fw-bold mb-1 text-dark font-heading"><i class="bi bi-card-checklist me-2 text-primary"></i>Active Work Orders &amp; Technician Tracking</h5>
           <p class="text-muted small mb-0">Monitor field status, assign technicians, navigate site via Google Maps, or contact via WhatsApp</p>
         </div>
 
-        <div class="d-flex flex-wrap align-items-center gap-2">
+        <div class="d-flex flex-wrap align-items-center gap-2 filter-controls-wrapper">
           <!-- Status Filter -->
-          <select id="statusFilter" class="form-select form-select-sm" style="width: 150px;" onchange="applyFilters()">
+          <select id="statusFilter" class="form-select form-select-sm" style="width: 160px;" onchange="applyFilters()">
             <option value="all">All Statuses</option>
             <option value="pending">🟡 Pending</option>
             <option value="assigned">🔵 Assigned</option>
+            <option value="en_route">🚗 En Route</option>
             <option value="in_progress">🟠 In Progress</option>
             <option value="on_hold">🟣 On Hold</option>
             <option value="completed">🟢 Completed</option>
           </select>
 
           <!-- Technician Filter -->
-          <select id="techFilter" class="form-select form-select-sm" style="width: 170px;" onchange="applyFilters()">
+          <select id="techFilter" class="form-select form-select-sm" style="width: 175px;" onchange="applyFilters()">
             <option value="all">All Technicians</option>
             <!-- Populated via JS -->
           </select>
 
           <!-- Search Box -->
-          <div class="input-group input-group-sm" style="width: 220px;">
-            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-            <input type="text" id="searchInput" class="form-control" placeholder="Search client/phone/ID..." onkeyup="applyFilters()">
+          <div class="input-group input-group-sm" style="width: 230px;">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+            <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="Search client/phone/ID..." onkeyup="applyFilters()">
           </div>
         </div>
       </div>
@@ -133,112 +140,261 @@
   <!-- NEW WORK ORDER MODAL -->
   <div class="modal fade" id="newJobModal" tabindex="-1" aria-labelledby="newJobModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
-        <div class="modal-header bg-primary text-white border-0 py-3">
-          <h5 class="modal-title fw-bold" id="newJobModalLabel"><i class="bi bi-tools me-2"></i>New Work / Job Entry</h5>
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden modal-compact">
+        <div class="modal-header bg-primary text-white border-0 py-2.5 px-3">
+          <h6 class="modal-title fw-bold font-heading mb-0" id="newJobModalLabel"><i class="bi bi-tools me-2"></i>New Work / Job Entry</h6>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form id="newJobForm">
-          <div class="modal-body p-4">
-            <div class="row g-3">
+          <div class="modal-body p-3">
+            <div class="d-flex flex-column gap-3">
               
-              <div class="col-md-6">
-                <label class="form-label fw-semibold small">Client / Customer Name <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="jobClientName" placeholder="e.g. Hotel Bharatpur Heights" required>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label fw-semibold small">Contact Person &amp; Phone <span class="text-danger">*</span></label>
-                <div class="input-group">
-                  <input type="text" class="form-control" id="jobContactPerson" placeholder="Contact Person" required>
-                  <input type="tel" class="form-control" id="jobPhone" placeholder="98XXXXXXXX" required>
+              <!-- Section 1: Client & Location Details -->
+              <div class="form-section-box">
+                <div class="form-section-title">
+                  <i class="bi bi-person-badge-fill text-primary"></i> Client &amp; Location Details
+                </div>
+                <div class="row g-2">
+                  <div class="col-md-6">
+                    <label class="form-label-compact">Client / Customer Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-sm" id="jobClientName" placeholder="Type or select client name..." list="clientsDatalist" required oninput="autoFillClientDetails()">
+                    <datalist id="clientsDatalist"></datalist>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label-compact">Contact Person <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-sm" id="jobContactPerson" placeholder="Contact Person" required>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label-compact">Phone Number <span class="text-danger">*</span></label>
+                    <input type="tel" class="form-control form-control-sm" id="jobPhone" placeholder="98XXXXXXXX" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label-compact">Location &amp; Landmark <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-sm" id="jobLocation" placeholder="e.g. Lions Chowk, 2nd floor above Sunrise Bank" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label-compact">Google Maps Link <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-sm" id="jobMapUrl" placeholder="https://maps.app.goo.gl/..." required>
+                  </div>
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <label class="form-label fw-semibold small">Work Category <span class="text-danger">*</span></label>
-                <select class="form-select" id="jobWorkType" required>
-                  <option value="CCTV Installation & Maintenance">CCTV Installation &amp; Maintenance</option>
-                  <option value="Smart Wi-Fi Cameras">Smart Wi-Fi Cameras</option>
-                  <option value="DVR & NVR Installation & AMC">DVR &amp; NVR Installation &amp; AMC</option>
-                  <option value="Biometric Attendance Machines">Biometric Attendance Machines</option>
-                  <option value="Access Control Door & Gate Systems">Access Control Door &amp; Gate Systems</option>
-                  <option value="Routers, Switches & PoE Switches">Routers, Switches &amp; PoE Switches</option>
-                  <option value="Fiber Splicing & Optical Network">Fiber Splicing &amp; Optical Network</option>
-                  <option value="Laptop & Computer Sales & Repair">Laptop &amp; Computer Sales &amp; Repair</option>
-                  <option value="Printer Sales, Repair & Refilling">Printer Sales, Repair &amp; Refilling</option>
-                  <option value="Fire Extinguishers & Safety">Fire Extinguishers &amp; Safety</option>
-                  <option value="IT Consultancy & AMC Contract">IT Consultancy &amp; AMC Contract</option>
-                </select>
+              <!-- Section 2: Work Scope & Field Technician Assignment -->
+              <div class="form-section-box">
+                <div class="form-section-title">
+                  <i class="bi bi-card-checklist text-primary"></i> Work Details &amp; Assignment
+                </div>
+                <div class="row g-2">
+                  <div class="col-md-5">
+                    <label class="form-label-compact">Work Category <span class="text-danger">*</span></label>
+                    <select class="form-select form-select-sm" id="jobWorkType" required>
+                      <option value="CCTV Installation & Maintenance">CCTV Installation &amp; Maintenance</option>
+                      <option value="Smart Wi-Fi Cameras">Smart Wi-Fi Cameras</option>
+                      <option value="DVR & NVR Installation & AMC">DVR &amp; NVR Installation &amp; AMC</option>
+                      <option value="Biometric Attendance Machines">Biometric Attendance Machines</option>
+                      <option value="Access Control Door & Gate Systems">Access Control Door &amp; Gate Systems</option>
+                      <option value="Routers, Switches & PoE Switches">Routers, Switches &amp; PoE Switches</option>
+                      <option value="Fiber Splicing & Optical Network">Fiber Splicing &amp; Optical Network</option>
+                      <option value="Laptop & Computer Sales & Repair">Laptop &amp; Computer Sales &amp; Repair</option>
+                      <option value="Printer Sales, Repair & Refilling">Printer Sales, Repair &amp; Refilling</option>
+                      <option value="Fire Extinguishers & Safety">Fire Extinguishers &amp; Safety</option>
+                      <option value="IT Consultancy & AMC Contract">IT Consultancy &amp; AMC Contract</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label-compact">Job Priority</label>
+                    <select class="form-select form-select-sm" id="jobPriority">
+                      <option value="medium">Medium Priority</option>
+                      <option value="low">Low Priority</option>
+                      <option value="high">High Priority</option>
+                      <option value="emergency">🚨 Emergency</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label-compact">Assign Field Technician</label>
+                    <select class="form-select form-select-sm" id="jobAssignedTech">
+                      <option value="">-- Select Technician --</option>
+                      <!-- Populated via JS -->
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label-compact">Scheduled Date</label>
+                    <input type="date" class="form-control form-control-sm" id="jobScheduledDate">
+                  </div>
+                  <div class="col-md-8">
+                    <label class="form-label-compact">Work Scope / Details <span class="text-danger">*</span></label>
+                    <textarea class="form-control form-control-sm" id="jobDescription" rows="2" placeholder="Camera qty, router config, cabling route, materials needed..." required></textarea>
+                  </div>
+                </div>
               </div>
 
-              <div class="col-md-6">
-                <label class="form-label fw-semibold small">Job Priority</label>
-                <select class="form-select" id="jobPriority">
-                  <option value="medium">Medium Priority</option>
-                  <option value="low">Low Priority</option>
-                  <option value="high">High Priority</option>
-                  <option value="emergency">🚨 Critical / Emergency</option>
-                </select>
-              </div>
-
-              <div class="col-md-8">
-                <label class="form-label fw-semibold small">Location &amp; Landmark <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="jobLocation" placeholder="e.g. Lions Chowk, 2nd floor above Sunrise Bank" required>
-              </div>
-
-              <div class="col-md-4">
-                <label class="form-label fw-semibold small">Google Maps Link</label>
-                <input type="url" class="form-control" id="jobMapUrl" placeholder="https://maps.app.goo.gl/...">
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label fw-semibold small">Assign Field Technician</label>
-                <select class="form-select" id="jobAssignedTech">
-                  <option value="">-- Select Technician --</option>
-                  <!-- Populated via JS -->
-                </select>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label fw-semibold small">Scheduled Execution Date</label>
-                <input type="date" class="form-control" id="jobScheduledDate">
-              </div>
-
-              <div class="col-12">
-                <label class="form-label fw-semibold small">Work Scope / Detailed Description <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="jobDescription" rows="3" placeholder="Describe camera quantity, router configuration, cabling route, materials required..." required></textarea>
-              </div>
-
-              <div class="col-md-4">
-                <label class="form-label fw-semibold small">Estimated Amount (NPR)</label>
-                <input type="number" class="form-control" id="jobEstimatedAmount" placeholder="e.g. 45000">
-              </div>
-
-              <div class="col-md-4">
-                <label class="form-label fw-semibold small">Advance Paid (NPR)</label>
-                <input type="number" class="form-control" id="jobAdvanceAmount" placeholder="e.g. 20000">
-              </div>
-
-              <div class="col-md-4">
-                <label class="form-label fw-semibold small">Payment Mode</label>
-                <select class="form-select" id="jobPaymentMode">
-                  <option value="Cash">Cash</option>
-                  <option value="Fonepay">Fonepay QR</option>
-                  <option value="eSewa">eSewa</option>
-                  <option value="Khalti">Khalti</option>
-                  <option value="Bank Transfer">Bank Transfer</option>
-                  <option value="Cheque">Cheque</option>
-                </select>
+              <!-- Section 3: Financials & Advance Payment -->
+              <div class="form-section-box">
+                <div class="form-section-title">
+                  <i class="bi bi-cash-coin text-primary"></i> Billing &amp; Payment
+                </div>
+                <div class="row g-2">
+                  <div class="col-md-4">
+                    <label class="form-label-compact">Estimated Amount (NPR)</label>
+                    <input type="number" class="form-control form-control-sm" id="jobEstimatedAmount" placeholder="e.g. 45000">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label-compact">Advance Paid (NPR)</label>
+                    <input type="number" class="form-control form-control-sm" id="jobAdvanceAmount" placeholder="e.g. 20000">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label-compact">Payment Mode</label>
+                    <select class="form-select form-select-sm" id="jobPaymentMode">
+                      <option value="Cash">Cash</option>
+                      <option value="Fonepay">Fonepay QR</option>
+                      <option value="eSewa">eSewa</option>
+                      <option value="Khalti">Khalti</option>
+                      <option value="Bank Transfer">Bank Transfer</option>
+                      <option value="Cheque">Cheque</option>
+                    </select>
+                  </div>
+                </div>
               </div>
 
             </div>
           </div>
-          <div class="modal-footer bg-light border-0 py-3">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary px-4 fw-bold">Save &amp; Dispatch Job</button>
+          <div class="modal-footer bg-light border-0 py-2 px-3">
+            <button type="button" class="btn btn-sm btn-outline-secondary rounded-2 px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-sm btn-primary px-4 fw-bold rounded-2"><i class="bi bi-check-circle-fill me-1"></i>Save &amp; Dispatch Job</button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT WORK ORDER MODAL (ADMIN ONLY) -->
+  <div class="modal fade" id="editJobModal" tabindex="-1" aria-labelledby="editJobModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden modal-compact">
+        <div class="modal-header bg-dark text-white border-0 py-2.5 px-3">
+          <h6 class="modal-title fw-bold font-heading mb-0" id="editJobModalLabel"><i class="bi bi-pencil-square me-2 text-warning"></i>Edit Work Order Details</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="editJobForm">
+          <input type="hidden" id="editJobId">
+          <div class="modal-body p-3">
+            <div class="d-flex flex-column gap-3">
+              
+              <!-- Section 1: Client & Location Details -->
+              <div class="form-section-box">
+                <div class="form-section-title text-warning">
+                  <i class="bi bi-person-badge-fill text-warning"></i> Client &amp; Location Details
+                </div>
+                <div class="row g-2">
+                  <div class="col-md-6">
+                    <label class="form-label-compact">Client / Customer Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-sm" id="editJobClientName" required>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label-compact">Contact Person <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-sm" id="editJobContactPerson" placeholder="Contact Person" required>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label-compact">Phone Number <span class="text-danger">*</span></label>
+                    <input type="tel" class="form-control form-control-sm" id="editJobPhone" placeholder="98XXXXXXXX" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label-compact">Location &amp; Landmark <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-sm" id="editJobLocation" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label-compact">Google Maps Link <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-sm" id="editJobMapUrl" placeholder="https://maps.app.goo.gl/..." required>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section 2: Work Details & Assignment -->
+              <div class="form-section-box">
+                <div class="form-section-title text-warning">
+                  <i class="bi bi-card-checklist text-warning"></i> Work Details &amp; Assignment
+                </div>
+                <div class="row g-2">
+                  <div class="col-md-5">
+                    <label class="form-label-compact">Work Category <span class="text-danger">*</span></label>
+                    <select class="form-select form-select-sm" id="editJobWorkType" required>
+                      <option value="CCTV Installation & Maintenance">CCTV Installation &amp; Maintenance</option>
+                      <option value="Smart Wi-Fi Cameras">Smart Wi-Fi Cameras</option>
+                      <option value="DVR & NVR Installation & AMC">DVR &amp; NVR Installation &amp; AMC</option>
+                      <option value="Biometric Attendance Machines">Biometric Attendance Machines</option>
+                      <option value="Access Control Door & Gate Systems">Access Control Door &amp; Gate Systems</option>
+                      <option value="Routers, Switches & PoE Switches">Routers, Switches &amp; PoE Switches</option>
+                      <option value="Fiber Splicing & Optical Network">Fiber Splicing &amp; Optical Network</option>
+                      <option value="Laptop & Computer Sales & Repair">Laptop &amp; Computer Sales &amp; Repair</option>
+                      <option value="Printer Sales, Repair & Refilling">Printer Sales, Repair &amp; Refilling</option>
+                      <option value="Fire Extinguishers & Safety">Fire Extinguishers &amp; Safety</option>
+                      <option value="IT Consultancy & AMC Contract">IT Consultancy &amp; AMC Contract</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label-compact">Job Priority</label>
+                    <select class="form-select form-select-sm" id="editJobPriority">
+                      <option value="medium">Medium Priority</option>
+                      <option value="low">Low Priority</option>
+                      <option value="high">High Priority</option>
+                      <option value="emergency">🚨 Emergency</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label-compact">Assign Field Technician</label>
+                    <select class="form-select form-select-sm" id="editJobAssignedTech">
+                      <option value="">-- Select Technician --</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label-compact">Scheduled Date</label>
+                    <input type="date" class="form-control form-control-sm" id="editJobScheduledDate">
+                  </div>
+                  <div class="col-md-8">
+                    <label class="form-label-compact">Work Scope / Details <span class="text-danger">*</span></label>
+                    <textarea class="form-control form-control-sm" id="editJobDescription" rows="2" required></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section 3: Billing & Payment -->
+              <div class="form-section-box">
+                <div class="form-section-title text-warning">
+                  <i class="bi bi-cash-coin text-warning"></i> Billing &amp; Payment
+                </div>
+                <div class="row g-2">
+                  <div class="col-md-4">
+                    <label class="form-label-compact">Estimated Amount (NPR)</label>
+                    <input type="number" class="form-control form-control-sm" id="editJobEstimatedAmount">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label-compact">Advance Paid (NPR)</label>
+                    <input type="number" class="form-control form-control-sm" id="editJobAdvanceAmount">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label-compact">Payment Mode</label>
+                    <select class="form-select form-select-sm" id="editJobPaymentMode">
+                      <option value="Cash">Cash</option>
+                      <option value="Fonepay">Fonepay QR</option>
+                      <option value="eSewa">eSewa</option>
+                      <option value="Khalti">Khalti</option>
+                      <option value="Bank Transfer">Bank Transfer</option>
+                      <option value="Cheque">Cheque</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer bg-light border-0 py-2 px-3">
+            <button type="button" class="btn btn-sm btn-outline-secondary rounded-2 px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-sm btn-warning px-4 fw-bold rounded-2"><i class="bi bi-check-circle-fill me-1"></i>Update Work Order</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
       </div>
     </div>
   </div>
@@ -248,7 +404,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content border-0 shadow-lg rounded-4">
         <div class="modal-header border-0 pb-0">
-          <h5 class="modal-title fw-bold">Job Card / Work Order Receipt</h5>
+          <h5 class="modal-title fw-bold font-heading">Job Card / Work Order Receipt</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body p-4" id="printableJobCard">
@@ -256,12 +412,12 @@
             <!-- Print Header -->
             <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
               <div>
-                <h3 class="fw-bold mb-1 text-primary">GERMON IT SOLUTION PVT. LTD.</h3>
+                <h3 class="fw-bold mb-1 text-primary font-heading">GERMON IT SOLUTION PVT. LTD.</h3>
                 <p class="small text-muted mb-0">Ganesh Market, Narayangarh, Chitwan, Nepal</p>
                 <p class="small text-muted mb-0">Phone: +977-9855084949, +977-9866284949 | PAN: 609876543</p>
               </div>
               <div class="text-end">
-                <span class="badge bg-primary fs-6 px-3 py-2 mb-1" id="printJobId">JOB-2026-0001</span>
+                <span class="badge bg-primary fs-6 px-3 py-2 mb-1 font-monospace" id="printJobId">JOB-2026-0001</span>
                 <div class="small text-muted" id="printDate">Date: 2026-09-04</div>
               </div>
             </div>
@@ -304,9 +460,9 @@
                 <div class="small text-muted">Payment Mode: <strong id="printPayMode">Cash</strong></div>
               </div>
               <div class="col-6 text-end">
-                <div>Estimated: <strong id="printEstimated">NPR 0</strong></div>
-                <div>Paid / Advance: <strong class="text-success" id="printPaid">NPR 0</strong></div>
-                <div class="fs-6 fw-bold text-danger">Due Balance: <span id="printDue">NPR 0</span></div>
+                <div>Estimated: <strong id="printEstimated" class="font-monospace">NPR 0</strong></div>
+                <div>Paid / Advance: <strong class="text-success font-monospace" id="printPaid">NPR 0</strong></div>
+                <div class="fs-6 fw-bold text-danger">Due Balance: <span id="printDue" class="font-monospace">NPR 0</span></div>
               </div>
             </div>
 
@@ -324,8 +480,8 @@
           </div>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="window.print()"><i class="bi bi-printer-fill me-2"></i> Print Job Slip</button>
+          <button type="button" class="btn btn-secondary rounded-3" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary rounded-3" onclick="window.print()"><i class="bi bi-printer-fill me-2"></i> Print Job Slip</button>
         </div>
       </div>
     </div>
@@ -347,6 +503,7 @@
 
     function initDashboard() {
       populateTechDropdowns();
+      populateClientDatalist();
       renderKPIs();
       renderWebInquiries();
       renderJobsTable();
@@ -382,7 +539,16 @@
       const jobs = GermonStore.getJobs();
       const clients = GermonStore.getClients();
 
-      const totalClients = clients.length;
+      // Consolidate unique clients from clients table + active work orders
+      const clientNames = new Set();
+      clients.forEach(c => {
+        if (c.name && c.name.trim()) clientNames.add(c.name.trim().toLowerCase());
+      });
+      jobs.forEach(j => {
+        if (j.clientName && j.clientName.trim()) clientNames.add(j.clientName.trim().toLowerCase());
+      });
+      const totalClients = Math.max(clients.length, clientNames.size);
+
       const todayStr = new Date().toISOString().split('T')[0];
       const todayWork = jobs.filter(j => j.scheduledDate === todayStr).length;
 
@@ -400,46 +566,64 @@
 
       const row = document.getElementById('kpiStatsRow');
       row.innerHTML = `
-        <div class="col-6 col-lg-2">
+        <div class="col-6 col-md-4 col-xl-2">
           <div class="stat-card accent-primary">
             <div class="stat-card-accent"></div>
-            <div class="stat-label">Total Clients</div>
+            <div class="stat-header">
+              <span class="stat-label">Total Clients</span>
+              <div class="stat-icon stat-icon-primary"><i class="bi bi-buildings-fill"></i></div>
+            </div>
             <div class="stat-value text-primary">${totalClients}</div>
           </div>
         </div>
-        <div class="col-6 col-lg-2">
+        <div class="col-6 col-md-4 col-xl-2">
           <div class="stat-card accent-info">
             <div class="stat-card-accent"></div>
-            <div class="stat-label">Today's Work</div>
+            <div class="stat-header">
+              <span class="stat-label">Today's Work</span>
+              <div class="stat-icon stat-icon-info"><i class="bi bi-calendar-event-fill"></i></div>
+            </div>
             <div class="stat-value text-info">${todayWork}</div>
           </div>
         </div>
-        <div class="col-6 col-lg-2">
+        <div class="col-6 col-md-4 col-xl-2">
           <div class="stat-card accent-warning">
             <div class="stat-card-accent"></div>
-            <div class="stat-label">Pending / Unassigned</div>
+            <div class="stat-header">
+              <span class="stat-label">Pending</span>
+              <div class="stat-icon stat-icon-warning"><i class="bi bi-hourglass-split"></i></div>
+            </div>
             <div class="stat-value text-warning">${pending}</div>
           </div>
         </div>
-        <div class="col-6 col-lg-2">
+        <div class="col-6 col-md-4 col-xl-2">
           <div class="stat-card accent-purple">
             <div class="stat-card-accent"></div>
-            <div class="stat-label">In Progress / Hold</div>
-            <div class="stat-value text-purple" style="color: #8B5CF6;">${inProgress + onHold}</div>
+            <div class="stat-header">
+              <span class="stat-label">In Progress</span>
+              <div class="stat-icon stat-icon-purple"><i class="bi bi-gear-fill"></i></div>
+            </div>
+            <div class="stat-value text-purple" style="color: #8b5cf6;">${inProgress + onHold}</div>
           </div>
         </div>
-        <div class="col-6 col-lg-2">
+        <div class="col-6 col-md-4 col-xl-2">
           <div class="stat-card accent-success">
             <div class="stat-card-accent"></div>
-            <div class="stat-label">Completed</div>
+            <div class="stat-header">
+              <span class="stat-label">Completed</span>
+              <div class="stat-icon stat-icon-success"><i class="bi bi-check-circle-fill"></i></div>
+            </div>
             <div class="stat-value text-success">${completed}</div>
           </div>
         </div>
-        <div class="col-6 col-lg-2">
+        <div class="col-6 col-md-4 col-xl-2">
           <div class="stat-card accent-danger">
             <div class="stat-card-accent"></div>
-            <div class="stat-label">Receivable Due</div>
-            <div class="stat-value text-danger fs-5 mt-2">Rs. ${totalDue.toLocaleString('en-IN')}</div>
+            <div class="stat-header">
+              <span class="stat-label">Receivable</span>
+              <div class="stat-icon stat-icon-danger"><i class="bi bi-cash-coin"></i></div>
+            </div>
+            <div class="stat-value text-danger fs-5 mt-1 font-monospace">Rs.${totalDue.toLocaleString('en-IN')}</div>
           </div>
         </div>
       `;
@@ -467,12 +651,12 @@
         tbody.innerHTML += `
           <tr>
             <td class="ps-3">
-              <span class="badge bg-light text-dark border">${inq.id}</span>
+              <span class="badge bg-light text-dark border font-monospace">${inq.id}</span>
               <div class="small text-muted mt-1">${timeAgo}</div>
             </td>
             <td>
               <div class="fw-bold text-dark">${escapeHtml(inq.name)}</div>
-              <div class="small text-muted"><i class="bi bi-telephone me-1"></i>${inq.phone}</div>
+              <div class="small text-muted font-monospace"><i class="bi bi-telephone me-1"></i>${inq.phone}</div>
             </td>
             <td>
               <span class="badge bg-primary bg-opacity-10 text-primary fw-semibold">${escapeHtml(inq.service)}</span>
@@ -539,7 +723,7 @@
         tbody.innerHTML = `
           <tr>
             <td colspan="7" class="text-center py-5 text-muted">
-              <i class="bi bi-clipboard-x fs-1 d-block mb-2"></i>
+              <i class="bi bi-clipboard-x fs-1 d-block mb-2 text-secondary opacity-50"></i>
               No work orders match the current criteria.
             </td>
           </tr>
@@ -558,15 +742,15 @@
         tbody.innerHTML += `
           <tr>
             <td>
-              <span class="fw-bold text-primary font-monospace">${job.id}</span>
+              <span class="fw-bold text-primary font-monospace fs-6">${job.id}</span>
               <div class="mt-1">
                 <span class="badge badge-priority-${job.priority}">${job.priority.toUpperCase()}</span>
               </div>
-              <div class="small text-muted mt-1">${job.scheduledDate}</div>
+              <div class="small text-muted mt-1 font-monospace">${job.scheduledDate}</div>
             </td>
             <td>
               <div class="fw-bold text-dark">${escapeHtml(job.clientName)}</div>
-              <div class="small text-muted"><i class="bi bi-person me-1"></i>${escapeHtml(job.contactPerson)} &bull; ${job.phone}</div>
+              <div class="small text-muted"><i class="bi bi-person me-1"></i>${escapeHtml(job.contactPerson)} &bull; <span class="font-monospace">${job.phone}</span></div>
               <div class="small text-secondary mt-1">
                 <i class="bi bi-geo-alt-fill text-danger me-1"></i>${escapeHtml(job.location)}
               </div>
@@ -582,18 +766,18 @@
               ${job.assignedTechName ? `
                 <div class="fw-semibold"><i class="bi bi-person-badge text-info me-1"></i>${escapeHtml(job.assignedTechName)}</div>
               ` : `
-                <span class="badge bg-secondary">Unassigned</span>
+                <span class="badge bg-secondary rounded-pill">Unassigned</span>
               `}
             </td>
             <td>
               <span class="badge-status status-${job.status}-badge">
-                <i class="bi bi-circle-fill" style="font-size: 0.5rem;"></i> ${formatStatus(job.status)}
+                <span class="status-dot"></span> ${formatStatus(job.status, job.assignedTechName)}
               </span>
             </td>
             <td>
-              <div class="small">Total: <strong>Rs. ${est.toLocaleString('en-IN')}</strong></div>
-              <div class="small text-success">Paid: Rs. ${paid.toLocaleString('en-IN')}</div>
-              ${due > 0 ? `<div class="small text-danger fw-bold">Due: Rs. ${due.toLocaleString('en-IN')}</div>` : `<span class="badge bg-success bg-opacity-25 text-success">Paid</span>`}
+              <div class="small">Total: <strong class="font-monospace">Rs.${est.toLocaleString('en-IN')}</strong></div>
+              <div class="small text-success">Paid: <span class="font-monospace">Rs.${paid.toLocaleString('en-IN')}</span></div>
+              ${due > 0 ? `<div class="small text-danger fw-bold">Due: <span class="font-monospace">Rs.${due.toLocaleString('en-IN')}</span></div>` : `<span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1">Paid</span>`}
             </td>
             <td class="text-end pe-3">
               <div class="d-inline-flex gap-1">
@@ -615,6 +799,18 @@
                 <button class="btn-action-icon" title="Print Job Card" onclick="openPrintModal('${job.id}')">
                   <i class="bi bi-printer-fill"></i>
                 </button>
+                <!-- Edit Job (Admin & Staff) -->
+                ${(GermonStore.getCurrentUser()?.role === 'admin' || GermonStore.getCurrentUser()?.role === 'staff') ? `
+                  <button class="btn-action-icon text-primary" title="Edit Work Order" onclick="openEditModal('${job.id}')">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                ` : ''}
+                <!-- Delete Job (Admin Only) -->
+                ${GermonStore.getCurrentUser()?.role === 'admin' ? `
+                  <button class="btn-action-icon text-danger" title="Delete Work Order (Admin Only)" onclick="confirmDeleteJob('${job.id}', '${escapeHtml(job.clientName)}')">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                ` : ''}
               </div>
             </td>
           </tr>
@@ -624,6 +820,119 @@
 
     function applyFilters() {
       renderJobsTable();
+    }
+
+    // Open & Populate Edit Modal
+    function openEditModal(jobId) {
+      const job = GermonStore.getJobById(jobId);
+      if (!job) return;
+
+      document.getElementById('editJobId').value = job.id;
+      document.getElementById('editJobClientName').value = job.clientName || '';
+      document.getElementById('editJobContactPerson').value = job.contactPerson || '';
+      document.getElementById('editJobPhone').value = job.phone || '';
+      document.getElementById('editJobWorkType').value = job.workType;
+      document.getElementById('editJobPriority').value = job.priority;
+      document.getElementById('editJobLocation').value = job.location || '';
+      document.getElementById('editJobMapUrl').value = job.mapUrl || '';
+      document.getElementById('editJobScheduledDate').value = job.scheduledDate || '';
+      document.getElementById('editJobDescription').value = job.description || '';
+      document.getElementById('editJobEstimatedAmount').value = job.estimatedAmount || 0;
+      document.getElementById('editJobAdvanceAmount').value = job.advanceAmount || 0;
+      document.getElementById('editJobPaymentMode').value = job.paymentMode || 'Cash';
+
+      // Populate Tech dropdown in edit modal
+      const users = GermonStore.getUsers();
+      const assignable = users.filter(u => u.role !== 'admin' && u.status === 'active');
+      const techSelect = document.getElementById('editJobAssignedTech');
+      techSelect.innerHTML = '<option value="">-- Unassigned --</option>';
+      assignable.forEach(t => {
+        const isSel = job.assignedTechId === t.id ? 'selected' : '';
+        techSelect.innerHTML += `<option value="${t.id}" data-name="${t.name}" ${isSel}>${t.name} — ${t.role}</option>`;
+      });
+
+      const modal = new bootstrap.Modal(document.getElementById('editJobModal'));
+      modal.show();
+    }
+
+    // Submit Edit Job Form
+    document.getElementById('editJobForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const jobId = document.getElementById('editJobId').value;
+      const techSelect = document.getElementById('editJobAssignedTech');
+      const selectedTechOpt = techSelect.options[techSelect.selectedIndex];
+
+      const updatedData = {
+        clientName: document.getElementById('editJobClientName').value.trim(),
+        contactPerson: document.getElementById('editJobContactPerson').value.trim(),
+        phone: document.getElementById('editJobPhone').value.trim(),
+        workType: document.getElementById('editJobWorkType').value,
+        priority: document.getElementById('editJobPriority').value,
+        location: document.getElementById('editJobLocation').value.trim(),
+        mapUrl: document.getElementById('editJobMapUrl').value.trim(),
+        assignedTechId: techSelect.value,
+        assignedTechName: selectedTechOpt ? selectedTechOpt.getAttribute('data-name') : 'Unassigned',
+        scheduledDate: document.getElementById('editJobScheduledDate').value,
+        description: document.getElementById('editJobDescription').value.trim(),
+        estimatedAmount: document.getElementById('editJobEstimatedAmount').value || 0,
+        advanceAmount: document.getElementById('editJobAdvanceAmount').value || 0,
+        paymentMode: document.getElementById('editJobPaymentMode').value
+      };
+
+      try {
+        GermonStore.updateJobDetails(jobId, updatedData);
+        const modalEl = document.getElementById('editJobModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+        modalInstance.hide();
+        alert(`Work Order ${jobId} updated successfully!`);
+        initDashboard();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    // Confirm & Delete Work Order
+    function confirmDeleteJob(jobId, clientName) {
+      if (confirm(`Are you sure you want to delete Work Order ${jobId} (${clientName})?\n\nNOTE: The work order entry will be deleted, but Client info and Passwords Vault credentials will REMAIN PERMANENTLY SAVED.`)) {
+        try {
+          GermonStore.deleteJob(jobId);
+          alert(`Work Order ${jobId} deleted successfully. Client details & Vault credentials were preserved.`);
+          initDashboard();
+        } catch (err) {
+          alert(err.message);
+        }
+      }
+    }
+
+    function populateClientDatalist() {
+      const datalist = document.getElementById('clientsDatalist');
+      if (!datalist) return;
+      const clients = GermonStore.getClients();
+      datalist.innerHTML = '';
+      clients.forEach(c => {
+        datalist.innerHTML += `<option value="${escapeHtml(c.name)}">${c.name} — ${c.address}</option>`;
+      });
+    }
+
+    function autoFillClientDetails() {
+      const val = document.getElementById('jobClientName').value.trim().toLowerCase();
+      if (!val) return;
+      const clients = GermonStore.getClients();
+      const found = clients.find(c => (c.name || '').trim().toLowerCase() === val);
+      if (found) {
+        if (found.contactPerson && !document.getElementById('jobContactPerson').value) {
+          document.getElementById('jobContactPerson').value = found.contactPerson;
+        }
+        if (found.phone && !document.getElementById('jobPhone').value) {
+          document.getElementById('jobPhone').value = found.phone;
+        }
+        if (found.address && !document.getElementById('jobLocation').value) {
+          document.getElementById('jobLocation').value = found.address;
+        }
+        if (found.mapUrl) {
+          document.getElementById('jobMapUrl').value = found.mapUrl;
+        }
+      }
     }
 
     // Handle New Job Creation
@@ -709,10 +1018,11 @@
       modal.show();
     }
 
-    function formatStatus(status) {
+    function formatStatus(status, techName = '') {
       switch (status) {
         case 'pending': return 'Pending';
         case 'assigned': return 'Assigned';
+        case 'en_route': return `🚗 En Route: ${techName || 'Technician'}`;
         case 'in_progress': return 'In Progress';
         case 'on_hold': return 'On Hold';
         case 'completed': return 'Completed';

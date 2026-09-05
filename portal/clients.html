@@ -168,8 +168,8 @@
                 <input type="text" class="form-control" id="newClientPan" placeholder="e.g. 609876543">
               </div>
               <div class="col-12">
-                <label class="form-label fw-semibold small">Google Maps Location Link</label>
-                <input type="url" class="form-control" id="newClientMap" placeholder="https://maps.app.goo.gl/...">
+                <label class="form-label fw-semibold small">Google Maps Location Link <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="newClientMap" placeholder="https://maps.app.goo.gl/..." required>
               </div>
             </div>
           </div>
@@ -298,6 +298,11 @@
             <td>
               <div class="small fw-semibold text-dark">${escapeHtml(c.address)}</div>
               <div class="small text-secondary"><i class="bi bi-geo-alt-fill text-danger me-1"></i>${escapeHtml(c.landmark || 'No landmark')}</div>
+              ${c.mapUrl ? `
+                <a href="${c.mapUrl}" target="_blank" class="badge bg-danger text-white text-decoration-none mt-1 d-inline-block shadow-sm">
+                  <i class="bi bi-geo-alt-fill me-1"></i>Open Google Maps
+                </a>
+              ` : ''}
             </td>
             <td><span class="small font-monospace text-muted">${c.panVat || 'N/A'}</span></td>
             <td><span class="badge bg-secondary bg-opacity-10 text-secondary">${c.type}</span></td>

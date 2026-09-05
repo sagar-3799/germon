@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -27,10 +27,8 @@
         <span><i class="bi bi-telephone-fill text-success me-1"></i> +977-9855084949 / 9866284949</span>
       </div>
       <div class="social-icons">
-        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
-        <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        <a href="https://www.facebook.com/share/1KWz8XonRF/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+        <a href="https://wa.me/9779855084949" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
       </div>
     </div>
   </div>
@@ -40,12 +38,15 @@
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
       <div class="container">
         <a class="navbar-brand navbar-brand-wrapper" href="index.html">
-          <img src="logo.jpeg" alt="Germon IT Solution Logo" class="navbar-brand-logo">
-          <div class="brand-text">
-            <span class="brand-name">GERMON IT</span>
-            <span class="brand-subname">SOLUTION PVT. LTD.</span>
-          </div>
+          <img src="images/logo.jpeg" alt="Germon IT Solution Logo" class="navbar-brand-logo">
         </a>
+
+        <!-- Mobile Staff Portal Icon (Left side of hamburger toggler) -->
+        <div class="d-flex align-items-center ms-auto me-2 d-lg-none">
+          <a href="portal/index.html" class="btn btn-sm btn-staff-portal rounded-circle p-0 d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px;" title="Staff Portal" aria-label="Staff Portal">
+            <i class="bi bi-person-badge-fill fs-6"></i>
+          </a>
+        </div>
 
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
           <span class="bi bi-list fs-1 text-primary"></span>
@@ -68,8 +69,10 @@
             <li class="nav-item">
               <a class="nav-link active" href="contact.html">Contact</a>
             </li>
-            <li class="nav-item ms-lg-2">
-              <a href="portal/index.html" class="nav-link text-warning fw-semibold"><i class="bi bi-shield-lock-fill me-1"></i>Staff Portal</a>
+            <li class="nav-item ms-lg-2 d-none d-lg-block">
+              <a href="portal/index.html" class="btn btn-sm btn-staff-portal rounded-circle p-0 d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px;" title="Staff Portal" aria-label="Staff Portal">
+                <i class="bi bi-person-badge-fill fs-6"></i>
+              </a>
             </li>
             <li class="nav-item ms-lg-2">
               <a href="contact.html" class="btn btn-custom-primary">Get a Quote <i class="bi bi-arrow-right-short fs-5"></i></a>
@@ -81,11 +84,12 @@
   </header>
 
   <!-- Inner Page Banner -->
-  <section class="py-5 bg-dark text-white position-relative" style="background: linear-gradient(135deg, #0B0F19 0%, #2B2E83 100%);">
-    <div class="container py-4 text-center">
-      <h1 class="display-4 fw-bold text-white mb-2">Contact Germon IT Solution</h1>
+  <section class="py-3 bg-dark text-white position-relative" style="background: linear-gradient(135deg, #0B0F19 0%, #2B2E83 100%);">
+    <div class="container text-center">
+      <span class="badge bg-info text-dark rounded-pill px-3 py-1 mb-1 font-heading">GET IN TOUCH WITH CHITWAN'S TRUSTED IT TEAM</span>
+      <h1 class="h3 fw-bold text-white mb-1 font-heading">Contact Germon IT Solution</h1>
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb justify-content-center mb-0">
+        <ol class="breadcrumb justify-content-center mb-0 extra-small">
           <li class="breadcrumb-item"><a href="index.html" class="text-info text-decoration-none">Home</a></li>
           <li class="breadcrumb-item active text-white-50" aria-current="page">Contact Us</li>
         </ol>
@@ -93,177 +97,229 @@
     </div>
   </section>
 
-  <!-- Contact Info Cards & Form -->
-  <section class="py-5">
-    <div class="container py-4">
+  <!-- Contact Info Cards, AMC Banner & Form -->
+  <section class="py-3">
+    <div class="container">
       
-      <!-- Info Cards Row -->
-      <div class="row g-4 mb-5">
+      <!-- Top: 4 Quick Contact Info Items (Icon + Detail Text Only) -->
+      <div class="row g-3 mb-3">
         
-        <div class="col-lg-3 col-md-6 reveal-on-scroll">
-          <div class="contact-info-card h-100">
-            <div class="contact-info-icon"><i class="bi bi-geo-alt-fill"></i></div>
-            <div>
-              <h4 class="h6 fw-bold mb-1">Our Location</h4>
-              <p class="text-muted small mb-0">Ganesh Market, Narayangarh, Chitwan, Nepal</p>
+        <!-- 1. Location -->
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 reveal-on-scroll">
+          <div class="d-flex align-items-center gap-2.5">
+            <div class="rounded-circle text-white d-flex align-items-center justify-content-center flex-shrink-0 shadow-sm" style="width: 38px; height: 38px; background: #0284C7; font-size: 1.1rem;">
+              <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div class="fw-semibold text-dark small">Ganesh Market, Narayangarh</div>
+          </div>
+        </div>
+
+        <!-- 2. Call Hotlines -->
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 reveal-on-scroll delay-100">
+          <div class="d-flex align-items-center gap-2.5">
+            <div class="rounded-circle text-white d-flex align-items-center justify-content-center flex-shrink-0 shadow-sm" style="width: 38px; height: 38px; background: #10B981; font-size: 1.1rem;">
+              <i class="bi bi-telephone-fill"></i>
+            </div>
+            <div class="small fw-semibold">
+              <a href="tel:+9779855084949" class="text-dark text-decoration-none">+977-9855084949</a> / 
+              <a href="tel:+9779866284949" class="text-dark text-decoration-none">9866284949</a>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-3 col-md-6 reveal-on-scroll delay-100">
-          <div class="contact-info-card h-100">
-            <div class="contact-info-icon"><i class="bi bi-telephone-fill"></i></div>
-            <div>
-              <h4 class="h6 fw-bold mb-1">Call Hotlines</h4>
-              <p class="text-muted small mb-0">+977-9855084949<br>+977-9866284949</p>
+        <!-- 3. Email -->
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 reveal-on-scroll delay-200">
+          <div class="d-flex align-items-center gap-2.5">
+            <div class="rounded-circle text-white d-flex align-items-center justify-content-center flex-shrink-0 shadow-sm" style="width: 38px; height: 38px; background: #6D28D9; font-size: 1.1rem;">
+              <i class="bi bi-envelope-fill"></i>
+            </div>
+            <div class="small fw-semibold">
+              <a href="mailto:germonitchitwan@gmail.com" class="text-dark text-decoration-none">germonitchitwan@gmail.com</a>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-3 col-md-6 reveal-on-scroll delay-200">
-          <div class="contact-info-card h-100">
-            <div class="contact-info-icon"><i class="bi bi-envelope-fill"></i></div>
-            <div>
-              <h4 class="h6 fw-bold mb-1">Official Email</h4>
-              <p class="text-muted small mb-0"><a href="mailto:germonitchitwan@gmail.com" class="text-muted">germonitchitwan@gmail.com</a></p>
+        <!-- 4. Support Hours -->
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 reveal-on-scroll delay-300">
+          <div class="d-flex align-items-center gap-2.5">
+            <div class="rounded-circle text-white d-flex align-items-center justify-content-center flex-shrink-0 shadow-sm" style="width: 38px; height: 38px; background: #F59E0B; font-size: 1.1rem;">
+              <i class="bi bi-clock-fill"></i>
             </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 reveal-on-scroll delay-300">
-          <div class="contact-info-card h-100">
-            <div class="contact-info-icon"><i class="bi bi-clock-fill"></i></div>
-            <div>
-              <h4 class="h6 fw-bold mb-1">Business Hours</h4>
-              <p class="text-muted small mb-0">Sun - Fri: 9:00 AM - 6:00 PM<br>(Saturday Closed / Emergency AMC open)</p>
-            </div>
+            <div class="fw-semibold text-dark small">Sun - Fri: 9:00 AM - 7:00 PM</div>
           </div>
         </div>
 
       </div>
 
-      <!-- Contact Form & Support Box Row -->
-      <div class="row g-5">
-        
-        <div class="col-lg-7 reveal-on-scroll">
-          <div class="contact-form-card">
-            <h3 class="h3 fw-bold text-primary mb-2">Send Us a Message</h3>
-            <p class="text-muted mb-4">Have an inquiry regarding CCTV, Fire Extinguishers, Attendance Machines, Laptop Repair, Routers, or PoE Switches? Fill in your details below.</p>
+      <!-- MIDDLE: AMC & Emergency Tech Support Details Card (ABOVE FORM) -->
+      <div class="row mb-3 reveal-on-scroll">
+        <div class="col-lg-10 offset-lg-1">
+          <div class="p-3 p-md-3.5 rounded-4 shadow text-white position-relative overflow-hidden" style="background: linear-gradient(135deg, #1E1B4B 0%, #2B2E83 50%, #0F172A 100%); border-top: 4px solid #F59E0B;">
+            <div class="row align-items-center g-2.5">
+              <div class="col-lg-7">
+                <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                  <span class="badge bg-warning text-dark rounded-pill px-2.5 py-1 extra-small fw-bold"><i class="bi bi-shield-check me-1"></i>Emergency AMC Support</span>
+                  <span class="badge bg-info text-dark rounded-pill px-2.5 py-1 extra-small">9:00 AM - 7:00 PM</span>
+                  <span class="badge bg-white bg-opacity-20 text-white rounded-pill px-2.5 py-1 extra-small">Est. 2079 BS (3+ Yrs Exp)</span>
+                </div>
+                <h3 class="h6 text-white fw-bold mb-1 font-heading">Facing Server Breakdown, CCTV Loss, or Lock Malfunction?</h3>
+                <p class="text-white-50 extra-small mb-0">Our rapid-response technician team in Narayangarh is on-call for emergency AMC service callouts and hardware repairs.</p>
+              </div>
+
+              <div class="col-lg-5">
+                <div class="d-flex flex-column flex-sm-row gap-2 justify-content-lg-end">
+                  <a href="tel:+9779855084949" class="btn btn-info text-dark fw-bold btn-sm py-2 px-3 rounded-3 d-inline-flex align-items-center justify-content-center shadow font-heading">
+                    <i class="bi bi-telephone-outbound-fill me-1.5 fs-6 text-danger animated-pulse-icon"></i> Call +977-9855084949
+                  </a>
+                  <a href="https://wa.me/9779866284949" target="_blank" rel="noopener noreferrer" class="btn btn-success text-white fw-bold btn-sm py-2 px-3 rounded-3 d-inline-flex align-items-center justify-content-center shadow font-heading" style="background-color: #25D366; border-color: #25D366;">
+                    <i class="bi bi-whatsapp me-1.5 fs-6"></i> WhatsApp Direct
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM: Colorful Compact Contact Form (BELOW AMC DETAILS) -->
+      <div class="row reveal-on-scroll">
+        <div class="col-lg-10 offset-lg-1">
+          <div class="contact-form-card contact-form-colorful p-3 p-md-3.5 bg-white rounded-4 shadow border-0">
+            <div class="d-flex align-items-center justify-content-between mb-2.5 border-bottom pb-2">
+              <div>
+                <h3 class="h5 fw-bold text-primary mb-0 font-heading"><i class="bi bi-pencil-square text-info me-2"></i>Send Us an Official Inquiry</h3>
+                <p class="text-muted extra-small mb-0">Fill in your requirements for quick technician quote &amp; AMC consultation.</p>
+              </div>
+              <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2.5 py-1 extra-small fw-semibold"><i class="bi bi-lightning-charge-fill text-warning me-1"></i>Quick Response</span>
+            </div>
 
             <form id="contactForm" novalidate>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label for="nameInput" class="form-label fw-semibold">Your Full Name <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="nameInput" placeholder="e.g. Sagar Adhikari" required>
-                  <div class="invalid-feedback">Please enter your full name.</div>
+              <div class="row g-2.5">
+                
+                <!-- ROW 1 (3 Columns: Name, Phone, Email) -->
+                <!-- 1. Full Name -->
+                <div class="col-md-4 col-sm-6">
+                  <label for="nameInput" class="form-label fw-semibold extra-small mb-1">Your Full Name <span class="text-danger">*</span></label>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text input-badge-primary"><i class="bi bi-person-fill"></i></span>
+                    <input type="text" class="form-control" id="nameInput" placeholder="Sagar Adhikari" required>
+                    <div class="invalid-feedback">Please enter your full name.</div>
+                  </div>
                 </div>
 
-                <div class="col-md-6">
-                  <label for="phoneInput" class="form-label fw-semibold">Phone Number <span class="text-danger">*</span></label>
-                  <input type="tel" class="form-control" id="phoneInput" placeholder="e.g. +977-9800000000" required>
-                  <div class="invalid-feedback">Please enter your contact phone number.</div>
+                <!-- 2. Phone Number -->
+                <div class="col-md-4 col-sm-6">
+                  <label for="phoneInput" class="form-label fw-semibold extra-small mb-1">Phone / Mobile <span class="text-danger">*</span></label>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text input-badge-success"><i class="bi bi-telephone-fill"></i></span>
+                    <input type="tel" class="form-control" id="phoneInput" placeholder="+977-9800000000" required>
+                    <div class="invalid-feedback">Please enter a phone number.</div>
+                  </div>
                 </div>
 
-                <div class="col-md-6">
-                  <label for="emailInput" class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
-                  <input type="email" class="form-control" id="emailInput" placeholder="name@domain.com" required>
-                  <div class="invalid-feedback">Please enter a valid email address.</div>
+                <!-- 3. Email Address -->
+                <div class="col-md-4 col-sm-12">
+                  <label for="emailInput" class="form-label fw-semibold extra-small mb-1">Email Address <span class="text-danger">*</span></label>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text input-badge-info"><i class="bi bi-envelope-fill"></i></span>
+                    <input type="email" class="form-control" id="emailInput" placeholder="name@domain.com" required>
+                    <div class="invalid-feedback">Please enter an email address.</div>
+                  </div>
                 </div>
 
-                <div class="col-md-6">
-                  <label for="serviceSelect" class="form-label fw-semibold">Service / Product Category <span class="text-danger">*</span></label>
-                  <select class="form-select" id="serviceSelect" required>
-                    <option value="" selected>Select Product/Service...</option>
-                    <option value="CCTV & Wi-Fi Smart Cameras">CCTV &amp; Wi-Fi Smart Cameras</option>
-                    <option value="DVR & NVR Installation & AMC">DVR &amp; NVR Installation &amp; AMC</option>
-                    <option value="Fire Extinguishers & Safety">Fire Extinguishers &amp; Safety</option>
-                    <option value="Biometric Attendance Machines">Biometric Attendance Machines</option>
-                    <option value="Access Control Door & Gate Systems">Access Control Door &amp; Gate Systems</option>
-                    <option value="Money / Currency Counting Machines">Money / Currency Counting Machines</option>
-                    <option value="Laptop & Computer Sales & Repair">Laptop &amp; Computer Sales &amp; Repair</option>
-                    <option value="Printer Sales, Repair & Refilling">Printer Sales, Repair &amp; Refilling</option>
-                    <option value="Routers, Switches & PoE Switches">Routers, Switches &amp; PoE Switches</option>
-                    <option value="Fiber Splicing & Optical Network">Fiber Splicing &amp; Optical Network</option>
-                    <option value="IT Consultancy & AMC Contract">IT Consultancy &amp; AMC Contract</option>
-                  </select>
-                  <div class="invalid-feedback">Please select a service category.</div>
+                <!-- ROW 2 (3 Columns: Service, Location, Urgency) -->
+                <!-- 4. Service Category -->
+                <div class="col-md-4 col-sm-6">
+                  <label for="serviceSelect" class="form-label fw-semibold extra-small mb-1">Service Category <span class="text-danger">*</span></label>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text input-badge-warning"><i class="bi bi-tools"></i></span>
+                    <select class="form-select" id="serviceSelect" required>
+                      <option value="" selected disabled>Select category...</option>
+                      <option value="CCTV Installation & AMC">CCTV Installation &amp; AMC</option>
+                      <option value="Smart Wi-Fi Cameras">Smart Wi-Fi Cameras</option>
+                      <option value="DVR & NVR Installation">DVR &amp; NVR Systems</option>
+                      <option value="Fire Extinguishers & Safety">Fire Extinguishers &amp; Safety</option>
+                      <option value="Biometric Attendance Machines">Biometric Attendance</option>
+                      <option value="Access Control & Smart Gates">Access Control &amp; Smart Gates</option>
+                      <option value="Money / Currency Counting Machines">Currency Counting Machines</option>
+                      <option value="Laptop & Computer Sales & Repair">Laptop &amp; PC Sales / Repair</option>
+                      <option value="Printer Sales, Repair & Refilling">Printer Servicing &amp; Refilling</option>
+                      <option value="Routers, Switches & PoE Switches">Routers &amp; PoE Switches</option>
+                      <option value="Fiber Splicing & Optical Network">Structured Cabling &amp; Fiber</option>
+                      <option value="IT Consultancy & AMC Contract">IT Consultancy &amp; AMC</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a category.</div>
+                  </div>
                 </div>
 
-                <div class="col-md-6">
-                  <label for="locationInput" class="form-label fw-semibold">Location / Address <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="locationInput" placeholder="e.g. Bharatpur-10, Hakim Chowk" required>
-                  <div class="invalid-feedback">Please provide your location or landmark.</div>
+                <!-- 5. Location / Address -->
+                <div class="col-md-4 col-sm-6">
+                  <label for="locationInput" class="form-label fw-semibold extra-small mb-1">Location / Address <span class="text-danger">*</span></label>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text input-badge-danger"><i class="bi bi-geo-alt-fill"></i></span>
+                    <input type="text" class="form-control" id="locationInput" placeholder="Bharatpur-10" required>
+                    <div class="invalid-feedback">Please provide location.</div>
+                  </div>
                 </div>
 
-                <div class="col-md-6">
-                  <label for="urgencySelect" class="form-label fw-semibold">Urgency / Timeline</label>
-                  <select class="form-select" id="urgencySelect">
-                    <option value="Normal">Normal Inquiry (1-2 Days)</option>
-                    <option value="Urgent">Urgent (Today / Within 24 Hrs)</option>
-                    <option value="Emergency">ðŸš¨ Critical / Emergency (Immediate Breakdown)</option>
-                  </select>
+                <!-- 6. Urgency / Timeline -->
+                <div class="col-md-4 col-sm-12">
+                  <label for="urgencySelect" class="form-label fw-semibold extra-small mb-1">Urgency / Timeline</label>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text input-badge-purple"><i class="bi bi-clock-history"></i></span>
+                    <select class="form-select" id="urgencySelect">
+                      <option value="Normal">Normal Inquiry (1-2 Days)</option>
+                      <option value="Urgent">Urgent (Within 24 Hrs)</option>
+                      <option value="Emergency">&#128680; Emergency Breakdown</option>
+                    </select>
+                  </div>
                 </div>
 
-                <div class="col-12">
-                  <label for="subjectInput" class="form-label fw-semibold">Subject <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="subjectInput" placeholder="Inquiry regarding CCTV / Fire Safety / Laptop repair..." required>
-                  <div class="invalid-feedback">Please provide a subject.</div>
+                <!-- ROW 3 (Same Row: Subject, Description, Submit Button, WhatsApp Button) -->
+                <!-- Subject -->
+                <div class="col-lg-3 col-md-6">
+                  <label for="subjectInput" class="form-label fw-semibold extra-small mb-1">Subject <span class="text-danger">*</span></label>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text input-badge-primary"><i class="bi bi-chat-left-dots-fill"></i></span>
+                    <input type="text" class="form-control" id="subjectInput" placeholder="Quotation..." required>
+                    <div class="invalid-feedback">Please provide a subject.</div>
+                  </div>
                 </div>
 
-                <div class="col-12">
-                  <label for="messageInput" class="form-label fw-semibold">Detailed Message <span class="text-danger">*</span></label>
-                  <textarea class="form-control" id="messageInput" rows="5" placeholder="Describe your requirement..." required></textarea>
-                  <div class="invalid-feedback">Please enter your message details.</div>
+                <!-- Description / Detailed Message -->
+                <div class="col-lg-4 col-md-6">
+                  <label for="messageInput" class="form-label fw-semibold extra-small mb-1">Description <span class="text-danger">*</span></label>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text input-badge-info"><i class="bi bi-pencil-square"></i></span>
+                    <input type="text" class="form-control" id="messageInput" placeholder="Describe requirement..." required>
+                    <div class="invalid-feedback">Please enter description.</div>
+                  </div>
                 </div>
 
-                <div class="col-12 mt-4">
-                  <button type="submit" class="btn btn-custom-primary btn-lg w-100">Send Message <i class="bi bi-send-fill ms-2"></i></button>
+                <!-- Submit Inquiry Button -->
+                <div class="col-lg-2 col-md-6 d-flex align-items-end">
+                  <button type="submit" class="btn btn-custom-primary btn-sm w-100 shadow font-heading py-1.5" style="height: 31px;">
+                    Submit <i class="bi bi-send-fill ms-1"></i>
+                  </button>
                 </div>
+
+                <!-- WhatsApp Direct Button -->
+                <div class="col-lg-3 col-md-6 d-flex align-items-end">
+                  <a href="https://wa.me/9779855084949" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-sm w-100 shadow font-heading d-flex align-items-center justify-content-center py-1.5" style="background-color: #25D366; border-color: #25D366; height: 31px;">
+                    <i class="bi bi-whatsapp me-1 fs-6"></i> WhatsApp Direct
+                  </a>
+                </div>
+
               </div>
             </form>
           </div>
         </div>
-
-        <div class="col-lg-5 reveal-on-scroll delay-100">
-          <div class="bg-dark text-white p-4 p-md-5 rounded-4 shadow-lg h-100 d-flex flex-column justify-content-between" style="background: linear-gradient(135deg, #2B2E83 0%, #0B0F19 100%);">
-            <div>
-              <span class="badge bg-danger mb-3 px-3 py-2 fs-6">24/7 EMERGENCY TECH SUPPORT</span>
-              <h3 class="text-white fw-bold mb-3">Facing Server Breakdown, CCTV Failure, or Lock Malfunction?</h3>
-              <p class="text-white-50 mb-4">Our rapid-response technician team in Narayangarh is available for emergency AMC calls and priority hardware diagnostics.</p>
-              
-              <div class="p-3 bg-white bg-opacity-10 rounded-3 mb-3 border border-white border-opacity-10">
-                <h4 class="h6 text-info mb-1"><i class="bi bi-telephone-outbound-fill me-2"></i> Direct Emergency Helpline</h4>
-                <a href="tel:+9779855084949" class="fs-4 text-white fw-bold text-decoration-none">+977-9855084949</a>
-              </div>
-
-              <div class="p-3 bg-white bg-opacity-10 rounded-3 border border-white border-opacity-10">
-                <h4 class="h6 text-danger mb-1"><i class="bi bi-chat-dots-fill me-2"></i> WhatsApp Instant Support</h4>
-                <a href="https://wa.me/9779866284949" target="_blank" class="fs-5 text-white fw-semibold text-decoration-none">+977-9866284949</a>
-              </div>
-            </div>
-
-            <div class="mt-4 pt-4 border-top border-secondary">
-              <h5 class="text-white h6 mb-3">Follow Germon IT Solution:</h5>
-              <div class="social-icons">
-                <a href="#" aria-label="Facebook"><i class="bi bi-facebook fs-5"></i></a>
-                <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp fs-5"></i></a>
-                <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin fs-5"></i></a>
-                <a href="#" aria-label="Instagram"><i class="bi bi-instagram fs-5"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
 
-      <!-- Google Map Section -->
-      <div class="row mt-5">
-        <div class="col-12 reveal-on-scroll">
-          <div class="text-center mb-4">
-            <span class="section-subtitle">FIND US ON THE MAP</span>
-            <h2 class="section-title">Visit Our Store &amp; Service Center in Narayangarh</h2>
-          </div>
-          <div class="map-container">
+      <!-- Google Map Section (Compact & Stylish) -->
+      <div class="row mt-3">
+        <div class="col-lg-10 offset-lg-1 reveal-on-scroll">
+          <div class="map-container position-relative rounded-4 overflow-hidden shadow-sm border" style="height: 260px;">
             <!-- Google Maps Embed for Ganesh Market, Narayangarh, Chitwan, Nepal -->
             <iframe 
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.748123456789!2d84.425890!3d27.697450!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3994fb2188888888%3A0x1111111111111111!2sGanesh%20Market%2C%20Narayangarh%2C%20Chitwan%2C%20Nepal!5e0!3m2!1sen!2snp!4v1700000000000!5m2!1sen!2snp" 
@@ -275,6 +331,11 @@
               referrerpolicy="no-referrer-when-downgrade"
               title="Germon IT Solution Location Map">
             </iframe>
+            
+            <div class="position-absolute bottom-0 start-0 m-2 bg-white p-1.5 px-2.5 rounded-3 shadow-sm border d-none d-sm-block">
+              <span class="extra-small text-dark fw-bold"><i class="bi bi-geo-alt-fill text-danger me-1"></i> Ganesh Market, Narayangarh</span>
+              <a href="https://maps.google.com/?q=Ganesh+Market+Narayangarh+Chitwan+Nepal" target="_blank" rel="noopener noreferrer" class="btn btn-xs btn-outline-primary ms-2 py-0 px-2 extra-small">Get Directions <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+            </div>
           </div>
         </div>
       </div>
@@ -282,78 +343,64 @@
     </div>
   </section>
 
-  <!-- Footer Section -->
-  <footer class="footer-section">
-    <div class="container">
-      <div class="row g-4">
+  <!-- Compact Animated Footer Section -->
+  <footer class="footer-compact">
+    <div class="footer-top-border"></div>
+    <div class="container py-3">
+      <div class="row g-4 align-items-center">
         
-        <div class="col-lg-4 col-md-6">
-          <div class="d-flex align-items-center gap-2 mb-3">
-            <img src="logo.jpeg" alt="Germon IT Solution Logo" class="footer-logo">
-            <div class="brand-text">
-              <span class="brand-name text-white">GERMON IT</span>
-              <span class="brand-subname text-info">SOLUTION PVT. LTD.</span>
+        <!-- Brand & Short Note -->
+        <div class="col-lg-4 col-md-6 text-center text-lg-start">
+          <div class="d-inline-flex align-items-center gap-2 mb-2">
+            <img src="logo.jpeg" alt="Germon IT Logo" class="footer-logo-sm">
+          </div>
+          <p class="text-white-50 small mb-3">Premier IT &amp; Security Solutions in Narayangarh, Chitwan. Est. 2079 BS.</p>
+          <div class="footer-social-animated justify-content-center justify-content-lg-start">
+            <a href="https://www.facebook.com/share/1KWz8XonRF/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-btn fb"><i class="bi bi-facebook"></i></a>
+            <a href="https://wa.me/9779855084949" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="social-btn wa"><i class="bi bi-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- Compact Navigation Links -->
+        <div class="col-lg-4 col-md-6 text-center">
+          <h5 class="text-white fw-bold mb-2.5 fs-6 font-heading">Quick Navigation</h5>
+          <div class="d-flex flex-wrap justify-content-center gap-3 footer-nav-compact mb-2">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="services.html">Services</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="contact.html">Contact Us</a>
+          </div>
+          <div class="footer-tag-cloud mt-2 d-flex flex-wrap justify-content-center gap-1.5">
+            <span class="badge bg-secondary bg-opacity-20 text-white-50">CCTV &amp; Wi-Fi</span>
+            <span class="badge bg-secondary bg-opacity-20 text-white-50">Fire Safety</span>
+            <span class="badge bg-secondary bg-opacity-20 text-white-50">Biometrics</span>
+            <span class="badge bg-secondary bg-opacity-20 text-white-50">PC Repair</span>
+          </div>
+        </div>
+
+        <!-- Quick Contact Info -->
+        <div class="col-lg-4 col-md-12 text-center text-lg-end">
+          <h5 class="text-white fw-bold mb-2.5 fs-6 font-heading">Direct Contact</h5>
+          <div class="footer-contact-compact d-flex flex-column align-items-center align-items-lg-end gap-1 small text-white-50">
+            <div><i class="bi bi-geo-alt-fill text-danger me-1.5"></i> Ganesh Market, Narayangarh, Chitwan</div>
+            <div>
+              <a href="tel:+9779855084949" class="text-white text-decoration-none fw-semibold">
+                <i class="bi bi-telephone-fill text-primary me-1.5 animated-pulse-icon"></i> +977-9855084949 / 9866284949
+              </a>
             </div>
-          </div>
-          <p class="text-muted mb-4">Premier IT company based in Ganesh Market, Narayangarh, Chitwan, Nepal. Specialized in CCTV, Fire Extinguishers, Biometric Attendance, Wi-Fi Cameras, Printers, Money Counting Machines, Access Control Gates, Laptop/Computer Sales &amp; Repair, Routers, Switches, PoE Switches, and DVR/NVR Installation &amp; Maintenance.</p>
-          <div class="top-bar bg-transparent p-0">
-            <div class="social-icons">
-              <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-              <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
-              <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-              <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-md-6">
-          <h4 class="footer-title">Quick Links</h4>
-          <ul class="footer-links">
-            <li><a href="index.html"><i class="bi bi-chevron-right"></i> Home</a></li>
-            <li><a href="about.html"><i class="bi bi-chevron-right"></i> About Us</a></li>
-            <li><a href="services.html"><i class="bi bi-chevron-right"></i> Our Services</a></li>
-            <li><a href="portfolio.html"><i class="bi bi-chevron-right"></i> Portfolio</a></li>
-            <li><a href="contact.html"><i class="bi bi-chevron-right"></i> Contact Us</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-          <h4 class="footer-title">Our Key Services</h4>
-          <ul class="footer-links">
-            <li><a href="services.html"><i class="bi bi-camera-video"></i> CCTV &amp; Wi-Fi Cameras</a></li>
-            <li><a href="services.html"><i class="bi bi-fire"></i> Fire Extinguishers &amp; Safety</a></li>
-            <li><a href="services.html"><i class="bi bi-fingerprint"></i> Biometric &amp; Access Control</a></li>
-            <li><a href="services.html"><i class="bi bi-laptop"></i> Laptop/Computer Sales &amp; Repair</a></li>
-            <li><a href="services.html"><i class="bi bi-router"></i> Routers, Switches &amp; PoE</a></li>
-            <li><a href="services.html"><i class="bi bi-hdd"></i> DVR/NVR Installation &amp; AMC</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-          <h4 class="footer-title">Contact Info</h4>
-          <div class="footer-contact-item">
-            <i class="bi bi-geo-alt-fill footer-contact-icon"></i>
-            <span>Ganesh Market, Narayangarh, Chitwan, Nepal</span>
-          </div>
-          <div class="footer-contact-item">
-            <i class="bi bi-telephone-fill footer-contact-icon"></i>
-            <span>+977-9855084949<br>+977-9866284949</span>
-          </div>
-          <div class="footer-contact-item">
-            <i class="bi bi-envelope-fill footer-contact-icon"></i>
-            <span>germonitchitwan@gmail.com</span>
-          </div>
-          <div class="footer-contact-item">
-            <i class="bi bi-clock-fill footer-contact-icon"></i>
-            <span>Sun - Fri: 9:00 AM - 6:00 PM</span>
+            <div><i class="bi bi-clock-fill text-warning me-1.5"></i> Sun - Fri: 9:00 AM - 7:00 PM</div>
           </div>
         </div>
 
       </div>
 
-      <div class="footer-bottom text-center">
-        <p class="mb-0">&copy; <script>document.write(new Date().getFullYear())</script> Germon IT Solution Pvt. Ltd. All Rights Reserved. Designed for Excellence in Chitwan, Nepal.</p>
+      <!-- Copyright Bar -->
+      <div class="footer-bottom-compact mt-3 pt-3 text-center text-white-50 small border-top border-white border-opacity-10 d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>&copy; <script>document.write(new Date().getFullYear())</script> Germon IT Solution Pvt. Ltd. All rights reserved.</div>
+        <div class="text-white-50">Ganesh Market, Narayangarh, Chitwan, Nepal</div>
       </div>
+
     </div>
   </footer>
 

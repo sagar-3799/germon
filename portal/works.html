@@ -43,6 +43,7 @@
               <option value="all">All Statuses</option>
               <option value="pending">🟡 Pending</option>
               <option value="assigned">🔵 Assigned</option>
+              <option value="en_route">🚗 En Route</option>
               <option value="in_progress">🟠 In Progress</option>
               <option value="on_hold">🟣 On Hold</option>
               <option value="completed">🟢 Completed</option>
@@ -212,42 +213,76 @@
         tbody.innerHTML += `
           <tr>
             <td>
-              <span class="fw-bold text-primary font-monospace">${job.id}</span>
+              <span class="fw-bold text-primary font-monospace fs-6">${job.id}</span>
               <div class="mt-1">
                 <span class="badge badge-priority-${job.priority}">${job.priority.toUpperCase()}</span>
               </div>
             </td>
             <td>
-              <div class="fw-bold text-dark">${escapeHtml(job.clientName)}</div>
-              <div class="small text-muted">${escapeHtml(job.contactPerson)} &bull; ${job.phone}</div>
-              <div class="small text-secondary">${escapeHtml(job.location)}</div>
+              <div class="fw-bold text-dark fs-6">${escapeHtml(job.clientName)}</div>
+              <div class="small text-muted"><i class="bi bi-person me-1"></i>${escapeHtml(job.contactPerson)} &bull; <span class="font-monospace">${job.phone}</span></div>
+              <div class="small text-secondary mt-1"><i class="bi bi-geo-alt-fill text-danger me-1"></i>${escapeHtml(job.location)}</div>
             </td>
             <td>
               <div class="fw-semibold text-dark">${escapeHtml(job.workType)}</div>
-              <div class="small text-muted text-truncate" style="max-width: 250px;">${escapeHtml(job.description)}</div>
+              <div class="small text-muted text-truncate" style="max-width: 260px;" title="${escapeHtml(job.description)}">${escapeHtml(job.description)}</div>
+              <div class="mt-1">
+                ${est > 0 ? `
+                  <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 font-monospace">
+                    <i class="bi bi-cash-stack me-1"></i>Fixed Amount: Rs. ${est.toLocaleString('en-IN')}
+                  </span>
+                ` : `
+                  <span class="badge bg-light text-muted border font-monospace">Quote Pending</span>
+                `}
+              </div>
             </td>
             <td>
-              <div class="fw-semibold"><i class="bi bi-person-fill text-info me-1"></i>${escapeHtml(job.assignedTechName || 'Unassigned')}</div>
+              ${job.assignedTechName ? `
+                <div class="fw-bold text-dark"><i class="bi bi-person-badge text-info me-1"></i>${escapeHtml(job.assignedTechName)}</div>
+              ` : `
+                <span class="badge bg-secondary rounded-pill">Unassigned</span>
+              `}
             </td>
             <td>
-              <span class="badge-status status-${job.status}-badge mb-1">${formatStatus(job.status)}</span>
-              <div class="small text-muted">${job.scheduledDate}</div>
+              <span class="badge-status status-${job.status}-badge mb-1">
+                <span class="status-dot"></span> ${formatStatus(job.status, job.assignedTechName)}
+              </span>
+              <div class="small text-muted font-monospace mt-1"><i class="bi bi-calendar-event me-1"></i>${job.scheduledDate}</div>
             </td>
             <td>
-              <div class="d-flex align-items-center gap-2">
-                ${job.photos?.after || job.photos?.before ? `<span class="badge bg-info text-dark"><i class="bi bi-camera me-1"></i>Photos</span>` : ''}
-                ${job.signature ? `<span class="badge bg-success"><i class="bi bi-pen me-1"></i>Signed</span>` : ''}
+              <div class="d-flex flex-wrap align-items-center gap-1">
+                ${job.photos?.after || job.photos?.before ? `<span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25"><i class="bi bi-camera me-1"></i>Photos</span>` : ''}
+                ${job.signature ? `<span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25"><i class="bi bi-pen me-1"></i>Signed</span>` : ''}
                 ${!job.photos?.after && !job.signature ? `<span class="small text-muted">None</span>` : ''}
               </div>
             </td>
             <td class="text-end pe-3">
-              <button class="btn btn-sm btn-outline-primary" onclick="openJobDetail('${job.id}')">
-                <i class="bi bi-eye"></i> View Full
-              </button>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-sm btn-outline-primary" onclick="openJobDetail('${job.id}')" title="View Details">
+                  <i class="bi bi-eye"></i> View
+                </button>
+                ${(GermonStore.getCurrentUser()?.role === 'admin') ? `
+                  <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteJob('${job.id}', '${escapeHtml(job.clientName)}')" title="Delete Work Order (Admin Only)">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                ` : ''}
+              </div>
             </td>
           </tr>
         `;
       });
+    }
+
+    function confirmDeleteJob(jobId, clientName) {
+      if (confirm(`Are you sure you want to delete Work Order ${jobId} (${clientName})?\n\nNOTE: The work order entry will be deleted, but Client details and Passwords Vault credentials will REMAIN PERMANENTLY SAVED.`)) {
+        try {
+          GermonStore.deleteJob(jobId);
+          alert(`Work Order ${jobId} deleted successfully. Client details & Vault credentials were preserved.`);
+          renderWorks();
+        } catch (err) {
+          alert(err.message);
+        }
+      }
     }
 
     function resetFilters() {
@@ -343,10 +378,11 @@
       modal.show();
     }
 
-    function formatStatus(status) {
+    function formatStatus(status, techName = '') {
       switch (status) {
         case 'pending': return 'Pending';
         case 'assigned': return 'Assigned';
+        case 'en_route': return `🚗 En Route: ${techName || 'Technician'}`;
         case 'in_progress': return 'In Progress';
         case 'on_hold': return 'On Hold';
         case 'completed': return 'Completed';

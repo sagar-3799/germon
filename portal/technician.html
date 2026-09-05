@@ -65,7 +65,6 @@
   <header class="tech-app-header">
     <div class="d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center gap-2">
-        <img src="../logo.jpeg" alt="Germon IT" class="rounded-2" style="width: 38px; height: 38px; object-fit: cover; border: 1px solid #FFF;">
         <div>
           <div class="fw-bold fs-6 lh-1" id="techUserName">Technician Workspace</div>
           <small class="text-info" id="techUserRole">Field Service App</small>
@@ -82,18 +81,32 @@
     </div>
   </header>
 
-  <!-- Filter & Tab bar -->
-  <div class="bg-white border-bottom px-3 py-2 d-flex justify-content-between align-items-center">
-    <div class="fw-bold text-dark small text-uppercase letter-spacing-1">
-      <i class="bi bi-tools text-primary me-1"></i> My Assigned Tasks (<span id="assignedCount">0</span>)
+  <!-- View Mode Nav Tabs (Active Tasks, All Company Works, Completed History) -->
+  <div class="bg-white border-bottom px-3 py-2">
+    <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between gap-2">
+      <div class="d-flex flex-fill align-items-center gap-2" role="group">
+        <button type="button" class="btn btn-primary fw-bold flex-fill py-2 px-2 text-truncate" id="tabActive" onclick="switchTechTab('active')">
+          ⚡ Active Works (<span id="assignedCount">0</span>)
+        </button>
+        <button type="button" class="btn btn-outline-primary fw-semibold flex-fill py-2 px-2 text-truncate" id="tabAllCompany" onclick="switchTechTab('allCompany')">
+          🌐 All Works
+        </button>
+        <button type="button" class="btn btn-outline-secondary fw-semibold flex-fill py-2 px-2 text-truncate" id="tabCompleted" onclick="switchTechTab('completed')">
+          ✅ Completed
+        </button>
+      </div>
+
+      <div class="d-flex align-items-center gap-2 ms-md-auto">
+        <select id="techStatusFilter" class="form-select form-select-sm py-2" style="min-width: 145px;" onchange="renderMyJobs()">
+          <option value="all">All Statuses</option>
+          <option value="assigned">🔵 Assigned</option>
+          <option value="en_route">🚗 En Route</option>
+          <option value="in_progress">🟠 In Progress</option>
+          <option value="on_hold">🟣 On Hold</option>
+          <option value="completed">🟢 Completed</option>
+        </select>
+      </div>
     </div>
-    <select id="techStatusFilter" class="form-select form-select-sm" style="width: 140px;" onchange="renderMyJobs()">
-      <option value="all">All Jobs</option>
-      <option value="in_progress">🟠 In Progress</option>
-      <option value="assigned">🔵 Assigned</option>
-      <option value="on_hold">🟣 On Hold</option>
-      <option value="completed">🟢 Completed</option>
-    </select>
   </div>
 
   <!-- Job Cards Container -->
@@ -120,9 +133,15 @@
               <div class="small text-muted mb-2">
                 <i class="bi bi-geo-alt-fill text-danger me-1"></i><span id="modalLocation">Chowk Narayangarh</span>
               </div>
-              <div class="d-flex gap-2">
+              <div class="d-flex flex-wrap gap-2 mb-2">
                 <a href="#" id="modalCallBtn" class="btn btn-sm btn-outline-primary fw-semibold"><i class="bi bi-telephone-fill me-1"></i>Call Client</a>
-                <a href="#" id="modalMapBtn" target="_blank" class="btn btn-sm btn-outline-danger fw-semibold"><i class="bi bi-geo-alt me-1"></i>Open Google Maps</a>
+                <a href="#" id="modalMapBtn" target="_blank" class="btn btn-sm btn-danger fw-semibold"><i class="bi bi-geo-alt-fill me-1"></i>Open Google Maps</a>
+              </div>
+              <div class="mt-2 pt-2 border-top">
+                <label class="form-label fw-bold small text-danger text-uppercase mb-1">
+                  <i class="bi bi-geo-alt-fill me-1"></i>Site Google Maps Link (Auto-Saves to Client Directory)
+                </label>
+                <input type="text" class="form-control form-control-sm font-monospace" id="modalTechMapUrl" placeholder="Paste Google Maps link here to save permanently for this client...">
               </div>
             </div>
 
@@ -162,36 +181,84 @@
               </div>
             </div>
 
-            <!-- Before / After Photos with Automatic Compression -->
-            <div class="mb-3 p-3 bg-white rounded-3 border">
-              <label class="form-label fw-bold small text-muted text-uppercase mb-1">
-                <i class="bi bi-camera-fill text-primary me-1"></i>Before &amp; After Work Photos
-              </label>
-              <p class="small text-muted mb-2">Photos are automatically compressed (under 200KB) to save phone mobile data and hosting storage.</p>
 
-              <div class="row g-3">
-                <!-- Before Photo -->
+            <!-- Job Amount & Payment (Technician Entry Allowed if Admin hasn't entered amount) -->
+            <div class="mb-3 p-3 bg-white rounded-3 border border-success border-opacity-25" id="techPaymentSection">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label class="form-label fw-bold small text-success text-uppercase mb-0">
+                  <i class="bi bi-cash-stack me-1"></i>Job Amount &amp; Payment (NPR)
+                </label>
+                <span class="badge bg-success bg-opacity-10 text-success font-monospace small" id="amountEditableBadge">Technician Entry Allowed</span>
+              </div>
+              <p class="small text-muted mb-2">Technician can enter or update total billing amount and collected payment if Admin has not entered an amount.</p>
+
+              <div class="row g-2">
                 <div class="col-6">
-                  <div class="photo-dropzone">
-                    <input type="file" accept="image/*" capture="environment" id="beforePhotoInput" onchange="handlePhotoUpload(this, 'before')">
-                    <div id="beforePhotoPlaceholder">
-                      <i class="bi bi-camera fs-2 text-muted"></i>
-                      <div class="small fw-semibold mt-1">Before Photo</div>
-                    </div>
-                    <img id="beforePhotoPreview" src="" class="img-fluid rounded d-none" style="max-height: 120px; object-fit: cover;" alt="Before">
-                  </div>
+                  <label class="form-label small fw-semibold">Fixed Total Amount (Rs.)</label>
+                  <input type="number" class="form-control form-control-sm font-monospace fw-bold" id="modalTechEstAmount" placeholder="e.g. 5000" min="0" oninput="calculateTechDueDisplay()">
                 </div>
-
-                <!-- After Photo -->
                 <div class="col-6">
-                  <div class="photo-dropzone">
-                    <input type="file" accept="image/*" capture="environment" id="afterPhotoInput" onchange="handlePhotoUpload(this, 'after')">
-                    <div id="afterPhotoPlaceholder">
-                      <i class="bi bi-camera-fill fs-2 text-success"></i>
-                      <div class="small fw-semibold mt-1">After Photo</div>
-                    </div>
-                    <img id="afterPhotoPreview" src="" class="img-fluid rounded d-none" style="max-height: 120px; object-fit: cover;" alt="After">
-                  </div>
+                  <label class="form-label small fw-semibold">Previously Paid (Rs.)</label>
+                  <input type="number" class="form-control form-control-sm font-monospace fw-bold bg-light" id="modalTechPrevPaidDisplay" readonly value="0">
+                </div>
+                <div class="col-6">
+                  <label class="form-label small fw-semibold text-success">New Payment Received Now (Rs.)</label>
+                  <input type="number" class="form-control form-control-sm font-monospace fw-bold text-success border-success" id="modalTechNewPaidAmount" placeholder="e.g. 1000" min="0" oninput="calculateTechDueDisplay()">
+                </div>
+                <div class="col-6">
+                  <label class="form-label small fw-semibold">Payment Mode</label>
+                  <select class="form-select form-select-sm" id="modalTechPayMode">
+                    <option value="Cash">Cash</option>
+                    <option value="Fonepay">Fonepay QR</option>
+                    <option value="eSewa">eSewa</option>
+                    <option value="Khalti">Khalti</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-semibold">New Remaining Due</label>
+                  <input type="text" class="form-control form-control-sm font-monospace bg-light fw-bold text-danger" id="modalTechDueDisplay" readonly value="Rs. 0">
+                </div>
+              </div>
+            </div>
+
+            <!-- Device / App Access Credentials Capture (Saved to Passwords Vault) -->
+            <div class="mb-3 p-3 bg-white rounded-3 border border-primary border-opacity-25" id="credentialsSection">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label class="form-label fw-bold small text-primary text-uppercase mb-0">
+                  <i class="bi bi-shield-lock-fill me-1"></i>Device &amp; App Credentials (Auto-Saved to Vault)
+                </label>
+                <span class="badge bg-primary bg-opacity-10 text-primary font-monospace small">Vault Sync</span>
+              </div>
+              <p class="small text-muted mb-2">Record NVR/DVR pass, Wi-Fi Camera App user/pass, Router IP, saved permanently to Client Vault.</p>
+              
+              <div class="row g-2">
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">System / App Type</label>
+                  <select class="form-select form-select-sm" id="modalCredSystemType">
+                    <option value="CCTV NVR/DVR System">CCTV NVR/DVR System</option>
+                    <option value="Smart Wi-Fi Camera App (Hik-Connect, EZVIZ, CP Plus)">Smart Wi-Fi Camera App</option>
+                    <option value="Biometric Attendance Machine">Biometric Attendance Machine</option>
+                    <option value="Access Control Gate / Door System">Access Control Gate / Door System</option>
+                    <option value="Wi-Fi Router / PoE Switch / ONU">Wi-Fi Router / PoE Switch / ONU</option>
+                    <option value="Laptop / Desktop PC Admin">Laptop / Desktop PC Admin</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">IP Address / Domain / Serial</label>
+                  <input type="text" class="form-control form-control-sm font-monospace" id="modalCredIpDomain" placeholder="e.g. 192.168.1.108 or Serial No.">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">App Username / User ID</label>
+                  <input type="text" class="form-control form-control-sm font-monospace" id="modalCredUsername" placeholder="e.g. admin or phone/email">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">App Password / Passcode</label>
+                  <input type="text" class="form-control form-control-sm font-monospace" id="modalCredPassword" placeholder="e.g. Germon@2026">
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-semibold">Port / Access Notes</label>
+                  <input type="text" class="form-control form-control-sm" id="modalCredNotes" placeholder="e.g. HTTP 80, RTSP 554, Mobile Port 8000">
                 </div>
               </div>
             </div>
@@ -215,10 +282,12 @@
 
           </div>
           <div class="modal-footer bg-light border-0 py-3">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary px-4 fw-bold touch-btn">
-              <i class="bi bi-check2-circle fs-5"></i> Save &amp; Update Job
-            </button>
+            <div class="w-100 d-flex gap-2">
+              <button type="button" class="btn btn-outline-secondary flex-fill py-2 fw-semibold" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary flex-fill py-2 fw-bold touch-btn d-flex align-items-center justify-content-center gap-1">
+                <i class="bi bi-check2-circle fs-5"></i> Save &amp; Update Job
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -255,18 +324,40 @@
       renderMyJobs();
     });
 
+    let currentTab = 'active'; // 'active', 'allCompany', 'completed'
+
+    function switchTechTab(tabName) {
+      currentTab = tabName;
+      document.getElementById('tabActive').className = tabName === 'active' ? 'btn btn-primary fw-bold' : 'btn btn-outline-primary fw-semibold';
+      document.getElementById('tabAllCompany').className = tabName === 'allCompany' ? 'btn btn-primary fw-bold' : 'btn btn-outline-primary fw-semibold';
+      document.getElementById('tabCompleted').className = tabName === 'completed' ? 'btn btn-primary fw-bold' : 'btn btn-outline-secondary fw-semibold';
+      renderMyJobs();
+    }
+
     function renderMyJobs() {
       const currentUser = GermonStore.getCurrentUser();
       const statusFilter = document.getElementById('techStatusFilter').value;
 
       let filterObj = {};
+      if (currentTab === 'active') {
+        filterObj.hideCompleted = true;
+      } else if (currentTab === 'allCompany') {
+        filterObj.allCompanyJobs = true;
+        filterObj.hideCompleted = true;
+      } else if (currentTab === 'completed') {
+        filterObj.completedOnly = true;
+      }
+
       if (statusFilter !== 'all') {
         filterObj.status = statusFilter;
       }
 
-      // GermonStore.getJobs automatically enforces: Unassigned jobs (visible to all) + Assigned jobs (visible to assigned user/admin)
       const jobs = GermonStore.getJobs(filterObj);
-      document.getElementById('assignedCount').textContent = jobs.length;
+      
+      // Update count of active/pending tasks for badge
+      const activeCount = GermonStore.getJobs({ hideCompleted: true }).length;
+      document.getElementById('assignedCount').textContent = activeCount;
+
       const container = document.getElementById('techJobsContainer');
       container.innerHTML = '';
 
@@ -274,8 +365,10 @@
         container.innerHTML = `
           <div class="text-center py-5 text-muted bg-white rounded-4 p-4 shadow-sm">
             <i class="bi bi-check2-all fs-1 text-success d-block mb-2"></i>
-            <h5 class="fw-bold">No Active Jobs</h5>
-            <p class="small text-muted mb-0">You have no tasks matching this filter right now. Enjoy your break or check with office dispatch!</p>
+            <h5 class="fw-bold">${currentTab === 'completed' ? 'No Completed History Yet' : 'No Active Jobs Found'}</h5>
+            <p class="small text-muted mb-0">
+              ${currentTab === 'completed' ? 'Finished work orders will appear here for reference.' : 'No tasks match this filter. Click "All Company Works" tab to browse open work orders!'}
+            </p>
           </div>
         `;
         return;
@@ -286,60 +379,96 @@
         const waText = encodeURIComponent(`Namaste ${job.contactPerson}! I am ${job.assignedTechName || 'your technician'} from Germon IT Solution Narayangarh. I am working on your ${job.workType}.`);
 
         container.innerHTML += `
-          <div class="tech-job-card">
-            <div class="tech-job-header">
-              <div>
-                <span class="badge bg-light text-dark font-monospace">${job.id}</span>
-                <span class="badge bg-${job.priority === 'emergency' ? 'danger' : 'warning'} ms-1">${job.priority.toUpperCase()}</span>
+          <div class="tech-job-card p-3 shadow-sm rounded-4 border mb-3">
+            <!-- Header Row: Job ID, Priority, En-Route Status, Assigned Tech -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2 pb-2 border-bottom">
+              <div class="d-flex align-items-center gap-2">
+                <span class="fw-bold text-primary font-monospace fs-6">${job.id}</span>
+                <span class="badge bg-${job.priority === 'emergency' ? 'danger' : 'warning'} px-2">${job.priority.toUpperCase()}</span>
+                <span class="job-badge-pill status-${job.status}-badge">
+                  <span class="status-dot"></span> ${formatStatus(job.status, job.assignedTechName)}
+                </span>
               </div>
-              <span class="job-badge-pill status-${job.status}-badge">${formatStatus(job.status)}</span>
+              <div>
+                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-2 py-1 small">
+                  <i class="bi bi-person-badge me-1"></i>Tech: ${escapeHtml(job.assignedTechName || 'Unassigned')}
+                </span>
+              </div>
             </div>
 
-            <div class="tech-job-body">
-              <h5 class="fw-bold text-dark mb-1">${escapeHtml(job.clientName)}</h5>
-              <div class="text-muted small mb-2">
-                <i class="bi bi-person me-1"></i>${escapeHtml(job.contactPerson)} &bull; 
-                <a href="tel:${cleanPhone}" class="text-primary fw-bold text-decoration-none">${job.phone}</a>
-              </div>
-
-              <div class="p-2 bg-light rounded-3 small mb-3 border">
-                <div class="fw-semibold text-primary"><i class="bi bi-tools me-1"></i>${escapeHtml(job.workType)}</div>
-                <div class="text-muted mt-1">${escapeHtml(job.description)}</div>
-                ${job.holdReason ? `<div class="text-danger mt-1"><strong>Hold Reason:</strong> ${escapeHtml(job.holdReason)}</div>` : ''}
-              </div>
-
-              <!-- Location and Navigation -->
-              <div class="d-flex align-items-center justify-content-between mb-3 small">
-                <div class="text-secondary text-truncate me-2">
-                  <i class="bi bi-geo-alt-fill text-danger me-1"></i>${escapeHtml(job.location)}
+            <!-- Content & Actions Main Grid -->
+            <div class="row g-3 align-items-center">
+              <!-- Left Column: Client Details & Location -->
+              <div class="col-md-5 col-12">
+                <h6 class="fw-bold text-dark mb-1 font-heading text-truncate">${escapeHtml(job.clientName)}</h6>
+                <div class="small text-muted text-truncate mb-1">
+                  <i class="bi bi-person me-1"></i>${escapeHtml(job.contactPerson)} &bull; <a href="tel:${cleanPhone}" class="font-monospace text-primary fw-bold text-decoration-none">${job.phone}</a>
                 </div>
-                ${job.mapUrl ? `
-                  <a href="${job.mapUrl}" target="_blank" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 flex-shrink-0">
-                    <i class="bi bi-cursor-fill"></i> Navigate
-                  </a>
-                ` : ''}
-              </div>
-
-              <!-- Mobile Quick Actions -->
-              <div class="d-grid gap-2">
-                <button class="btn btn-primary touch-btn shadow-sm" onclick="openUpdateModal('${job.id}')">
-                  <i class="bi bi-pencil-square"></i> Update Status / Materials / Photos
-                </button>
-
-                <div class="d-flex gap-2">
-                  <a href="tel:${cleanPhone}" class="btn btn-outline-secondary w-50 touch-btn">
-                    <i class="bi bi-telephone-fill text-success"></i> Call Client
-                  </a>
-                  <a href="https://wa.me/${cleanPhone}?text=${waText}" target="_blank" class="btn btn-outline-secondary w-50 touch-btn">
-                    <i class="bi bi-whatsapp text-success"></i> WhatsApp
-                  </a>
+                <div class="d-flex flex-wrap align-items-center gap-2 small">
+                  <span class="fw-semibold text-primary text-truncate"><i class="bi bi-tools me-1"></i>${escapeHtml(job.workType)}</span>
+                  <span class="text-secondary text-truncate">&bull; <i class="bi bi-geo-alt-fill text-danger me-1"></i>${escapeHtml(job.location)}</span>
+                </div>
+                <div class="mt-2 pt-1 border-top d-flex flex-wrap align-items-center gap-1 small">
+                  ${(job.finalAmount || job.estimatedAmount) > 0 ? `
+                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 font-monospace">
+                      <i class="bi bi-cash-stack me-1"></i>Admin Cost: Rs. ${Number(job.finalAmount || job.estimatedAmount).toLocaleString('en-IN')}
+                    </span>
+                    ${job.paidAmount > 0 ? `<span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 font-monospace">Paid: Rs. ${Number(job.paidAmount).toLocaleString('en-IN')}</span>` : ''}
+                  ` : `
+                    <span class="badge bg-warning bg-opacity-10 text-dark border border-warning border-opacity-25 font-monospace">
+                      <i class="bi bi-pencil-square me-1"></i>Amount Pending Tech / Admin Entry
+                    </span>
+                  `}
                 </div>
               </div>
 
+              <!-- Right Column: Equal Size Buttons Spanning Full Width of Right Column -->
+              <div class="col-md-7 col-12">
+                <div class="card-action-bar">
+                  <!-- 1. En Route -->
+                  ${(job.status !== 'completed' && job.status !== 'en_route') ? `
+                    <button type="button" class="action-btn btn btn-info text-white" title="Ma Jadai Chhu (En Route)" onclick="triggerEnRoute('${job.id}')">
+                      <i class="bi bi-car-front-fill"></i><span>En Route</span>
+                    </button>
+                  ` : ''}
+
+                  <!-- 2. Update Status & Credentials -->
+                  <button type="button" class="action-btn btn btn-primary" title="Update Status / Credentials" onclick="openUpdateModal('${job.id}')">
+                    <i class="bi bi-pencil-square"></i><span>Update</span>
+                  </button>
+
+                  <!-- 3. Call Client -->
+                  <a href="tel:${cleanPhone}" class="action-btn btn btn-success" title="Call Client">
+                    <i class="bi bi-telephone-fill"></i><span>Call</span>
+                  </a>
+
+                  <!-- 4. WhatsApp Chat -->
+                  <a href="https://wa.me/${cleanPhone}?text=${waText}" target="_blank" class="action-btn btn btn-success bg-gradient" title="WhatsApp Chat">
+                    <i class="bi bi-whatsapp"></i><span>WhatsApp</span>
+                  </a>
+
+                  <!-- 5. Navigate Maps -->
+                  ${job.mapUrl ? `
+                    <a href="${job.mapUrl}" target="_blank" class="action-btn btn btn-danger" title="Open Google Maps">
+                      <i class="bi bi-geo-alt-fill"></i><span>Maps</span>
+                    </a>
+                  ` : ''}
+                </div>
+              </div>
             </div>
           </div>
         `;
       });
+    }
+
+    function triggerEnRoute(jobId) {
+      try {
+        const job = GermonStore.selfClaimAndEnRoute(jobId);
+        alert(`Status updated to En Route!\n\nOffice Dashboard notified that you are heading to ${job.clientName}.`);
+        renderMyJobs();
+      } catch (err) {
+        alert(err.message);
+      }
     }
 
     // Open Update Modal
@@ -365,6 +494,7 @@
       document.getElementById('modalStatusSelect').value = activeJobForUpdate.status;
       document.getElementById('modalHoldReason').value = activeJobForUpdate.holdReason || '';
       document.getElementById('modalTechNote').value = '';
+      document.getElementById('modalTechMapUrl').value = activeJobForUpdate.mapUrl || '';
 
       handleStatusChangeUI();
 
@@ -377,12 +507,35 @@
         addMaterialRow('', '', true);
       }
 
-      // Photos
-      tempPhotos.before = activeJobForUpdate.photos?.before || '';
-      tempPhotos.after = activeJobForUpdate.photos?.after || '';
+      // Populate Billing & Payment
+      const estAmt = Number(activeJobForUpdate.finalAmount || activeJobForUpdate.estimatedAmount || 0);
+      const prevPaidAmt = Number(activeJobForUpdate.paidAmount || 0);
+      const payMode = activeJobForUpdate.paymentMode || 'Cash';
 
-      updatePhotoPreviewUI('before', tempPhotos.before);
-      updatePhotoPreviewUI('after', tempPhotos.after);
+      const estInput = document.getElementById('modalTechEstAmount');
+      estInput.value = estAmt > 0 ? estAmt : '';
+      document.getElementById('modalTechPrevPaidDisplay').value = prevPaidAmt;
+      document.getElementById('modalTechNewPaidAmount').value = '';
+      document.getElementById('modalTechPayMode').value = payMode;
+
+      const badge = document.getElementById('amountEditableBadge');
+      if (estAmt > 0) {
+        estInput.readOnly = true;
+        estInput.classList.add('bg-light');
+        if (badge) {
+          badge.textContent = `Admin Fixed Amount: Rs. ${estAmt.toLocaleString('en-IN')}`;
+          badge.className = 'badge bg-primary bg-opacity-10 text-primary font-monospace small';
+        }
+      } else {
+        estInput.readOnly = false;
+        estInput.classList.remove('bg-light');
+        if (badge) {
+          badge.textContent = 'Technician Entry Allowed';
+          badge.className = 'badge bg-success bg-opacity-10 text-success font-monospace small';
+        }
+      }
+
+      calculateTechDueDisplay();
 
       // Signature
       clearSignatureCanvas();
@@ -395,6 +548,15 @@
 
       // Resize canvas on modal open for accurate coordinate mapping
       setTimeout(() => resizeCanvas(), 300);
+    }
+
+    function calculateTechDueDisplay() {
+      const est = parseFloat(document.getElementById('modalTechEstAmount').value) || 0;
+      const prevPaid = parseFloat(document.getElementById('modalTechPrevPaidDisplay').value) || 0;
+      const newPaid = parseFloat(document.getElementById('modalTechNewPaidAmount').value) || 0;
+      const totalPaid = prevPaid + newPaid;
+      const due = Math.max(0, est - totalPaid);
+      document.getElementById('modalTechDueDisplay').value = `Rs. ${due.toLocaleString('en-IN')}`;
     }
 
     function handleStatusChangeUI() {
@@ -584,12 +746,39 @@
         signatureData = signaturePadCanvas.toDataURL('image/png');
       }
 
+      // Collect Credentials if entered
+      const credSystemType = document.getElementById('modalCredSystemType').value;
+      const credIpDomain = document.getElementById('modalCredIpDomain').value.trim();
+      const credUsername = document.getElementById('modalCredUsername').value.trim();
+      const credPassword = document.getElementById('modalCredPassword').value.trim();
+      const credNotes = document.getElementById('modalCredNotes').value.trim();
+
+      // Collect Technician Payment / Amount Entry
+      const techEstAmt = parseFloat(document.getElementById('modalTechEstAmount').value) || 0;
+      const prevPaid = parseFloat(document.getElementById('modalTechPrevPaidDisplay').value) || 0;
+      const newPaid = parseFloat(document.getElementById('modalTechNewPaidAmount').value) || 0;
+      const finalPaidAmt = prevPaid + newPaid;
+      const techPayMode = document.getElementById('modalTechPayMode').value;
+      const techMapUrl = document.getElementById('modalTechMapUrl').value.trim();
+
       const updates = {
         holdReason: holdReason,
-        note: techNote || `Technician updated status to ${newStatus}`,
+        note: techNote ? `${techNote}${newPaid > 0 ? ` (Collected +Rs. ${newPaid} via ${techPayMode})` : ''}` : `Technician updated status to ${newStatus}${newPaid > 0 ? ` & collected +Rs. ${newPaid} via ${techPayMode}` : ''}`,
         materialsUsed: materials,
         photos: tempPhotos,
-        signature: signatureData
+        signature: signatureData,
+        mapUrl: techMapUrl,
+        estimatedAmount: techEstAmt,
+        finalAmount: techEstAmt,
+        paidAmount: finalPaidAmt,
+        paymentMode: techPayMode,
+        credential: (credUsername || credPassword) ? {
+          systemType: credSystemType,
+          ipAddress: credIpDomain,
+          username: credUsername,
+          password: credPassword,
+          notes: credNotes
+        } : null
       };
 
       GermonStore.updateJobStatus(activeJobForUpdate.id, newStatus, updates);
@@ -603,10 +792,11 @@
       renderMyJobs();
     });
 
-    function formatStatus(status) {
+    function formatStatus(status, techName = '') {
       switch (status) {
         case 'pending': return 'Pending';
         case 'assigned': return 'Assigned';
+        case 'en_route': return `🚗 En Route: ${techName || 'Technician'}`;
         case 'in_progress': return 'In Progress';
         case 'on_hold': return 'On Hold';
         case 'completed': return 'Completed';

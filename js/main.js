@@ -162,7 +162,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Save into Portal Storage
         try {
-          const existingInquiries = JSON.parse(localStorage.getItem('germon_inquiries') || '[]');
           const newInquiry = {
             id: inquiryId,
             name: nameVal,
@@ -176,10 +175,16 @@ document.addEventListener('DOMContentLoaded', function () {
             date: new Date().toISOString(),
             status: 'New'
           };
-          existingInquiries.unshift(newInquiry);
-          localStorage.setItem('germon_inquiries', JSON.stringify(existingInquiries));
+
+          if (window.GermonStore && typeof window.GermonStore.addWebInquiry === 'function') {
+            window.GermonStore.addWebInquiry(newInquiry);
+          } else {
+            const existingInquiries = JSON.parse(localStorage.getItem('germon_inquiries') || '[]');
+            existingInquiries.unshift(newInquiry);
+            localStorage.setItem('germon_inquiries', JSON.stringify(existingInquiries));
+          }
         } catch (err) {
-          console.warn('Could not save to localStorage:', err);
+          console.warn('Could not save inquiry:', err);
         }
 
         contactForm.reset();
@@ -228,6 +233,33 @@ document.addEventListener('DOMContentLoaded', function () {
         alert('Thank you for subscribing to Germon IT Solution newsletter!');
         emailInput.value = '';
       }
+    });
+  }
+
+  // ------------------------------------------------------------------------
+  // 7. Team Ticker Click Pause & 5-Second Auto Resume Handler
+  // ------------------------------------------------------------------------
+  const teamTrack = document.getElementById('teamTickerTrack');
+  const statusBadge = document.getElementById('teamTickerStatus');
+  let tickerTimer = null;
+
+  if (teamTrack) {
+    teamTrack.addEventListener('click', function () {
+      teamTrack.classList.add('paused');
+      if (statusBadge) {
+        statusBadge.innerHTML = '<i class="bi bi-pause-circle-fill text-warning me-1"></i> Paused (Resuming in 5s...)';
+        statusBadge.className = 'badge bg-warning bg-opacity-10 text-dark border border-warning px-3 py-1.5 rounded-pill';
+      }
+
+      if (tickerTimer) clearTimeout(tickerTimer);
+
+      tickerTimer = setTimeout(function () {
+        teamTrack.classList.remove('paused');
+        if (statusBadge) {
+          statusBadge.innerHTML = '<i class="bi bi-arrow-repeat text-primary me-1"></i> Continuous Scrolling (Click to pause for 5s)';
+          statusBadge.className = 'badge bg-primary bg-opacity-10 text-primary border border-primary px-3 py-1.5 rounded-pill';
+        }
+      }, 5000);
     });
   }
 });

@@ -57,12 +57,12 @@
   }
 
   .contact-form-card {
-    padding: 25px;
-    margin-top: 30px;
+    padding: 20px 18px;
+    margin-top: 0;
   }
 
   .map-container {
-    height: 350px;
+    height: 300px;
   }
 }
 
@@ -78,6 +78,10 @@
 
   .counter-number {
     font-size: 2.5rem;
+  }
+
+  .counter-time {
+    font-size: 1.15rem;
   }
 
   .btn-custom-primary,
@@ -98,8 +102,14 @@
     height: 220px;
   }
 
-  .footer-section {
-    padding-top: 50px;
+  section.py-5, .py-5 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  .footer-compact {
+    padding-top: 25px;
+    padding-bottom: 15px;
   }
 }
 
